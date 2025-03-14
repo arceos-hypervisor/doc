@@ -58,23 +58,23 @@ match &exit_reason {
 
 虚拟中断控制器通过配置表，判断客户机是否有权限控制中断号，若有权限，则将客户机中断号相应操作透传到物理中断控制器。
 
-### 虚拟中断
+### 虚拟设备到 Guest OS 的通知
+
+绝大多数情况下，虚拟设备通知 Guest OS 的方式是虚拟中断。但虚拟中断并不完全来自虚拟设备，也可能来自直通设备的物理中断（由 Hypervisor 转发）或者来自某个 VCpu 的虚拟 IPI（同样由 Hypervisor 转发）。因此，需要一个统一的虚拟中断注入接口，用以向指定的 VCpu 注入中断。
+
+这个接口应该放置在 AxVM 中，签名类似于 inject_interrupt_to_vcpu(target: Option<CpuMask>, vector: usize) -> AxResult。其中 target 可以控制中断注入的目标 VCpu，是任意一个 VCpu，指定一个 VCpu，指定一组 VCpu，或者所有 VCpu；vector 是中断向量。放置在 AxVM 中的原因是，中断注入的操作可能需要访问 VGIC 等设备。
+
+为了设备不直接依赖于 AxVM 或者 AxVCpu，虚拟设备结构体不能直接调用 inject_interrupt_to_vcpu，而是应当通过提供给设备的一个闭包来实现中断注入。
 
 系统时钟和虚拟设备等中断通过全虚拟化方式实现，每个 `vcpu` 都有一个中断向量表，用于记录客户机中断号对应的中断状态。
 
 当虚拟设备触发中断时，向物理中断控制器发送软中断，由物理中断控制器将中断请求转发到 `vcpu`。
 
-## AARCH64 & RISCV64
+### `inject_interrupt_to_vcpu` 的实现
 
-中断控制器作为虚拟设备，位于 `Axvm` 层，实现通用接口，供 `vcpu` 和上层使用。
+为了保持 AxVM 的架构无关性，AxVCpu 和 AxArchVCpu 仍然应该提供一个 inject_interrupt 方法，用以向当前 VCpu 注入中断。AxVM 的 inject_interrupt_to_vcpu 方法应该根据 target 参数，调用对应 AxVCpu 的 inject_interrupt 方法。在 aarch64 和 riscv64 平台上，AxArchVCpu 在 setup 时，应该通过 SetupConfig 得到一个实际完成中断注入的闭包；而在 x86 平台上，AxArchVCpu 本身具有中断注入的能力，因此无需进一步的配置。
 
-## X86_64
-
-TODO
-
-## 当前状态
-
-目前通过直通方式绕过虚拟中断控制器，直接使用物理中断控制器。
+当被注入中断时，如果 VCpu 正在当前核心上运行，可以直接通过各个架构的虚拟化机制注入中断；如果 VCpu 处于当前核心就绪队列中，则应该记录中断，等 VCpu 下次运行时再注入；如果 VCpu 在非当前核心上运行，可以通过 IPI 通知目标核心的 Hypervisor，由 Hypervisor 负责注入中断。
 
 ## 参考资料
 

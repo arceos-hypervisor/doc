@@ -33,3 +33,11 @@ Local APIC 的寄存器通过内存映射（MMIO）访问。虚拟机对 APIC �
 ### Posted Interrupts（Intel）：
 
  * 物理中断可直接“投递”到虚拟机的虚拟 APIC，绕过 Hypervisor 干预，极大降低延迟。
+
+## 代码分析
+
+代码位于 [x86-vlapic](https://github.com/arceos-hypervisor/x86_vlapic)
+
+`EmulatedLocalApic` 实现了虚拟中断的基本方法，通过 `handle_read` `handle_write` 实现读写虚拟中断寄存器的功能。
+
+`VirtualApicRegs` 包含了 `APIC` 所有寄存器，保存客户机虚拟中断的寄存器状态
