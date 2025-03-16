@@ -60,7 +60,7 @@ Unified modular ArceOS hypervisor, mainly composed of the following independent 
 
 * [axaddrspace](https://github.com/arceos-hypervisor/axaddrspace): provides guest VM address space management -->
 
-* [vmm-app](https://github.com/arceos-hypervisor/arceos-umhv/tree/master/arceos-vmm)
+* [axvisor](https://github.com/arceos-hypervisor/axvisor/)
 
 * [axvm](https://github.com/arceos-hypervisor/arceos-umhv/tree/master/crates/axvm)
 * [axvcpu](https://github.com/arceos-hypervisor/axvcpu)
@@ -129,11 +129,10 @@ Unified modular ArceOS hypervisor, mainly composed of the following independent 
 
 ## Components
 
-* [vmm-app](https://github.com/arceos-hypervisor/arceos-umhv/tree/master/arceos-vmm): acts like a VMM (Virtual Machine Monitor)
+* [axvisor](https://github.com/arceos-hypervisor/axvisor/): acts like a VMM (Virtual Machine Monitor)
     * As an ArceOS unikernel app, directly call arceos functions
     * completely architecture-independent
     * responsible for VM management (configuration & runtime)
-
 
 
 
