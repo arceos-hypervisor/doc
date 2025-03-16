@@ -32,21 +32,21 @@ impl axvm::PhysFrameIf for PhysFrameIfImpl {
 ### 模块组织
 
 ```
-axvm/
-├── src/
-│   ├── msr.rs          - 模型特定寄存器操作
-│   ├── regs.rs         - 通用寄存器管理
-│   ├── ept.rs          - 扩展页表支持
-│   ├── frame.rs        - 物理内存帧管理
-│   ├── vmx/            - Intel VT-x 相关实现
-│   │   ├── definitions.rs  - 常量和类型定义
-│   │   ├── instructions.rs - VMX 指令封装
-│   │   ├── percpu.rs       - 每 CPU 状态管理
-│   │   ├── structs.rs      - VMX 数据结构
-│   │   ├── vcpu.rs         - 虚拟 CPU 实现
-│   │   ├── vmcs.rs         - VMCS 字段操作
-│   │   └── mod.rs          - 模块入口
-│   └── lib.rs          - 库入口点
+x86_vcpu/
+    ├── src/
+    │   ├── msr.rs          - 模型特定寄存器操作
+    │   ├── regs.rs         - 通用寄存器管理
+    │   ├── ept.rs          - 扩展页表支持
+    │   ├── frame.rs        - 物理内存帧管理
+    │   ├── vmx/            - Intel VT-x 相关实现
+    │   │   ├── definitions.rs  - 常量和类型定义
+    │   │   ├── instructions.rs - VMX 指令封装
+    │   │   ├── percpu.rs       - 每 CPU 状态管理
+    │   │   ├── structs.rs      - VMX 数据结构
+    │   │   ├── vcpu.rs         - 虚拟 CPU 实现
+    │   │   ├── vmcs.rs         - VMCS 字段操作
+    │   │   └── mod.rs          - 模块入口
+    │   └── lib.rs          - 库入口点
 ```
 
 ### 核心组件
