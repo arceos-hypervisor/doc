@@ -20,13 +20,17 @@
 
 # Components
 
-- [vCpu](./vcpu/vcpu.md)
+- [axvisor](./axvisor.md)
+
+- [axvm](./axvm.md)
+
+- [axvcpu](./vcpu/vcpu.md)
     - [x86_vcpu](./vcpu/x86_vcpu.md)
     - [arm_vcpu](./vcpu/arm_vcpu.md)
     - [riscv_vcpu](./vcpu/riscv_vcpu.md)
     - [loongarch_vcpu](./vcpu/loongarch_vcpu.md)
 
-- [Memory](./memory.md)
+- [axaddrspace](./memory.md)
 
 - [Virtual IRQ](./irq/irq.md)
     - [vGIC](./irq/vgic.md)
