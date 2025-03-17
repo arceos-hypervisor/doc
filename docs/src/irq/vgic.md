@@ -402,6 +402,8 @@ struct gich_lr {
 
 ### VGIC 寄存器虚拟化
 
+有的寄存器是单个32位长，有的寄存器是多个32位长，所以使用宏来定义各个寄存器，提供直观的访问方式
+
 ``` rust
 // Macro to define GIC register enums
 macro_rules! generate_gic_registers {
@@ -553,6 +555,26 @@ generate_gic_registers! {
             offset: 0x0f20,
             size: 32
         },
+    }
+}
+
+// 访问寄存器的方法
+match GicRegister::from_addr(addr as u32) {
+    Some(reg) => match reg {
+        GicRegister::GicdCtlr => Ok(self.vgicd.lock().ctrlr as usize),
+        GicRegister::GicdTyper => Ok(self.vgicd.lock().typer as usize),
+        GicRegister::GicdIidr => Ok(self.vgicd.lock().iidr as usize),
+        GicRegister::GicdStatusr => self.read_statusr(),
+        GicRegister::GicdIgroupr(idx) => self.read_igroupr(idx),
+        GicRegister::GicdIsenabler(idx) => Ok(self.vgicd.lock().vgicd_isenabler_read(idx)),
+        GicRegister::GicdIcenabler(idx) => self.read_icenabler(idx),
+        GicRegister::GicdIspendr(idx) => self.read_ispendr(idx),
+        _ => {
+            error!("Read register address: {addr:#x}");
+        }
+    },
+    None => {
+        error!("Invalid read register address: {addr:#x}");
     }
 }
 
