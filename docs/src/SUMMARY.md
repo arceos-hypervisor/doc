@@ -10,6 +10,7 @@
     - [How-to](./start/How-to.md)
     - [Guest Linux](./start/linux_cn.md)
     - [2 Guest ArceOS + Linux](./start/2vm_arceos_linux.md)  
+    - [2 VM Timer Nimbos](./start/2vm_timer_cn.md)
 
 # Overall Architecture
 
