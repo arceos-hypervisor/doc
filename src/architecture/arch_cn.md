@@ -7,18 +7,18 @@ ArceOS-Hypervisor 是基于 ArceOS unikernel 框架实现的 Hypervisor。其目
 
 ArceOS 是一个基于 Rust 语言的 unikernel 框架，其设计目标是提供一个高性能、模块化、最小化的操作系统基座。通过在 ArceOS 的基础上添加不同的模块，就可以对应不同的应用场景生成不同的操作系统：在 ArceOS 上直接添加应用程序，就可以生成一个独立的应用程序 unikernel 镜像；在 ArceOS 上添加宏内核模块，就可以生成一个完整的宏内核操作系统；ArceOS-Hypervisor 则在 ArceOS 的基础上添加虚拟化相关模块，从而以最小成本实现一个 Type-1 Hypervisor。
 
-![arceos-architecture](assets/arceos-backbone.png)
+![arceos-architecture](../assets/arceos-backbone.png)
 
 ## 2. 软件架构
 
 ArceOS-Hypervisor 的软件架构如下图所示，图中每一个框都是一个独立的模块，模块之间通过标准接口进行通信。包括作为基础的 ArceOS 在内，ArceOS-Hypervisor 的软件架构分为五层：
 
-![arceos-hypervisor-architecture](assets/arceos-hypervisor-architecture.png)
+![arceos-hypervisor-architecture](../assets/arceos-hypervisor-architecture.png)
 
 AxVisor 整体架构
 
 <center class="half">
-    <img src="./assets/arm mode.png" width="200"/><img src="./assets/x86 mode.png" width="200"/>
+    <img src="../assets/arm mode.png" width="200"/><img src="../assets/x86 mode.png" width="200"/>
 </center>
 
 ### 2.1. ArceOS
@@ -58,38 +58,38 @@ ArceOS-VMM 应用程序是整个 ArceOS-Hypervisor 的核心，它作为 ArceOS 
 
 ArceOS-Hypervisor 的执行流程的核心是虚拟 CPU 的调度。在 ArceOS-Hypervisor 中，虚拟 CPU 是虚拟机的基本执行单元，每个虚拟机可以包含一个或多个虚拟 CPU。虚拟 CPU 的调度是通过复用 ArceOS 的任务调度机制实现的，每个虚拟 CPU 作为一个任务，由 ArceOS 的任务调度器进行调度：
 
-![vcpu scheduling](assets/vcpu-scheduling-base.png)
+![vcpu scheduling](../assets/vcpu-scheduling-base.png)
 
 ArceOS-Hypervisor 还支持混合的调度策略。对于不同的虚拟 CPU，可以采用不同的调度策略，例如，对于实时任务，可以将对应的虚拟 CPU 固定在一个物理 CPU 上，独占物理 CPU 的资源，以保证实时任务的响应时间；对于普通任务，则通过调度器进行动态调度，以实现资源的高效利用：
 
-![vcpu scheduling](assets/vcpu-scheduling.png)
+![vcpu scheduling](../assets/vcpu-scheduling.png)
 
 未来计划实现：unikernel axtask、宏内核 process 以及 AxVisor vcpu 的统一调度
 
-![](./assets/axtask.png)
+![](../assets/axtask.png)
 
-![](./assets/cpu.png)
+![](../assets/cpu.png)
 
 ### 3.3. 二阶段地址翻译
 
-![](./assets/pt.png)
+![](../assets/pt.png)
 
 ### 3.3. VMExit 处理
 
-![vmexit handling](assets/vmexit-handling.png)
+![vmexit handling](../assets/vmexit-handling.png)
 
 
 ### 3.4 虚拟设备实现
 
-![](./assets/driver-device.png)
+![](../assets/driver-device.png)
 
 #### 3.4.1 Virtio-device
 
-![](./assets/io.png)
+![](../assets/io.png)
 
 AxVisor 实现 virtio-device 后端设备，具体的设备实现通过类似影子进程的设计转发给 Linux 实现
 
-![virtio](assets/virtio-backend.png)
+![virtio](../assets/virtio-backend.png)
 
 ### 3.5. 影子进程
 

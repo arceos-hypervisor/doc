@@ -1,4 +1,6 @@
-docs/book
+# build output
+book
+
 ## Editor
 *.swp
 *.swo
@@ -11,10 +13,10 @@ Session.vim
 .favorites.json
 .settings/
 
-
 ## File system
 .DS_Store
 desktop.ini
 
-docs/mermaid-init.js
-docs/mermaid.min.js
+## others
+mermaid-init.js
+mermaid.min.js

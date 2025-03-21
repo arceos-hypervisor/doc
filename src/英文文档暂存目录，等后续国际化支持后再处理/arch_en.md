@@ -24,13 +24,13 @@ This project originated from the [discussion/13](https://github.com/orgs/rcore-o
     * Kernel-independent crates
         * buddy allocator, page_table...
 
-![](./assets/arceos.png)
+![](../assets/arceos.png)
 
 
 
 ## Heterogeneous expansion based on arceos kernel components
 
-![](./assets/arceos-hypervisor-architecture.png)
+![](../assets/arceos-hypervisor-architecture.png)
 
 * Kernel Backbone: arceos components
 * Monolithic  kernel extension: [starry-next](https://github.com/arceos-org/starry-next)
@@ -72,7 +72,7 @@ Unified modular ArceOS hypervisor, mainly composed of the following independent 
 * [axaddrspace](https://github.com/arceos-hypervisor/axaddrspace)
 
 
-![](./assets/arceos-hypervisor-architecture.png)
+![](../assets/arceos-hypervisor-architecture.png)
 
 
 
@@ -283,7 +283,7 @@ Currently we focus on [emulated interrupt controller](https://github.com/arceos-
 
 ## Dependency diagram
 
-![](./assets/arceos-hv-dep.svg)
+![](../assets/arceos-hv-dep.svg)
 
 <!-- * Note: we aim to consolidate all dependencies on ArceOS within the vmm-app -->
 Since modules/crates used for virtualization functionality in the ArceOS-Hypervisor architecture need to call OS-related resource management interfaces, **while we aim to consolidate all OS-related dependencies within the vmm-app**.

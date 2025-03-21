@@ -3,7 +3,7 @@
 [axvisor](https://github.com/arceos-hypervisor/axvisor/): acts like a VMM (Virtual Machine Monitor),
 built and run as an ArceOS [unikernel app](https://github.com/arceos-org/arceos-apps).
 
-![](./assets/arceos-hv-dep.svg)
+![](../assets/arceos-hv-dep.svg)
 
 As shown in the dependency figure, ​it provides a global perspective of Hypervisor resource management, serving as a bridge that connects the core functional components of the ArceOS with virtualization-related components.
 

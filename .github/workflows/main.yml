@@ -24,13 +24,13 @@ jobs:
       - name: Setup mdbook mermaid env
         run: cargo install mdbook-mermaid
       - name: preprocess mdbook mermaid graph
-        run: mdbook-mermaid install docs
+        run: mdbook-mermaid install
       - name: Build mdbook
-        run: mdbook build docs
+        run: mdbook build
       - name: Deploy to Github Pages
         if: ${{ github.ref == env.default-branch }}
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           single-commit: true
           branch: gh-pages
-          folder: docs/book
+          folder: book
