@@ -1,4 +1,4 @@
-# AxVisor
+# 概述
 
 ## The unified modular hypervisor based on [ArceOS](https://github.com/arceos-org/arceos).
 
@@ -16,4 +16,4 @@
     * Kernel-independent crates
         * buddy allocator, page_table...
 
-![](./assets/arceos.png)
+![](../assets/arceos.png)

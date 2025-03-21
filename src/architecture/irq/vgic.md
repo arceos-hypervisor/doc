@@ -2,11 +2,11 @@
 
 # 一、GICv2介绍
 
-![](../assets/vgicv2/banner.png)
+![](../../assets/vgicv2/banner.png)
 
 通过上图可以确定，GIC 主要包含 3 部分：Distributor、CPU interfaces 和 Virtual CPU interfaces。Virtual CPU interfaces 包含 Virtual interface control 和 Virtual CPU interface。
 
-![](../assets/vgicv2/no-virtualization.png)
+![](../../assets/vgicv2/no-virtualization.png)
 
 - 中断进入 distributor，然后分发到 CPU interface
 
@@ -77,7 +77,7 @@ CPU 接口提供一个处理器连接到 GIC 的接口。每一个 CPU 接口都
 
 `GIC` 为每个 `CPU` 接口上每个受支持的中断维护一个状态机。下图显示了此状态机的实例，以及可能的状态转换。
 
-![](../assets/vgicv2/interrupt-state.png)
+![](../../assets/vgicv2/interrupt-state.png)
 
  - Inactive：该中断源处于未激活状态
  - Pending：中断源触发状态，GIC感知到，但还未被分发到PE
@@ -135,7 +135,7 @@ CPU 接口提供一个处理器连接到 GIC 的接口。每一个 CPU 接口都
 
 ## 中断虚拟化概要
 
-![](../assets/vgicv2/vgic_summary.png)
+![](../../assets/vgicv2/vgic_summary.png)
 
 - HCR_EL2.IMO 设置为 1 后，所有 IRQ 都会 trap 到 Hypervisor 
 - Hypervisor 判断该 IRQ 是否需要插入到 vCPU
@@ -168,7 +168,7 @@ CPU 接口提供一个处理器连接到 GIC 的接口。每一个 CPU 接口都
 
 ### VM's view
 
-![img](../assets/vgicv2/gicv2-vm-view.png)
+![img](../../assets/vgicv2/gicv2-vm-view.png)
 
 - 从 device tree 获得 GICD、GICC base 物理地址（实际是 Hypervisor 伪造的地址）
 - 配置 GICD 寄存器（实际上 trap 到 Hypervisor ，模拟地读写了内核某 struct 里的数据）
@@ -182,7 +182,7 @@ CPU 接口提供一个处理器连接到 GIC 的接口。每一个 CPU 接口都
 
 主要以以下4中case进行讨论，其中case4涉及vCPU调度，其他情况不涉及调度：
 
-![](../assets/vgicv2/vgicv2_4case.png)
+![](../../assets/vgicv2/vgicv2_4case.png)
 
 ### VGIC Distributor设计
 
@@ -310,7 +310,7 @@ SGI是一种特殊的中断，由软件生成，通常用于在多核系统中�
 - **虚拟GICD_SGIR寄存器**：VM通过这个寄存器触发SGI，hypervisor在接收到写操作后进行中断重定向。
 - **虚拟中断路由表**：hypervisor维护一个虚拟的中断路由表List Registers，用来追踪SGI应该被路由到哪个vCPU。
 
-![](../assets/vgicv2/case1.png)
+![](../../assets/vgicv2/case1.png)
 
 ### PPI 私有外设中断
 
@@ -338,7 +338,7 @@ PPI通常用于管理特定于处理器的外设中断。在GICv2中，每个核
 ##### Hypervisor的清理工作
 
 - **状态管理**：Hypervisor在处理完PPI中断后，负责清理中断状态和相关的寄存器，确保后续中断请求的正确性。
-- ![](../assets/vgicv2/case_ppi.png)
+- ![](../../assets/vgicv2/case_ppi.png)
 
 ### SPI 共享外设中断
 
@@ -369,11 +369,11 @@ SPI通常用于系统中那些可以被多个处理器访问的外设，例如�
 
 - **状态更新**：Hypervisor在处理完SPI中断后，更新中断的状态，以反映当前的处理中断情况。
 
-![](../assets/vgicv2/case4.png)
+![](../../assets/vgicv2/case4.png)
 
 #### List Register
 
-![img](../assets/vgicv2/lr.png)
+![img](../../assets/vgicv2/lr.png)
 
 对于有虚拟化扩展的 GIC，Hypervisor使用 List Registers 来维护高优先级虚拟中断的一些上下文信息。
 
