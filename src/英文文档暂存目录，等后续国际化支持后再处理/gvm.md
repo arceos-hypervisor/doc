@@ -1,5 +1,3 @@
-# ArceOS-Hypervisor Supported GuestVMs
-
 ## [NimbOS](https://github.com/arceos-hypervisor/nimbos)
 
 * Simple real time guest VM that can only be used for **single-core** testing
