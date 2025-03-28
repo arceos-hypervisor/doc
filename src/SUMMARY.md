@@ -10,13 +10,13 @@
 
 # 快速上手
 
-- [QEMU AArch64](./quickstart/qemu_aarch64.md)
+- [QEMU AArch64](./quickstart/aarch64_qemu.md)
 
-- [黑芝麻 A1000](./quickstart/a1000.md)
+- [黑芝麻 A1000](./quickstart/aarch64_a1000.md)
 
-- [RK3588](./quickstart/rk3568.md)
+- [RK3588](./quickstart/aarch64_rk3588.md)
 
-- [ROC-RK3568-PC](./quickstart/roc-rk3568-pc.md)
+- [ROC-RK3568-PC](./quickstart/aarch64_roc-rk3568-pc.md)
 
 - [其他硬件](./quickstart/others.md)
 

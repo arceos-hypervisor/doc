@@ -11,6 +11,7 @@ edition = "2021"
 [output.html]
 git-repository-url = "https://github.com/arceos-hypervisor/doc"
 # additional-js = ["mermaid.min.js", "mermaid-init.js"]
+additional-css = ["src/assets/css/custom.css"]
 
 [output.html.playpen]
 editable = true
