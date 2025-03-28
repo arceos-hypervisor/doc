@@ -48,6 +48,8 @@
 
 - [VM-Exit](./architecture/multi_layer_VM-Exit.md)
 
+- [测试](./architecture/test/test.md)
+
 # 开发指导手册
 
 - [构建](./development/build.md)
