@@ -18,8 +18,6 @@
 
 - [ROC-RK3568-PC](./quickstart/aarch64_roc-rk3568-pc.md)
 
-- [其他硬件](./quickstart/others.md)
-
 # 架构设计手册
 
 - [总体设计](./architecture/arch_cn.md)
@@ -52,25 +50,17 @@
 
 # 开发指导手册
 
-- [构建](./development/index_cn.md)
+- [构建](./development/build.md)
 
 - [硬件适配](./development/platform_port/platform_port.md)
 
-    - [A1000](./development/platform_port/a1000_linux&arceos.md)
-
-    - [RK3588](./development/platform_port/rk3588.md)
-
 - [客户机适配](./development/guest_vms/guest_vms.md)
-
-    - [Guest Linux](./development/guest_vms/linux.md)
-
-    - [2 Guest ArceOS + Linux](./development/guest_vms/2vm_arceos_linux.md)  
 
     - [2 VM Timer Nimbos](./development/guest_vms/2vm_timer.md)
 
 # 用户指导手册
 
-- [使用](./user_manual/index.md)
+- [使用](./user_manual/usage.md)
 
 - [管理](./user_manual/manage.md)
 
