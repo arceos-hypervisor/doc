@@ -1,18 +1,21 @@
-# [多层VM-Exit处理机制](https://github.com/orgs/arceos-hypervisor/discussions/19)
+# [Multilayer VM-Exit handling mechanism](https://github.com/orgs/arceos-hypervisor/discussions/19)
 
-众所周知，VM-Exit 对于获取客户虚拟机的运行状态以及与客户虚拟机进行交互至关重要。
+## VM-Exits
 
-VM-Exit 用于设备仿真和 vCPU 调度。
+As we all know, VM-Exits are curtial for getting guest VM's running states and interacting with Guest VMs. 
 
-在 x86_64、aarch64 和 riscv64 架构中，VM-Exit 遵循相同的设计逻辑，但实现方式略有不同。
+VM-Exits are used for device emulation and vCPU scheduling.
+
+VM-Exits in x86_64, aarch64 and riscv64 follow the same design logic but share a slightly different implementation.
 
 ![](../assets/vmexit-handling.png)
 
-# Inner-VCpu处理
+## Inner-VCpu handling
 
-在 x86_64 架构下，某些 VM-Exit 项目是特定于架构的（例如 `VmxExitReason::CR_ACCESS`、`VmxExitReason::CPUID`）。在我们当前的设计中，这些 VM-Exit 由 [`VmxVcpu`] 本身通过 `builtin_vmexit_handler` 处理，而其他 VM-Exit 类型则由 `vcpu.run()` 返回，并由调用 `vcpu.run()` 的程序来处理。
+Under x86_64, some VM-Exit items are architecture specific (e.g. `VmxExitReason::CR_ACCESS`, `VmxExitReason::CPUID`).
+In our current design, these VM-Exits are handled by [`VmxVcpu`] itself through `builtin_vmexit_handler`, while other VM-Exit types are returned by `vcpu.run()` and leaves whoever called `vcpu.run()` to handle.
 
-```rust
+```Rust
 impl<H: AxVMHal> VmxVcpu<H> {
     /// Handle vm-exits than can and should be handled by [`VmxVcpu`] itself.
     ///
@@ -34,15 +37,15 @@ impl<H: AxVMHal> VmxVcpu<H> {
 }
 ```
 
-此外，`VmxExitReason::IoRead/IoWrite` 和 `VmxExitReason::MsrRead/MsrWrite` 也是 x86_64 特有的，但这些 VM-Exit 与端口 I/O 或 Msr 设备仿真相关，因此更适合在 `vcpu.run()` 之外处理。
+Besides, `VmxExitReason::IoRead/IoWrite` and  `VmxExitReason::MsrRead/MsrWrite` are also x86_64 specific, but these VM-Exits are relavant to Port I/O or Msr device emulation, make them more suitable to be handled outside the `vcpu.run()`.
 
-# Inner-VM处理
+## Inner-VM handling
 
-由于 axvm 中的虚拟机结构负责虚拟机的资源管理，例如模拟设备和地址空间（axaddrspace），所以更倾向于将与设备模拟相关的以及与页面错误相关的（数据中止）虚拟机退出保留在 axvm 内部。
+Since VM structure in `axvm` is responsible for VM's resource management like emulated devices and address space (`axaddrspace`). I prefer leaving device emulation related and page-fault related (data abort) VM-Exits inside `axvm`. 
 
-也就是说，在虚拟机结构中提供一个 `run_vcpu()` 函数，并将与设备模拟相关的 VM 退出处理整合到 `vm.run_vcpu()`
+That is, providing a `run_vcpu()` function in VM structure, and consolidate the device emulation-related VM-exit handling into `vm.run_vcpu()`. 
 
-```rust
+```Rust
 impl<H: AxVMHal> AxVM<H> {
     pub fn run_vcpu(&self, vcpu_id: usize) -> AxResult<AxVCpuExitReason> {
         let vcpu = self
@@ -86,19 +89,19 @@ impl<H: AxVMHal> AxVM<H> {
 }
 ```
 
-因此，将设备模拟操作整合到 `axvm` 模块中，这样 `vmm-app` 只需要传入配置文件就可以，然后根据需要创建模拟设备实例，而不必关心模拟设备的特定运行时行为以及地址空间。
+Thus, consolidate the device emulation operations into the `axvm` module, so that the `vmm-app` only needs to pass in configuration files to create emulated device instances as needed, without having to be concerned with the specific runtime behavior of the emulated devices, as well as the address space.
 
-当然，这是在这些 VM-exit 不触发 vCPU 调度的条件下。
+Of course, this is on the condition that these VM-Exits do not trigger the scheduling of the vCPU.
 
-# (Outer-VM) vmm-app处理
+## (Outer-VM)vmm-app handling
 
-我们重用 task 来实现 vcpu 的运行时管理和调度。
+We reuse `axtask` to implement runtime management and scheduling of vCPUs. 
 
-这个逻辑是在 `vmm-app` 中实现的，因为 VMM 自然需要关注 vCPU 调度，并且它在 `vmm-app` 中整合了对 ArceOS 的 axtask 的依赖。
+This logic is implemented in the vmm-app because the VMM naturally needs to be concerned with vCPU scheduling, and it consolidates the dependency on ArceOS's `axtask` within the `vmm-app`. 
 
-对于前两层没有处理的 VM-Exit，它们将从 `vcpu::run()` 的返回值中获取，并在这里进行处理，包括处理 hypercalls（在 VMM 中处理这个似乎也相当合理）和任何需要 vcpu 调度或 vcpu 退出的 VM-Exit 类型。
+For VM-Exits that were not handled by the previous two layers, they will be get from the return value of `vcpu::run()` and processed here, including the handling of hypercalls (handling this within the VMM also seems quite reasonable) and any (if-any) VM-Exit types that require vCPU scheduling or vCPU exit.
 
-```rust
+```Rust
         let mut task = TaskInner::new(
             || {
                 let curr = axtask::current();
@@ -151,3 +154,7 @@ impl<H: AxVMHal> AxVM<H> {
             KERNEL_STACK_SIZE,
         );
 ```
+
+## End
+
+Now this is only a draft.
