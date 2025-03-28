@@ -1,5 +1,7 @@
 # QEMU AArch64
 
+目前，在 QEMU AArch64 平台上已经对独立运行 ArceOS 和 Linux 以及同时运行 ArceOS + Linux 的情况进行了验证。
+
 ## ArceOS
 
 首先，获取 ArceOS 主线代码 `git clone https://github.com/arceos-org/arceos.git`，然后执行 `make PLATFORM=aarch64-qemu-virt SMP=1 A=examples/helloworld` 获取 `helloworld_aarch64-qemu-virt.bin`
@@ -765,6 +767,38 @@
    ```
 
 4. 启动另一个终端，然后执行 `telnet localhost 4321`，上一个终端将继续运行，并输出第一个虚拟机启动信息，第二个虚拟机启动信息将在当前终端输出。
+
+
+
+## 注意事项
+
+在同时启动 ArceOS 和 Linux 客户机时，若启动 axvisor 后只有一个 vm 有输出，另一个无显示，可能是 qemu 配置选项不全，需查看当前 qemu 版本，建议使用 9.2.2 版本，安装过程如下
+
+```plain
+# 安装编译所需的依赖包
+sudo apt install autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev \
+              gawk build-essential bison flex texinfo gperf libtool patchutils bc \
+              zlib1g-dev libexpat-dev pkg-config  libglib2.0-dev libpixman-1-dev libsdl2-dev \
+              git tmux python3 python3-pip ninja-build
+# 下载源码
+wget https://download.qemu.org/qemu-9.2.2.tar.xz
+# 解压
+tar xvJf qemu-9.2.2.tar.xz
+cd qemu-9.2.2
+#生成设置文件
+./configure --enable-kvm --enable-slirp --enable-debug --target-list=aarch64-softmmu,x86_64-softmmu
+#编译
+make -j$(nproc)
+```
+
+之后编辑 `~/.bashrc` 文件，在文件的末尾加入几行：
+
+```plain
+export PATH=/path/to/qemu-9.2.2/build:$PATH
+```
+
+最后，执行 `source ~/.bashrc` 更新当前 shell 即可
+
 
 ## 已知问题
 
