@@ -4,7 +4,7 @@
 
 内存虚拟化由[axaddrspace](https://github.com/arceos-hypervisor/axaddrspace)实现，该模块与架构无关，负责管理和映射客户虚拟机的二级地址空间（GPA -> HPA）
 
-![](../../assets/pt.png)
+![](../assets/pt.png)
 
 
 ## 系统架构
