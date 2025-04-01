@@ -27,6 +27,8 @@ jobs:
       #   run: mdbook-mermaid install
       - name: Setup mdbook-pagetoc
         run: cargo install mdbook-pagetoc
+      - name: Setup embedify
+        run: cargo install mdbook-embedify
       - name: Build docs
         run: mdbook build
       - name: Deploy to Github Pages
