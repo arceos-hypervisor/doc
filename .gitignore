@@ -18,5 +18,5 @@ Session.vim
 desktop.ini
 
 ## others
-mermaid-init.js
-mermaid.min.js
+theme/pagetoc.css
+theme/pagetoc.js

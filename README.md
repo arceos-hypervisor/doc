@@ -6,7 +6,7 @@
 
 <h2 align="center">AxVisor Book</h1>
 
-<p align="center">THe online documentation built with mdbook for unified modular hypervisor AxVisor.</p>
+<p align="center">The online documentation built with mdbook for unified modular hypervisor AxVisor.</p>
 
 <div align="center">
 
@@ -26,15 +26,13 @@ This repository is the source repository for the documentation of AxVisor, built
 
 ### Environment
 
-By default, Rust does not install the mdbook tool. We need to manually install it using `cargo install mdbook`. The mdbook executable will be placed in the `.cargo/bin` directory.
-
-You can also directly download the precompiled executable from https://github.com/rust-lang/mdBook/releases for use, or build the executable from the source code!
+By default, Rust does not install the mdbook tool. We need to manually install it and related plugins using `cargo install mdbook mdbook-pagetoc mdbook-embedify`. The mdbook executable will be placed in the `.cargo/bin` directory.
 
 ### Source file
 
 mdbook is a documentation system that uses Markdown files as source files. Therefore, we only need to write the source files using Markdown syntax.
 
-The `doc/docs/src/SUMMARY.md` file in the source code is the table of contents for the documentation. When new source files are added, their corresponding file paths need to be added to this file.
+The `./src/SUMMARY.md` file in the source code is the table of contents for the documentation. When new source files are added, their corresponding file paths need to be added to this file.
 
 ### Build
 
@@ -66,7 +64,7 @@ The source code for mdBook is available at: https://github.com/rust-lang/mdBook
 
 ## Deploy
 
-Currently, the AxVisor documentation website is hosted on GitHub Pages: https://arceos-hypervisor.github.io/doc/. The repository is configured to deploy via GitHub Actions by default (GitHub supports both Actions and Branch deployment methods). Once the source code is committed to the repository, GitHub Actions will be automatically triggered to deploy the site.
+Currently, the AxVisor documentation website is hosted on GitHub Pages: https://arceos-hypervisor.github.io/doc/. The repository is configured to deploy via GitHub Actions by default (GitHub supports both Actions and Branch deployment methods. Now we are using branch method.). Once the source code is committed to the repository, GitHub Actions will be automatically triggered to deploy the site.
 
 ## Contributing
 

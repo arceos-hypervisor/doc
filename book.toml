@@ -10,7 +10,8 @@ edition = "2021"
 
 [output.html]
 git-repository-url = "https://github.com/arceos-hypervisor/doc"
-additional-css = ["src/assets/css/custom.css"]
+additional-css = ["src/assets/css/custom.css", "theme/pagetoc.css"]
+additional-js  = ["theme/pagetoc.js"]
 
 [output.html.playpen]
 editable = true
@@ -25,3 +26,26 @@ boost-hierarchy = 1
 boost-paragraph = 1
 expand = true
 heading-split-level = 3
+
+[preprocessor.pagetoc]
+
+[preprocessor.embedify]
+scroll-to-top.enable = true
+
+footer.enable = true
+footer.message = "Copyright © 2025 • Created by ArceOS Team"
+
+announcement-banner.enable = true
+announcement-banner.id = "0.2.11"
+announcement-banner.theme = "default"
+announcement-banner.message = "*正在逐步完善中。。。*"
+
+giscus.enable = true
+giscus.repo = "arceos-hypervisor/doc"
+giscus.repo-id = "R_kgDOLMHfvQ"
+giscus.category = "Comments"
+giscus.category-id = "DIC_kwDOLMHfvc4CoqAB"
+giscus.reactions-enabled = "1"
+giscus.theme = "light"
+giscus.lang = "zh-CN"
+giscus.loading = "eager"
