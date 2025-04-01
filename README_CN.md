@@ -26,7 +26,7 @@
 
 ### 开发环境
 
-默认安装 Rust 后并不会同步安装 mdbook 工具，我们需要使用 `cargo install mdbook mdbook-pagetoc` 手动进行安装及相关插件，mdbook 可执行文件会被放到 `.cargo/bin` 目录中。
+默认安装 Rust 后并不会同步安装 mdbook 工具，我们需要使用 `cargo install mdbook mdbook-pagetoc mdbook-embedify` 手动进行安装及相关插件，mdbook 可执行文件会被放到 `.cargo/bin` 目录中。
 
 ### 编写文档
 

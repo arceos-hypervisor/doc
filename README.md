@@ -26,7 +26,7 @@ This repository is the source repository for the documentation of AxVisor, built
 
 ### Environment
 
-By default, Rust does not install the mdbook tool. We need to manually install it and related plugins using `cargo install mdbook mdbook-pagetoc`. The mdbook executable will be placed in the `.cargo/bin` directory.
+By default, Rust does not install the mdbook tool. We need to manually install it and related plugins using `cargo install mdbook mdbook-pagetoc mdbook-embedify`. The mdbook executable will be placed in the `.cargo/bin` directory.
 
 ### Source file
 
