@@ -10,7 +10,8 @@ edition = "2021"
 
 [output.html]
 git-repository-url = "https://github.com/arceos-hypervisor/doc"
-additional-css = ["src/assets/css/custom.css"]
+additional-css = ["src/assets/css/custom.css", "theme/pagetoc.css"]
+additional-js  = ["theme/pagetoc.js"]
 
 [output.html.playpen]
 editable = true
@@ -25,3 +26,5 @@ boost-hierarchy = 1
 boost-paragraph = 1
 expand = true
 heading-split-level = 3
+
+[preprocessor.pagetoc]
