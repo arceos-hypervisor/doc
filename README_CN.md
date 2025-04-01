@@ -26,13 +26,13 @@
 
 ### 开发环境
 
-默认安装 Rust 后并不会同步安装 mdbook 工具，我们需要使用 `cargo install mdbook mdbook-pagetoc mdbook-embedify` 手动进行安装及相关插件，mdbook 可执行文件会被放到 `.cargo/bin` 目录中。
+默认安装 Rust 后并不会同步安装 mdbook 工具，我们需要使用 `cargo install mdbook mdbook-pagetoc mdbook-embedify` 手动进行安装它及相关插件，mdbook 可执行文件会被放到 `.cargo/bin` 目录中。
 
 ### 编写文档
 
 mdbook 是一个将 Markdown 文档作为源文件的文档系统，因此，我们只需要以 Markdown 语法编写源文件即可。
 
-源码中的 `doc/docs/src/SUMMARY.md` 是文档的目录，当新增了源文件之后，需要在其中添加上对应的文件路径
+源码中的 `./src/SUMMARY.md` 是文档的目录，当新增了源文件之后，需要在其中添加上对应的文件路径
 
 ### 构建
 
@@ -64,7 +64,7 @@ The source code for mdBook is available at: https://github.com/rust-lang/mdBook
 
 ## 部署
 
-目前，AxVisor 的文档网站托管在了 GitHub Pages 上：https://arceos-hypervisor.github.io/doc/，仓库默认配置为通过 GitHub Action 进行部署（Github 本身支持 Actions 和 Branch 两种部署方式），当把源码提交到仓库之后将自动触发 GitHub Action 进行部署。
+目前，AxVisor 的文档网站托管在了 GitHub Pages 上：https://arceos-hypervisor.github.io/doc/ ，仓库默认配置为通过 GitHub Action 进行部署（Github 本身支持 Actions 和 Branch 两种部署方式，当前使用 Branch 方式），当把源码提交到仓库之后将自动触发 GitHub Action 进行部署。
 
 ## 如何贡献
 
