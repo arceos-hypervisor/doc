@@ -10,7 +10,10 @@
 
 # 快速上手
 
-- [QEMU AArch64](./quickstart/aarch64_qemu.md)
+- [QEMU](./quickstart/qemu/qemu.md)
+    - [QEMU-aarch64](./quickstart/qemu/qemu_aarch64.md)
+    - [QEMU-x86_64](./quickstart/qemu/qemu_x86_64.md)
+    - [QEMU-riscv64](./quickstart/qemu/qemu_riscv64.md)
 
 - [黑芝麻 A1000](./quickstart/aarch64_a1000.md)
 
