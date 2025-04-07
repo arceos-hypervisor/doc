@@ -1,39 +1,45 @@
-# AxVisor
+# AxVisor: Virtual Machine Monitor based on ArceOS
 
-[AxVisor]((https://github.com/arceos-hypervisor/axvisor/)) 作为虚拟机监控器（VMM）运行，构建并作为 ArceOS 独立内核应用程序运行。
+[axvisor](https://github.com/arceos-hypervisor/axvisor/): acts like a VMM (Virtual Machine Monitor),
+built and run as an ArceOS [unikernel app](https://github.com/arceos-org/arceos-apps).
 
 ![](../assets/arceos-hv-dep.svg)
 
-如上依赖关系图所示，它提供了一个全局视角的虚拟化资源管理，作为连接 ArceOS 核心功能组件与虚拟化相关组件的桥梁。
+As shown in the dependency figure, ​it provides a global perspective of Hypervisor resource management, serving as a bridge that connects the core functional components of the ArceOS with virtualization-related components.
 
-一方面，它直接依赖于 ArceOS 提供的 axstd 库，调用 ArceOS 的核心功能。一些直接的依赖包括：
+
+On one hand, ​it directly relies on the [axstd](https://github.com/arceos-org/arceos/tree/main/ulib/axstd) library provided by ArceOS, invoking core functionalities from arceos.
+Some direct dependencies includes:
 
 * ​[axtask](https://arceos.org/arceos/axtask/index.html) based vCpu management and scheduling
 * [axhal](https://arceos.org/arceos/axhal/index.html) for platform-specific operations and interrupt handling
 * [axconfig](https://arceos.org/arceos/axconfig/index.html) for platform configuration
 
-另一方面，它依赖于 [axvm](./axvm.md) 来实现虚拟机管理（配置与运行时），包括：
+
+On the other hand, ​it depends on [axvm](./axvm.md) to implement VM management (configuration & runtime), encompassing:
 
 * ​CRUD operations for guest VMs
 * ​VM lifecycle control: setup, boot, notification and shutdown
 * Hypercall handling for communication between hypervisor and guest VMs
 
-## VM 管理
+## VM management
 
 * hypercall handler
 * GLOBAL_VM_LIST
 
-## 基于 axtask 的 vCPU 调度
+## vCPU scheduling based on axtask
 
-[axvcpu](./vcpu/vcpu.md) 仅负责虚拟化功能支持，例如通过 vmlaunch/vmexit 进入/退出客户机。
+[axvcpu](./vcpu/vcpu.md) is just and only reponsible virtualization function support, e.g. enter/exit guest VM through vmlaunch/vmexit.
 
-由于 ArceOS 已经提供了 axtask 用于在单一特权级别下进行运行时控制流管理，我们可以重用其调度器并与之共同发展。
+Since ArceOS already provides ​[axtask](https://github.com/arceos-org/arceos/tree/main/modules/axtask) for runtime control flow mangement under single privilege level,
+we can reuse its scheduler and evolve with it.
 
-在虚拟机启动和设置过程中，axvisor 为每个 vCPU 分配 axtask，将任务的入口函数设置为 `vcpu_run()`，如果 vCPU 有专用的物理 CPU 集，它还会初始化 CPU 掩码。
+During VM booting&setup process, axvisor allocates axtask for each vcpu, set the task's entry function to [`vcpu_run()`],
+it alse initializes the CPU mask if the vCPU has a dedicated physical CPU set.
 
 ### `vcpu_run()`
 
-`vcpu_run()` 函数是 vCPU 任务的主要例程，可以总结如下：
+The `vcpu_run()` function is the main routine for vCPU task, which can be concluded like:
 
 ```rust
 fn vcpu_run() {
@@ -78,35 +84,35 @@ fn vcpu_run() {
 }
 ```
 
-### Task 扩展
+### Task Extension
 
-该机制允许调用者在不修改 axtask 结构体源代码的情况下自定义其扩展字段，（这是一种类似于线程局部存储（TLS）的轻量级机制）。
+This mechanism allows callers to ​customize extension fields of the `axtask` struct without modifying its source code, 
+(a lightweight mechanism similar to Thread-Local Storage (TLS)). 
 
 <!-- Core design principles: -->
 
-axtask 结构体的基本字段: 
+Base fields of axtask: 
+* Essential information required for task execution, such as function call context, stack pointers, and other runtime metadata.
 
-* 任务执行所需的基本信息，包括函数调用上下文、栈指针以及其他运行时元数据。
-
-使用场景
-* 宏内核的扩展
+Usage scenarios
+* Extension for monolithic kernel
     * Process metadata (e.g., PID)
     * Memory management informations like page table
     * Resource management including fd table
     * ...
-* hypervisor 扩展
+* Extension for hypervisor
     * vCPU state
     * Metadata of the associated VM
     * ...
 
-#### Task 扩展设计
+#### Task Extension Design
 
-* 将 `task_ext_ptr` 引入作为扩展字段
-* 利用基于指针的访问方式，实现与原生结构体字段相当的内存访问性能。
-* 通过 [def_task_ext](https://arceos.org/arceos/axtask/macro.def_task_ext.html) 在编译时确定扩展字段的大小。 
-* 在堆上分配内存，将扩展字段指针 `task_ext_ptr` 设置为该内存块。
-* 暴露引用 API 供外部访问
-* 由 `init_task_ext` 初始化
+* introduce `task_ext_ptr` as extension field
+* leverage pointer-based access to achieve memory access performance comparable to native struct fields
+* determine extension field size at compile-time through [def_task_ext](https://arceos.org/arceos/axtask/macro.def_task_ext.html)
+* allocate memory on the heap, set the extension field pointer `task_ext_ptr` to this memory block
+* expose reference APIs for external access
+* initialized by `init_task_ext`
 
 ```rust
 // arceos/modules/axtask/src/task_ext.rs
@@ -199,19 +205,22 @@ fn alloc_vcpu_task(vm: VMRef, vcpu: VCpuRef) -> AxTaskRef {
     axtask::spawn_task(vcpu_task)
 }
 ```
-
 ## irq & timer
 
 ### External Interrupt
 
-所有来自外部设备的中断都通过多层次的 VM-Exit 处理例程返回给 axvisor 进行处理。因为 只有 axvisor 拥有全局资源管理视角。
+All interrupts from external devices are returned to axvisor for processing through the multi-layered VM-Exit handling routine.
 
-axvisor 根据中断号和虚拟机配置文件识别外部中断：
-* 如果中断是预留给 axvisor 的（例如 axvisor 自己的时钟中断），则由 axhal 提供的 ArceOS 中断处理例程来处理。
+Because **ONLY** axvisor has a global resource management perspective
 
-* 如果中断属于某个客户虚拟机（例如客户虚拟机的直通磁盘中断），则该中断会直接注入到对应的虚拟机。
-    * 请注意，一些架构的中断控制器可以配置为在不经过 VM-Exit 的情况下直接将外部中断注入到虚拟机中（例如 x86 提供的已发布中断）
+axvisor identifies the external interrupt based on the interrupt number and the virtual machine configuration file:
+
+* If the interrupt is reserved for axvisor (e.g. the axvisor's own clock interrupt), it is handled by the ArceOS's interrupt handling routine provided by axhal
+
+* If the interrupt belongs to a guest VM (such as a pass-through disk of a guest VM), it is directly injected into the corresponding virtual machine
+    * Note that the interrupt controller of some architectures can be configured to inject external interrupts directly into the VM without VM-Exit (such as posted-interrupt provided by x86)
 
 ### Timer
 
-草拟设计请参考 [discussion#36](https://github.com/orgs/arceos-hypervisor/discussions/36#discussioncomment-11002988)。
+Draft design refer to [discussion#36](https://github.com/orgs/arceos-hypervisor/discussions/36#discussioncomment-11002988)
+
