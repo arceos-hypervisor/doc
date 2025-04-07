@@ -20,7 +20,7 @@
 
 # 架构设计手册
 
-- [总体设计](./architecture/arch_cn.md)
+- [总体设计](./architecture/arch.md)
 
 - [AxVisor API](./architecture/axvisor_api/comparison.md)
 

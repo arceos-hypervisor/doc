@@ -1,5 +1,4 @@
-# AxVisor: 基于 ArceOS 的统一模块化 Hypervisor 设计文档
-
+# 总体设计
 
 ## 1. 设计目标
 
