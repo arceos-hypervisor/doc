@@ -25,9 +25,9 @@
 
 - [总体设计](./architecture/arch.md)
 
-- [AxVisor API](./architecture/axvisor_api/comparison.md)
-
 - [AxVisor](./architecture/axvisor.md)
+
+- [AxVisor API](./architecture/axvisor_api/comparison.md)
 
 - [axvm](./architecture/axvm.md)
 
