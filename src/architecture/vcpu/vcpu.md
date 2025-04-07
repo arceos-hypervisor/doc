@@ -1,10 +1,10 @@
 # AxVCpu: Virtual CPU interface and wrapper for ArceOS.
 
-* [axvcpu](https://github.com/arceos-hypervisor/axvcpu): provides CPU virtualization support
-    * highly architecture-dependent
-    * stores exception context frame of different architecture
-    * basic scheduling item
-    * arch-specific vcpu implementations need to be separated into separate crates:
+* [axvcpu](https://github.com/arceos-hypervisor/axvcpu) 提供 CPU 虚拟化支持
+    * 高度依赖于架构
+    * 存储不同架构的异常上下文框架
+    * 基本调度项
+    * 特定架构的 vCPU 实现需要被分离到独立的 crate 中:
         * [arm_vcpu](https://github.com/arceos-hypervisor/arm_vcpu)
         * [x86_vcpu](https://github.com/arceos-hypervisor/x86_vcpu)
         * [riscv_vcpu](https://github.com/arceos-hypervisor/riscv_vcpu)
