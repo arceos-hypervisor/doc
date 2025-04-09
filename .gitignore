@@ -20,3 +20,6 @@ desktop.ini
 ## others
 theme/pagetoc.css
 theme/pagetoc.js
+
+## i18n
+*.pot
