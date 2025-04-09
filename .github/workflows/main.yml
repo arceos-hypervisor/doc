@@ -48,8 +48,8 @@ jobs:
       - name: Setup mdbook-i18n-helpers
         run: cargo install mdbook-i18n-helpers
 
-      - name: Setup i18n-report
-        run: cargo install i18n-report
+      # - name: Setup i18n-report
+      #   run: cargo install i18n-report
 
       - name: Build docs
         run: mdbook build
@@ -58,7 +58,6 @@ jobs:
         run: |
           for po_lang in ${{ env.LANGUAGES }}; do
               MDBOOK_BOOK__LANGUAGE=$po_lang mdbook build -d book/$po_lang
-              mv book/$po_lang/html book/html/$po_lang
           done
 
       # - name: Build synced translation report
