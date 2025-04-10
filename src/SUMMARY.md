@@ -15,11 +15,13 @@
     - [QEMU-x86_64](./quickstart/qemu/qemu_x86_64.md)
     - [QEMU-riscv64](./quickstart/qemu/qemu_riscv64.md)
 
-- [黑芝麻 A1000](./quickstart/aarch64_a1000.md)
+- [华山 A1000](./quickstart/aarch64_a1000.md)
 
 - [RK3588](./quickstart/aarch64_rk3588.md)
 
 - [ROC-RK3568-PC](./quickstart/aarch64_roc-rk3568-pc.md)
+
+--------------
 
 # 架构设计手册
 
@@ -53,6 +55,8 @@
 
 - [测试](./architecture/test/test.md)
 
+--------------
+
 # 开发指导手册
 
 - [构建](./development/build.md)
@@ -66,6 +70,8 @@
 - [文档](./development/docs/docs.md)
     - [国际化](./development/docs/i18n.md)
 
+--------------
+
 # 用户指导手册
 
 - [使用](./user_manual/usage.md)
@@ -73,6 +79,8 @@
 - [管理](./user_manual/manage.md)
 
 - [部署](./user_manual/depoly.md)
+
+--------------
 
 # 开发计划
 
