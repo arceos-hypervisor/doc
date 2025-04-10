@@ -67,6 +67,8 @@
 
     - [2 VM Timer Nimbos](./development/guest_vms/2vm_timer.md)
 
+- [开发管理](./development/project/project.md)
+
 - [文档](./development/docs/docs.md)
     - [国际化](./development/docs/i18n.md)
 
