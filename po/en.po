@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AxVisor Book\n"
-"POT-Creation-Date: 2025-04-10T02:16:06Z\n"
+"POT-Creation-Date: 2025-04-10T02:56:09Z\n"
 "PO-Revision-Date: 2025-04-09 01:50+0000\n"
 "Last-Translator: ZCShou <zcsexp@gmail.com>\n"
 "Language-Team: English\n"
@@ -252,7 +252,7 @@ msgstr ""
 #: src/development/platform_port/platform_port.md:119
 #: src/development/guest_vms/guest_vms.md:120
 #: src/development/guest_vms/2vm_timer.md:439 src/development/docs/docs.md:178
-#: src/development/docs/i18n.md:228 src/user_manual/usage.md:120
+#: src/development/docs/i18n.md:229 src/user_manual/usage.md:120
 #: src/user_manual/manage.md:120 src/user_manual/depoly.md:120
 #: src/roadmap/roadmap.md:119 src/roadmap/discusstions.md:120
 msgid "<button type=\"button\">X</button>"
@@ -12210,7 +12210,7 @@ msgstr "22"
 
 #: src/development/docs/docs.md:1 src/development/docs/i18n.md:1
 msgid "简介"
-msgstr ""
+msgstr "Introduction"
 
 #: src/development/docs/docs.md:3
 msgid ""
@@ -12356,10 +12356,17 @@ msgid ""
 "一个 mdbook 渲染器，帮助我们提取需要翻译的源文本，而 mdbook-gettext 是一个 "
 "mdbook 预处理器，负责将翻译后的文本重新注入到 Markdown 文件中。"
 msgstr ""
+"This document uses the [mdbook-i18n-helpers](https://github.com/google/"
+"mdbook-i18n-helpers) provided by Google to offer internationalization "
+"support. The mdbook-i18n-helpers mainly includes two executables: mdbook-"
+"xgettext and mdbook-gettext. Among them, mdbook-xgettext is a mdbook "
+"renderer that helps extract the source text that needs to be translated, "
+"while mdbook-gettext is a mdbook preprocessor responsible for re-injecting "
+"the translated text into the Markdown files."
 
 #: src/development/docs/i18n.md:5
 msgid "翻译"
-msgstr ""
+msgstr "Translation"
 
 #: src/development/docs/i18n.md:7
 msgid ""
@@ -12368,10 +12375,16 @@ msgid ""
 "序，它提供了一个框架，在这个框架中我们可以方便的进行多种语言的翻译。该系统广"
 "泛用于开源软件的翻译，并且对于文档的翻译也相当有效。"
 msgstr ""
+"mdbook-i18n-helpers uses the GNU [Gettext](https://www.gnu.org/software/"
+"gettext/manual/html_node/index.html) system for translation. GNU Gettext is "
+"a set of utilities that provides a framework in which we can easily "
+"translate into multiple languages. This system is widely used for "
+"translating open-source software and is also quite effective for translating "
+"documentation."
 
 #: src/development/docs/i18n.md:9
 msgid "`.po` 文件"
-msgstr ""
+msgstr "`.po` file"
 
 #: src/development/docs/i18n.md:11
 msgid ""
@@ -12380,10 +12393,16 @@ msgid ""
 "容。因此，我们的翻译工作无需复制原始的 Markdown 文件并手动跟踪更改，而只需要"
 "修改`.po` 文件即可。"
 msgstr ""
+"In GNU Gettext, each language corresponds to a `.po` file named after the "
+"language code defined in ISO 639, such as `en.po`, which records all the "
+"original content that needs to be translated along with its corresponding "
+"translated content. Therefore, our translation work does not require copying "
+"the original Markdown files and manually tracking changes; we only need to "
+"modify the `.po` files."
 
 #: src/development/docs/i18n.md:13
-msgid "新建翻译"
-msgstr ""
+msgid "新增翻译"
+msgstr "New translation"
 
 #: src/development/docs/i18n.md:15
 msgid ""
@@ -12392,6 +12411,12 @@ msgid ""
 "并生成一个 `.pot` 文件（一个 PO 模板），我们以此为基础创建出不同语言的 `.po` "
 "文件即可。"
 msgstr ""
+"Once our original document is completed, we first need to create the "
+"corresponding `.po` files for the required languages to enable "
+"internationalization support. mdbook-xgettext can help us extract all the "
+"content that needs to be translated from the original document and generate "
+"a `.pot` file (a PO template). We can then create different language-"
+"specific `.po` files based on this template."
 
 #: src/development/docs/i18n.md:17 src/development/docs/i18n.md:35
 msgid ""
@@ -12399,44 +12424,68 @@ msgid ""
 "mdbook build -d po` 自动提取原始文档中所有需要翻译的内容并生成 `messages."
 "pot` 文件。命令执行之后就会生成默认的 `po/messages.pot` 文件"
 msgstr ""
+"Executing the command `MDBOOK_OUTPUT='{\"xgettext\": {\"pot-file\": "
+"\"messages.pot\"}}' mdbook build -d po` will automatically extract all the "
+"content that needs to be translated from the original document and generate "
+"a `messages.pot` file. After running this command, the default po/messages."
+"pot file will be created. This file serves as the template for creating the "
+"language-specific `.po` files."
 
 #: src/development/docs/i18n.md:19 src/development/docs/i18n.md:37
 msgid ""
 "如果在 `book.toml` 文件中添加了 `output.xgettext.pot-file = messages.pot` 配"
 "置项，则每次执行 `mdbook build` 时都会自动输出 `book/xgettext/messages.pot`"
 msgstr ""
+"If you add the configuration `output.xgettext.pot-file = messages.pot` in "
+"the `book.toml` file, then every time you execute `mdbook build`, it will "
+"automatically output the `book/xgettext/messages.pot` file. This "
+"configuration ensures that the `.pot` file is generated consistently with "
+"each build, saving you from having to manually specify it every time."
 
 #: src/development/docs/i18n.md:21 src/development/docs/i18n.md:39
 msgid ""
 "不要编辑 `po/messages.pot` 文件，也不要将它签入你的存储库，因为它是完全从源 "
 "Markdown 文件生成。"
 msgstr ""
+"Do not edit the `po/messages.pot` file, nor should you commit it to your "
+"repository, as it is generated entirely from the source Markdown files."
 
 #: src/development/docs/i18n.md:23
 msgid ""
 "执行 `msginit -i po/messages.pot -l xx -o po/xx.po` 生成对应语言的 `.po` 文"
 "件。其中，`xx` 为 ISO 639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
+"Execute `msginit -i po/messages.pot -l xx -o po/xx.po` to generate the "
+"corresponding language `.po` file. Here, `xx` refers to the language code "
+"defined in ISO 639, such as `en`, `zh-CN`, etc."
 
 #: src/development/docs/i18n.md:25
 msgid ""
 "可以直接将 `po/messages.pot` 修改为 `po/xx.po`，但是必须手动将标题（第一个带"
 "有 `msgid \"\"` 条目）更新为正确的语言"
 msgstr ""
+"You can directly modify `po/messages.pot` to `po/xx.po`, but you must "
+"manually update the header (the first entry with `msgid `) to reflect the "
+"correct language."
 
 #: src/development/docs/i18n.md:27
 msgid ""
 "手动翻译 `po/xx.po` 文件中各条 `msgstr` 对应的内容即可。其中，`xx` 为 ISO "
 "639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
+"Manually translate the content corresponding to each `msgstr` in the `po/xx."
+"po` file. Here, `xx` refers to the language code defined in ISO 639, such as "
+"`en`, `zh-CN`, etc."
 
 #: src/development/docs/i18n.md:29 src/development/docs/i18n.md:47
 msgid "不要编辑 `po/xx.po` 文件中的 `msgid` 条目"
 msgstr ""
+"Do not edit the `msgid` entries in the `po/xx.po` file. Only translate the "
+"corresponding `msgstr` entries."
 
 #: src/development/docs/i18n.md:31
 msgid "更新翻译"
-msgstr ""
+msgstr "Update translation"
 
 #: src/development/docs/i18n.md:33
 msgid ""
@@ -12445,37 +12494,50 @@ msgid ""
 "后根据 `.pot` 文件更新各种语言对应的 `.po` 文件，而不是简单的直接编辑原始文档"
 "和`.po` 文件。"
 msgstr ""
+"As the content of the documentation gradually increases or decreases, the "
+"corresponding translation content also needs to be adjusted accordingly. In "
+"this case, we need to use `mdbook-xgettext` to re-extract all the "
+"translatable content from the documentation and generate a `.pot` file. "
+"Then, based on the `.pot` file, we update the corresponding `.po` files for "
+"each language, rather than simply editing the original document and `.po` "
+"files directly."
 
 #: src/development/docs/i18n.md:41
 msgid ""
 "执行 `msgmerge --update po/xx.po po/messages.pot` 更新对应语言的 `.po` 文件。"
 "其中，`xx` 为 ISO 639 中定义的语言名，例如，en、zh-CN 等"
-msgstr ""
+msgstr "Run `msgmerge --update po/xx.po po/messages.pot` to update the corresponding language `.po` file. Here, `xx` refers to the language code defined in ISO 639, such as `en`, `zh-CN`, etc."
 
 #: src/development/docs/i18n.md:43
 msgid ""
 "未更改的内容将保持原样，删除的讯息会被标记为旧内容，更新的讯息则标注"
 "为“fuzzy”。“fuzzy” 条目会沿用之前的翻译，我们需要检查并根据需要更新它，再移"
 "除 “fuzzy” 标记。"
-msgstr ""
+msgstr "Unchanged content will remain as is, deleted messages will be marked as outdated, and updated messages will be marked as "fuzzy." "Fuzzy" entries will retain the previous translation, and we need to review them, update as necessary, and then remove the "fuzzy" tag."
 
 #: src/development/docs/i18n.md:45
 msgid ""
 "手动翻译 `po/xx.po` 文件中有变动的各条 `msgstr` 对应的内容即可。其中，`xx` "
 "为 ISO 639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
+"Manually translate the `msgstr` entries in the `po/xx.po` file that have "
+"changed. Here, `xx` refers to the language code defined in ISO 639, such as "
+"`en`, `zh-CN`, etc. You only need to update the `msgstr` content that has "
+"been modified, based on the latest `.pot` file."
 
 #: src/development/docs/i18n.md:49
 msgid "应用翻译"
-msgstr ""
+msgstr "Apply translation"
 
 #: src/development/docs/i18n.md:51
 msgid "应用我们翻译好的内容是通过 mdbook-gettext 预处理器完成的。"
 msgstr ""
+"The application of our translated content is done through the `mdbook-"
+"gettext` preprocessor."
 
 #: src/development/docs/i18n.md:53
 msgid "配置"
-msgstr ""
+msgstr "Configuration"
 
 #: src/development/docs/i18n.md:55
 msgid ""
@@ -12483,6 +12545,10 @@ msgid ""
 "将使能在执行完诸如 `{{ #include }}` 等操作后对源码运行 mdbook-gettext，从而使"
 "得翻译包含的源代码成为可能。"
 msgstr ""
+"First, you need to add the following configuration items to our `book.toml` "
+"file in order to enable it in the project. This will allow `mdbook-gettext` "
+"to be run on the source code after operations like `{{ #include }}` are "
+"executed, making it possible to translate the included source code."
 
 #: src/development/docs/i18n.md:57
 msgid ""
@@ -12497,6 +12563,9 @@ msgid ""
 "如果要在每次更改 `po/xx.po` 文件时自动重新加载我们的文档，则需要将如下配置项"
 "添加到项目的 `book.toml` 文件中："
 msgstr ""
+"To automatically reload our documentation whenever the `po/xx.po` file is "
+"changed, you need to add the following configuration item to the project's "
+"`book.toml` file:"
 
 #: src/development/docs/i18n.md:64
 msgid ""
@@ -12512,12 +12581,20 @@ msgid ""
 "toml` 文件中的 `book.language` 指定的语言选择并应用对应的 `po/xx.po` 并在 "
 "`book` 目录下生成对应语言的文档。"
 msgstr ""
+"After adding the above configuration, every time we execute `mdbook build`, "
+"it will automatically select and apply the corresponding `po/xx.po` file "
+"based on the language specified in the `book.language` setting in the `book."
+"toml` file, and generate the documentation for the corresponding language "
+"under the `book` directory."
 
 #: src/development/docs/i18n.md:73
 msgid ""
 "如果没有设置语言或者找不到与该语言对应的 `.po` 文件，那么将自动使用未翻译的内"
 "容"
 msgstr ""
+"If no language is set or if the corresponding `.po` file for the specified "
+"language cannot be found, the system will automatically use the untranslated "
+"content."
 
 #: src/development/docs/i18n.md:75
 msgid ""
@@ -12525,20 +12602,28 @@ msgid ""
 "build -d book/xx` 命令在 `book/xx` 目录中生成 xx 语言的文档 。其中，`xx` 为 "
 "ISO 639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
+"To build the documentation for a specific language individually, you can use "
+"the command `MDBOOK_BOOK__LANGUAGE=xx mdbook build -d book/xx` to generate "
+"the `xx` language documentation in the `book/xx` directory. Here, `xx` is "
+"the language code defined in ISO 639, such as `en`, `zh-CN`, etc."
 
 #: src/development/docs/i18n.md:77
 msgid "每种语言都对应一个独立的完整文档"
-msgstr ""
+msgstr "Each language corresponds to a separate, complete documentation."
 
 #: src/development/docs/i18n.md:79
 msgid "在线预览"
-msgstr ""
+msgstr "Online preview"
 
 #: src/development/docs/i18n.md:81
 msgid ""
 "由于构建是根据 `book.toml` 文件中的 `book.language` 指定的语言生成的对应语言"
 "的文档，因此，使用 `mdbook serve` 名在本地在线查看的也是对应语言的文档。"
 msgstr ""
+"Since the build generates the documentation for the specified language based "
+"on the `book.language` in the `book.toml` file, using the `mdbook serve` "
+"command will also allow you to view the documentation for the corresponding "
+"language locally online."
 
 #: src/development/docs/i18n.md:83
 msgid ""
@@ -12546,10 +12631,14 @@ msgid ""
 "serve -d book/xx` 命令来在线查看。其中，`xx` 为 ISO 639 中定义的语言名，例"
 "如，en、zh-CN 等"
 msgstr ""
+"To view the documentation for a specific language individually, you can use "
+"the command `MDBOOK_BOOK__LANGUAGE=xx mdbook serve -d book/xx` to preview it "
+"online. Here, `xx` is the language code defined in ISO 639, such as `en`, "
+"`zh-CN`, etc."
 
 #: src/development/docs/i18n.md:85
 msgid "动态切换"
-msgstr ""
+msgstr "Dynamic switching"
 
 #: src/development/docs/i18n.md:87
 msgid ""
@@ -12557,10 +12646,15 @@ msgid ""
 "际化，其默认主题中也没有用于切换不同语言的菜单，因此，我们需要修改默认的主题"
 "模板文件才能实现动态切换不同的语言。"
 msgstr ""
+"Multilingual support requires dynamic switching, rather than independent "
+"deployment for each language. However, since `mdbook` itself does not "
+"support internationalization and its default theme does not include a menu "
+"for switching between different languages, we need to modify the default "
+"theme template files to implement dynamic language switching."
 
 #: src/development/docs/i18n.md:89
 msgid "index.hbs"
-msgstr ""
+msgstr "index.hbs"
 
 #: src/development/docs/i18n.md:91
 msgid ""
@@ -12568,6 +12662,10 @@ msgid ""
 "index.hbs` 文件然后修改其中的内容，在构建时，mdbook 将自动使用当前目录下的 "
 "`theme/index.hbs` 文件，从而实现自定义主题！"
 msgstr ""
+"`index.hbs` is the base HTML template for all pages generated by `mdbook`. "
+"We can create a `theme/index.hbs` file and modify its contents. During the "
+"build process, `mdbook` will automatically use the `theme/index.hbs` file "
+"from the current directory, allowing us to implement a custom theme!"
 
 #: src/development/docs/i18n.md:93
 msgid ""
@@ -12577,10 +12675,19 @@ msgid ""
 "之后，还需要同步更新 URL 的路径并刷新显示。具体修改参见 `theme/index.hbs` 文"
 "件！"
 msgstr ""
+"For internationalization support, we first need to modify the existing "
+"`index.hbs` by adding an icon for switching languages on the right side of "
+"the top menu bar, along with a menu for various languages. We also need to "
+"implement the functionality where clicking the language icon displays the "
+"language menu, and selecting a language from the menu switches to the "
+"corresponding language's documentation. Furthermore, after switching to the "
+"selected language, the URL path should be updated accordingly, and the page "
+"should be refreshed to display the content in the selected language. For "
+"specific modifications, refer to the `theme/index.hbs` file!"
 
 #: src/development/docs/i18n.md:95
 msgid "增加样式"
-msgstr ""
+msgstr "Add styles"
 
 #: src/development/docs/i18n.md:97
 msgid ""
@@ -12588,36 +12695,78 @@ msgid ""
 "用于控制新增的语言选择菜单的样式。而且，要使该文件生效，需要在 `book.toml` 文"
 "件中的 `output.html.additional-css` 中显式指明该文件。"
 msgstr ""
+"To enhance the style, we also added a CSS file `theme/language-picker.css`, "
+"which is used to control the style of the newly added language selection "
+"menu. Additionally, to make this file take effect, it needs to be explicitly "
+"referenced in the `output.html.additional-css` section of the `book.toml` "
+"file."
 
 #: src/development/docs/i18n.md:99
 msgid "部署 Github Pages"
-msgstr ""
+msgstr "Deploy to GitHub Pages"
 
 #: src/development/docs/i18n.md:101
 msgid ""
 "mdbook 生成的文档本身就支持部署在 Github Pages，但是，在我们增加了国际化之后"
 "需要增加一些额外的执行步骤。"
 msgstr ""
+"The documentation generated by `mdbook` already supports deployment on "
+"GitHub Pages. However, after adding internationalization, some additional "
+"steps need to be performed."
 
 #: src/development/docs/i18n.md:103
 msgid ""
 "在没有国际化时，我们只需要通过 `mdbook build` 构建出文档，而支持国际化之后，"
 "则需要额外构建出每个语言对应的文档，并将构建出的不同语言的文档放到原构建目录"
 "中以 ISO 639 中定义的语言名为文件夹名字的子目录中即可（这是由于我们修改的 "
-"`index.hbs` 中强制写死了文件名）。具体修改见 `.github/workflows/main.yml`"
+"`index.hbs` 中强制写死了文件名）。具体修改见 `.github/workflows/build_deploy."
+"yml`"
 msgstr ""
+"Without internationalization, we only need to build the documentation using "
+"`mdbook build`. However, after adding internationalization, it is necessary "
+"to build the documentation for each language and place the generated "
+"documentation for each language into subdirectories named after the language "
+"codes defined in ISO 639 within the original build directory (this is "
+"because we hardcoded the file names in the modified `index.hbs`). For "
+"specific changes, see `.github/workflows/build_deploy.yml`."
 
 #: src/development/docs/i18n.md:105
 msgid "局限性"
-msgstr ""
+msgstr "Limitations"
 
 #: src/development/docs/i18n.md:107
 msgid "由于 mdbook 本身不支持国际化，因此需要对 mdbook 做比价多的改动"
-msgstr ""
+msgstr "Since `mdbook` itself does not support internationalization, it requires quite a few modifications to `mdbook`."
 
 #: src/development/docs/i18n.md:109
 msgid "mdbook 的搜索不支持中文"
+msgstr "The search functionality in `mdbook` does not support Chinese."
+
+#: src/development/docs/i18n.md:111
+msgid ""
+"目前无法再本地同时预览多个语言的版本（我们添加的动态切换无效），这是由于 "
+"mdbook 会清理掉其他语言的文档。暂时的解决方法是，在启动 `mdbook serve` 之后，"
+"再把构建的其他语言的文档放到 `book` 目录下<style> .scroll-to-top { font-"
+"size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: "
+"center; justify-content: center; position: fixed; padding: 0.75rem; bottom: "
+"4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; "
+"cursor: pointer; border: none; color: var(--bg); background: var(--fg); "
+"border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-"
+"top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-"
+"to-top { display: flex; } } </style> <button type=\"button\" aria-"
+"label=\"scroll-to-top\" class=\"scroll-to-top hidden\" "
+"onclick=\"scrollToTop()\"> <i class=\"fa fa-angle-up\"></i> </button>"
 msgstr ""
+"Currently, it's not possible to preview multiple language versions locally at the same time (the dynamic language switching we added doesn't work). This is because `mdbook` will clean up the documentation for other languages. A temporary solution is to place the built documentation for other languages into the `book` directory after starting `mdbook serve`.<style> .scroll-to-top { font-size: 2.5rem; width: "
+"3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: "
+"center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem "
+"+ 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; "
+"color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-"
+"top.hidden { display: none; } .scroll-to-top i { transform: "
+"translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: "
+"flex; } } </style> <button type=\"button\" aria-label=\"scroll-to-top\" "
+"class=\"scroll-to-top hidden\" onclick=\"scrollToTop()\"> <i class=\"fa fa-"
+"angle-up\"></i> </button>"
 
 #: src/roadmap/discusstions.md:1
 msgid ""
