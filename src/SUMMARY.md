@@ -63,6 +63,9 @@
 
     - [2 VM Timer Nimbos](./development/guest_vms/2vm_timer.md)
 
+- [文档](./development/docs/docs.md)
+    - [国际化](./development/docs/i18n.md)
+
 # 用户指导手册
 
 - [使用](./user_manual/usage.md)
