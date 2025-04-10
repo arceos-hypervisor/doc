@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: AxVisor Book\n"
-"POT-Creation-Date: 2025-04-10T02:08:46Z\n"
+"POT-Creation-Date: 2025-04-10T02:16:06Z\n"
 "PO-Revision-Date: 2025-04-09 01:50+0000\n"
 "Last-Translator: ZCShou <zcsexp@gmail.com>\n"
 "Language-Team: English\n"
@@ -149,7 +149,7 @@ msgid "开发指导手册"
 msgstr "Development Guide"
 
 #: src/SUMMARY.md:62 src/development/build.md:1 src/development/docs/docs.md:17
-#: src/development/docs/i18n.md:67
+#: src/development/docs/i18n.md:69
 msgid "构建"
 msgstr "Build"
 
@@ -252,7 +252,7 @@ msgstr ""
 #: src/development/platform_port/platform_port.md:119
 #: src/development/guest_vms/guest_vms.md:120
 #: src/development/guest_vms/2vm_timer.md:439 src/development/docs/docs.md:178
-#: src/development/docs/i18n.md:226 src/user_manual/usage.md:120
+#: src/development/docs/i18n.md:228 src/user_manual/usage.md:120
 #: src/user_manual/manage.md:120 src/user_manual/depoly.md:120
 #: src/roadmap/roadmap.md:119 src/roadmap/discusstions.md:120
 msgid "<button type=\"button\">X</button>"
@@ -12337,8 +12337,8 @@ msgid ""
 "hidden\" onclick=\"scrollToTop()\"> <i class=\"fa fa-angle-up\"></i> </"
 "button>"
 msgstr ""
-"GPL-3.0-or-later<style> .scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: "
-"3.2rem; display: none; align-items: center; justify-content: center; "
+"GPL-3.0-or-later<style> .scroll-to-top { font-size: 2.5rem; width: 3.2rem; "
+"height: 3.2rem; display: none; align-items: center; justify-content: center; "
 "position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px "
 "+ var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: "
 "var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top."
@@ -12430,7 +12430,7 @@ msgid ""
 "639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
 
-#: src/development/docs/i18n.md:29 src/development/docs/i18n.md:45
+#: src/development/docs/i18n.md:29 src/development/docs/i18n.md:47
 msgid "不要编辑 `po/xx.po` 文件中的 `msgid` 条目"
 msgstr ""
 
@@ -12454,30 +12454,37 @@ msgstr ""
 
 #: src/development/docs/i18n.md:43
 msgid ""
+"未更改的内容将保持原样，删除的讯息会被标记为旧内容，更新的讯息则标注"
+"为“fuzzy”。“fuzzy” 条目会沿用之前的翻译，我们需要检查并根据需要更新它，再移"
+"除 “fuzzy” 标记。"
+msgstr ""
+
+#: src/development/docs/i18n.md:45
+msgid ""
 "手动翻译 `po/xx.po` 文件中有变动的各条 `msgstr` 对应的内容即可。其中，`xx` "
 "为 ISO 639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
 
-#: src/development/docs/i18n.md:47
+#: src/development/docs/i18n.md:49
 msgid "应用翻译"
 msgstr ""
 
-#: src/development/docs/i18n.md:49
+#: src/development/docs/i18n.md:51
 msgid "应用我们翻译好的内容是通过 mdbook-gettext 预处理器完成的。"
 msgstr ""
 
-#: src/development/docs/i18n.md:51
+#: src/development/docs/i18n.md:53
 msgid "配置"
 msgstr ""
 
-#: src/development/docs/i18n.md:53
+#: src/development/docs/i18n.md:55
 msgid ""
 "首先，需要将如下配置项添加到我们的 `book.toml` 文件中，以便在项目中启用它。这"
 "将使能在执行完诸如 `{{ #include }}` 等操作后对源码运行 mdbook-gettext，从而使"
 "得翻译包含的源代码成为可能。"
 msgstr ""
 
-#: src/development/docs/i18n.md:55
+#: src/development/docs/i18n.md:57
 msgid ""
 "```toml\n"
 "[preprocessor.gettext]\n"
@@ -12485,13 +12492,13 @@ msgid ""
 "```"
 msgstr ""
 
-#: src/development/docs/i18n.md:60
+#: src/development/docs/i18n.md:62
 msgid ""
 "如果要在每次更改 `po/xx.po` 文件时自动重新加载我们的文档，则需要将如下配置项"
 "添加到项目的 `book.toml` 文件中："
 msgstr ""
 
-#: src/development/docs/i18n.md:62
+#: src/development/docs/i18n.md:64
 msgid ""
 "```toml\n"
 "[build]\n"
@@ -12499,70 +12506,70 @@ msgid ""
 "```"
 msgstr ""
 
-#: src/development/docs/i18n.md:69
+#: src/development/docs/i18n.md:71
 msgid ""
 "增加了以上配置项之后，每当我们执行 `mdbook build` 构建时，将自动根据 `book."
 "toml` 文件中的 `book.language` 指定的语言选择并应用对应的 `po/xx.po` 并在 "
 "`book` 目录下生成对应语言的文档。"
 msgstr ""
 
-#: src/development/docs/i18n.md:71
+#: src/development/docs/i18n.md:73
 msgid ""
 "如果没有设置语言或者找不到与该语言对应的 `.po` 文件，那么将自动使用未翻译的内"
 "容"
 msgstr ""
 
-#: src/development/docs/i18n.md:73
+#: src/development/docs/i18n.md:75
 msgid ""
 "如果要单独构建指定语言的文档，则可以使用 `MDBOOK_BOOK__LANGUAGE=xx mdbook "
 "build -d book/xx` 命令在 `book/xx` 目录中生成 xx 语言的文档 。其中，`xx` 为 "
 "ISO 639 中定义的语言名，例如，en、zh-CN 等"
 msgstr ""
 
-#: src/development/docs/i18n.md:75
+#: src/development/docs/i18n.md:77
 msgid "每种语言都对应一个独立的完整文档"
 msgstr ""
 
-#: src/development/docs/i18n.md:77
+#: src/development/docs/i18n.md:79
 msgid "在线预览"
 msgstr ""
 
-#: src/development/docs/i18n.md:79
+#: src/development/docs/i18n.md:81
 msgid ""
 "由于构建是根据 `book.toml` 文件中的 `book.language` 指定的语言生成的对应语言"
 "的文档，因此，使用 `mdbook serve` 名在本地在线查看的也是对应语言的文档。"
 msgstr ""
 
-#: src/development/docs/i18n.md:81
+#: src/development/docs/i18n.md:83
 msgid ""
 "如果要单独查看指定语言的文档，则可以使用 `MDBOOK_BOOK__LANGUAGE=xx mdbook "
 "serve -d book/xx` 命令来在线查看。其中，`xx` 为 ISO 639 中定义的语言名，例"
 "如，en、zh-CN 等"
 msgstr ""
 
-#: src/development/docs/i18n.md:83
+#: src/development/docs/i18n.md:85
 msgid "动态切换"
 msgstr ""
 
-#: src/development/docs/i18n.md:85
+#: src/development/docs/i18n.md:87
 msgid ""
 "多语言的支持需要动态切换，而不是分别独立部署。但是，由于 mdbook 本身不支持国"
 "际化，其默认主题中也没有用于切换不同语言的菜单，因此，我们需要修改默认的主题"
 "模板文件才能实现动态切换不同的语言。"
 msgstr ""
 
-#: src/development/docs/i18n.md:87
+#: src/development/docs/i18n.md:89
 msgid "index.hbs"
 msgstr ""
 
-#: src/development/docs/i18n.md:89
+#: src/development/docs/i18n.md:91
 msgid ""
 "index.hbs 是 mdbook 的生成的所有页面的基础 HTML 模板，我们可以创建 `theme/"
 "index.hbs` 文件然后修改其中的内容，在构建时，mdbook 将自动使用当前目录下的 "
 "`theme/index.hbs` 文件，从而实现自定义主题！"
 msgstr ""
 
-#: src/development/docs/i18n.md:91
+#: src/development/docs/i18n.md:93
 msgid ""
 "对于要支持国际化的需求，我们首先需要在原在 index.hbs 的基础上，在顶部菜单栏的"
 "右侧增加一个切换不同语言的图标以及各种语言的菜单，并实现用户单击语言图标显示"
@@ -12571,28 +12578,28 @@ msgid ""
 "件！"
 msgstr ""
 
-#: src/development/docs/i18n.md:93
+#: src/development/docs/i18n.md:95
 msgid "增加样式"
 msgstr ""
 
-#: src/development/docs/i18n.md:95
+#: src/development/docs/i18n.md:97
 msgid ""
 "为了美化样式，我们还需要增加了一个 CSS 样式文件 `theme/language-picker.css`，"
 "用于控制新增的语言选择菜单的样式。而且，要使该文件生效，需要在 `book.toml` 文"
 "件中的 `output.html.additional-css` 中显式指明该文件。"
 msgstr ""
 
-#: src/development/docs/i18n.md:97
+#: src/development/docs/i18n.md:99
 msgid "部署 Github Pages"
 msgstr ""
 
-#: src/development/docs/i18n.md:99
+#: src/development/docs/i18n.md:101
 msgid ""
 "mdbook 生成的文档本身就支持部署在 Github Pages，但是，在我们增加了国际化之后"
 "需要增加一些额外的执行步骤。"
 msgstr ""
 
-#: src/development/docs/i18n.md:101
+#: src/development/docs/i18n.md:103
 msgid ""
 "在没有国际化时，我们只需要通过 `mdbook build` 构建出文档，而支持国际化之后，"
 "则需要额外构建出每个语言对应的文档，并将构建出的不同语言的文档放到原构建目录"
@@ -12600,15 +12607,15 @@ msgid ""
 "`index.hbs` 中强制写死了文件名）。具体修改见 `.github/workflows/main.yml`"
 msgstr ""
 
-#: src/development/docs/i18n.md:103
+#: src/development/docs/i18n.md:105
 msgid "局限性"
 msgstr ""
 
-#: src/development/docs/i18n.md:105
+#: src/development/docs/i18n.md:107
 msgid "由于 mdbook 本身不支持国际化，因此需要对 mdbook 做比价多的改动"
 msgstr ""
 
-#: src/development/docs/i18n.md:107
+#: src/development/docs/i18n.md:109
 msgid "mdbook 的搜索不支持中文"
 msgstr ""
 
