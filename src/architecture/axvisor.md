@@ -2,7 +2,9 @@
 
 [AxVisor]((https://github.com/arceos-hypervisor/axvisor/)) 作为虚拟机监控器（VMM）运行，构建并作为 ArceOS 独立内核应用程序运行。
 
-![](../assets/arceos-hv-dep.svg)
+<div align="center">
+<img src="../assets/arceos-hv-dep.svg" width="125%">
+</div>
 
 如上依赖关系图所示，它提供了一个全局视角的虚拟化资源管理，作为连接 ArceOS 核心功能组件与虚拟化相关组件的桥梁。
 

@@ -58,7 +58,9 @@ let (_status, cmd) = root.get_status_command(bdf);
 
 Emulated PCI正是通过软件模拟PCI设备实现的，这些虚拟设备与真实的硬件PCI设备类似，但并非直接依赖Hardware Devices的支持，而是通过Hypervisor层来模拟和管理，用于在虚拟化环境中为VM提供对物理PCI设备的访问能力。
 
-![](../../assets/vpci.png)
+<div align="center">
+<img src="../../assets/vpci.png" width="75%">
+</div>
 
 ###  **Guest VM层**
 
