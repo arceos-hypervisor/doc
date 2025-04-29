@@ -17,7 +17,7 @@ ArceOS-Hypervisor 的软件架构如下图所示，图中每一个框都是一�
 AxVisor 整体架构
 
 <center class="half">
-    <img src="../assets/arm mode.png" width="200"/><img src="../assets/x86 mode.png" width="200"/>
+    <img src="../assets/arm mode.png" width="325"/><img src="../assets/x86 mode.png" width="325"/>
 </center>
 
 ### 2.1. ArceOS
