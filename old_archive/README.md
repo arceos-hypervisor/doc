@@ -1,3 +1,3 @@
-# ArceOS-Hypervisor-Docs
+# AxVisor-Docs
 
-Some documents summarized during the development of [ArceOS-Hypervisor](https://github.com/arceos-hypervisor/arceos).
+Some documents summarized during the development of [AxVisor](https://github.com/arceos-hypervisor/arceos).

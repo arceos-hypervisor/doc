@@ -1,4 +1,4 @@
-# arceos-hypervisor aarch64 crates 情况统计
+# AxVisor aarch64 crates 情况统计
 
 - `arceos` 的组件：[45 个 crate](./components.list)
 - `arceos` 的 app：[14 个 crate](./apps.list)

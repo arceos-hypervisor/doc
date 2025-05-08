@@ -1,4 +1,4 @@
-# Records about virtio-blk in arceos-hypervisor
+# Records about virtio-blk in AxVisor
 
 * architecture blueprint
 

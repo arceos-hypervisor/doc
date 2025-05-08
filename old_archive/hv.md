@@ -2,7 +2,7 @@
 
 ## 仓库链接
 
-ArceOS-Hypervisor x86仓库： https://github.com/arceos-hypervisor/arceos/tree/hypervisor-x86
+AxVisor x86仓库： https://github.com/arceos-hypervisor/arceos/tree/hypervisor-x86
 
 arceos-scf-driver： https://github.com/arceos-hypervisor/arceos-scf-driver
 

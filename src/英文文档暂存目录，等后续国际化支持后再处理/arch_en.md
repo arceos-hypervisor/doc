@@ -286,7 +286,7 @@ Currently we focus on [emulated interrupt controller](https://github.com/arceos-
 ![](../assets/arceos-hv-dep.svg)
 
 <!-- * Note: we aim to consolidate all dependencies on ArceOS within the vmm-app -->
-Since modules/crates used for virtualization functionality in the ArceOS-Hypervisor architecture need to call OS-related resource management interfaces, **while we aim to consolidate all OS-related dependencies within the vmm-app**.
+Since modules/crates used for virtualization functionality in the AxVisor architecture need to call OS-related resource management interfaces, **while we aim to consolidate all OS-related dependencies within the vmm-app**.
 
 Various modules/crates will achieve dependency injection through Rust traits.
 

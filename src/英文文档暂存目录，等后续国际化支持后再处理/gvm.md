@@ -25,7 +25,7 @@
 * It can act as a bootloader for NimbOS and ArceOS
 * Binary product available at [here](https://github.com/arceos-hypervisor/axvm-bios-x86/releases/download/v0.1/axvm-bios.bin)
 
-# ArceOS-Hypervisor in RK3588 board
+# AxVisor in RK3588 board
 ## How to run ArceOS on rk3588
 1. Prepare your kernal file `linux-rk3588-aarch64.bin` and DTB file `rk3588.dtb`.
 2. Set the kernel path and DTB path in the configuration file `configs/linux-rk3588-aarch64.toml`.

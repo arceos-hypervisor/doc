@@ -2,7 +2,7 @@
 
 考虑使用一个完备的 bios 来代替现在苏佬捏的 vlbl([virtual linux bootloader](https://github.com/arceos-hypervisor/arceos/tree/process_type15/apps/hv/guest/vlbl))
 
-本文记录 arceos-hypervisor 引导 seabios 的启动遇到的一些坑
+本文记录 AxVisor 引导 seabios 的启动遇到的一些坑
 
 进度：目前 pending，详见 [Status](#status)
 
@@ -45,14 +45,14 @@ mode at 0xFFFF0000:FFF0.
         ```
 ## mock QEMU
 * 目前 seabios 支持从 Xen 或者 QEMU 上boot，主要的支持代码在 `paravirt.c` 中
-* 如果想要在 arceos-hypervisor 上启动 seabios，需要将自己伪装为 QEMU
+* 如果想要在 AxVisor 上启动 seabios，需要将自己伪装为 QEMU
 * `paravirt.c`
     * QEMU将 VM的启动引导顺序、ACPI 和 SMBIOS表、SMP 和 NUMA 信息等传递给虚拟机。
     * QEMU 的 Firmware Configuration(fw_cfg) Device 机制是 hypervisor 想要支持 seabios 的运行需要完成的
 
 ## Status
 
-目前可以加载 seabios 到 arceos-hypervisor 地址空间中并从中引导启动
+目前可以加载 seabios 到 AxVisor 地址空间中并从中引导启动
 
 但是卡在 pio 的处理（包括端口模拟以及后续的 qemu_fw_cfg 都需要一定工作量）
 
@@ -87,7 +87,7 @@ transition32:
 #define A20_ENABLE_BIT 0x02
 ```
 
-* arceos-hypervisor 的 load_img 相关代码
+* AxVisor 的 load_img 相关代码
 
 ```Rust
 // Seabio size: 0x10000 (65536)
