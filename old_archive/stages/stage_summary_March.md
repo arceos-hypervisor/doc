@@ -2,7 +2,7 @@
 marp: true
 ---
 
-# Stage Summary for ArceOS-Hypervisor
+# Stage Summary for AxVisor
 2024/5/26
 
 ---
