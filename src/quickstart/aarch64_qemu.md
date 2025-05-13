@@ -20,14 +20,18 @@
       $ sudo umount tmp
       ```
 
-2. 修改对应的 `./configs/vms/arceos-aarch64.toml` 文件中的配置项
+2. 对照arceos项目中 `configs/platforms/arceos-aarch64.toml`，修改对应的 `./configs/vms/arceos-aarch64.toml` 文件中的配置项
+   
+   > 如果遇到运行后卡住的情况一定要对照修改下面的参数配置
+   
    ![](../assets/quickstart/aarch64_qemu_arceos_config_fs.png)
+   
    - `image_location="fs"` 表示从文件系统加载
    - `kernel_path` 指出内核镜像在文件系统中的路径
    - `entry_point` 指出内核镜像的入口地址
    - `kernel_load_addr` 指出内核镜像的加载地址
    - 其他
-
+   
 3. 执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
    ```bash
          d8888                            .d88888b.   .d8888b.
@@ -38,14 +42,14 @@
    d88P   888 888     888      88888888 888     888       "888
    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
    d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
-
+   
    arch = aarch64
    platform = aarch64-qemu-virt-hv
    target = aarch64-unknown-none-softfloat
    build_mode = release
    log_level = info
    smp = 1
-
+   
    [  0.021701 0 axruntime:130] Logging is enabled.
    [  0.027394 0 axruntime:131] Primary CPU 0 started, dtb = 0x48000000.
    [  0.029626 0 axruntime:133] Found physcial memory regions:
@@ -106,7 +110,7 @@
    [  1.218682 0:2 axvisor::vmm:42] VM[1] boot success
    [  1.223139 0:5 axvisor::vmm::vcpus:240] VM[1] Vcpu[0] waiting for running
    [  1.225580 0:5 axvisor::vmm::vcpus:243] VM[1] Vcpu[0] running...
-
+   
          d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
       d88P888                           888     888 Y88b.
@@ -115,14 +119,14 @@
    d88P   888 888     888      88888888 888     888       "888
    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
    d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
-
+   
    arch = aarch64
    platform = aarch64-qemu-virt
    target = aarch64-unknown-none-softfloat
    build_mode = release
    log_level = warn
    smp = 1
-
+   
    Hello, world!
    [  1.249320 0:5 axvisor::vmm::vcpus:288] VM[1] run VCpu[0] SystemDown
    [  1.251119 0:5 axhal::platform::aarch64_common::psci:98] Shutting down...
@@ -140,7 +144,7 @@
 
 2. 执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
    ```bash
-
+   
          d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
       d88P888                           888     888 Y88b.
@@ -149,14 +153,14 @@
    d88P   888 888     888      88888888 888     888       "888
    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
    d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
-
+   
    arch = aarch64
    platform = aarch64-qemu-virt-hv
    target = aarch64-unknown-none-softfloat
    build_mode = release
    log_level = info
    smp = 1
-
+   
    [  0.023017 0 axruntime:130] Logging is enabled.
    [  0.028629 0 axruntime:131] Primary CPU 0 started, dtb = 0x48000000.
    [  0.030723 0 axruntime:133] Found physcial memory regions:
@@ -206,7 +210,7 @@
    [  0.346616 0:2 axvisor::vmm:42] VM[1] boot success
    [  0.351053 0:5 axvisor::vmm::vcpus:240] VM[1] Vcpu[0] waiting for running
    [  0.353230 0:5 axvisor::vmm::vcpus:243] VM[1] Vcpu[0] running...
-
+   
          d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
       d88P888                           888     888 Y88b.
@@ -215,14 +219,14 @@
    d88P   888 888     888      88888888 888     888       "888
    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
    d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
-
+   
    arch = aarch64
    platform = aarch64-qemu-virt
    target = aarch64-unknown-none-softfloat
    build_mode = release
    log_level = warn
    smp = 1
-
+   
    Hello, world!
    [  0.376780 0:5 axvisor::vmm::vcpus:288] VM[1] run VCpu[0] SystemDown
    [  0.378516 0:5 axhal::platform::aarch64_common::psci:98] Shutting down...
@@ -271,7 +275,7 @@
 
 3. 执行 `make ARCH=aarch64 VM_CONFIGS=configs/vms/linux-qemu-aarch64.toml LOG=debug BUS=mmio NET=y FEATURES=page-alloc-64g MEM=8g run` 构建 AxVisor，并在 QEMU 中启动。
    ```
-
+   
          d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
       d88P888                           888     888 Y88b.
@@ -280,14 +284,14 @@
    d88P   888 888     888      88888888 888     888       "888
    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
    d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
-
+   
    arch = aarch64
    platform = aarch64-qemu-virt-hv
    target = aarch64-unknown-none-softfloat
    build_mode = release
    log_level = debug
    smp = 1
-
+   
    [  0.021692 0 axruntime:130] Logging is enabled.
    [  0.027480 0 axruntime:131] Primary CPU 0 started, dtb = 0x48000000.
    [  0.029740 0 axruntime:133] Found physcial memory regions:
