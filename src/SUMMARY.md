@@ -69,12 +69,16 @@
 
 - [开发管理](./development/project/project.md)
 
-- [文档](./development/docs/docs.md)
+- [文档编写](./development/docs/docs.md)
     - [国际化](./development/docs/i18n.md)
 
 --------------
 
-# 用户指导手册
+# 调试记录
+
+- [调试记录](./debug/debug.md)
+
+<!-- # 用户指导手册
 
 - [使用](./user_manual/usage.md)
 
@@ -82,7 +86,7 @@
 
 - [部署](./user_manual/depoly.md)
 
---------------
+-------------- -->
 
 # 开发计划
 
