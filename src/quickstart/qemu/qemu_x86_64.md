@@ -6,7 +6,7 @@
 
 [axvm-bios](https://github.com/arceos-hypervisor/axvm-bios-x86) 是针对 x86_64 用户虚拟机的一个极简BIOS实现。
 
-它可以承担引导 NimbOS 以及 ArceOS 启动的任务，二进制文件[链接](https://github.com/arceos-hypervisor/axvm-bios-x86/releases/download/v0.1/axvm-bios.bin).
+它可以承担引导 NimbOS 以及 ArceOS 启动的任务，二进制文件见[链接](https://github.com/arceos-hypervisor/axvm-bios-x86/releases/download/v0.1/axvm-bios.bin).
 
 ## Guest VM configuration
 
