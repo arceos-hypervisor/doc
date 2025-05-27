@@ -15,11 +15,13 @@
     - [QEMU-x86_64](./quickstart/qemu/qemu_x86_64.md)
     - [QEMU-riscv64](./quickstart/qemu/qemu_riscv64.md)
 
-- [华山 A1000](./quickstart/aarch64_a1000.md)
+- [AArch64](./quickstart/aarch64/aarch64.md)
 
-- [RK3588](./quickstart/aarch64_rk3588.md)
+  - [华山 A1000](./quickstart/aarch64/aarch64_a1000.md)
 
-- [ROC-RK3568-PC](./quickstart/aarch64_roc-rk3568-pc.md)
+  - [RK3588](./quickstart/aarch64/aarch64_rk3588.md)
+
+  - [ROC-RK3568-PC](./quickstart/aarch64/aarch64_roc-rk3568-pc.md)
 
 --------------
 

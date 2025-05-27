@@ -4,14 +4,21 @@
 
 ## ArceOS
 
-首先，获取 ArceOS 主线代码 `git clone https://github.com/arceos-org/arceos.git`，然后执行 `make PLATFORM=aarch64-qemu-virt SMP=1 A=examples/helloworld` 获取 `helloworld_aarch64-qemu-virt.bin`
+### 准备 ArceOS 镜像
+
+1. 获取 ArceOS 主线代码 `git clone https://github.com/arceos-org/arceos.git`
+
+2. 在 `arceos` 源码目录中执行 `make PLATFORM=aarch64-qemu-virt SMP=1 A=examples/helloworld` 获得 `examples/helloworld/helloworld_aarch64-qemu-virt.bin`
 
 ### 从文件系统加载运行
 
-1. 制作一个磁盘镜像文件，并将客户机镜像放到文件系统中
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
+1. 制作一个磁盘镜像文件，并将 ArceOS 客户机镜像放到磁盘镜像文件系统中
 
    1. 使用 `make disk_img` 命令生成一个空的 FAT32 磁盘镜像文件 `disk.img`
-   2. 手动挂载 `disk.img`，然后将自己的客户机镜像复制到该文件系统中
+
+   2. 手动挂载 `disk.img`，然后将ArceOS 客户机镜像复制到该文件系统中即可
 
       ```bash
       $ mkdir -p tmp
@@ -24,8 +31,8 @@
    ![](../assets/quickstart/aarch64_qemu_arceos_config_fs.png)
    - `image_location="fs"` 表示从文件系统加载
    - `kernel_path` 指出内核镜像在文件系统中的路径
-   - `entry_point` 指出内核镜像的入口地址
-   - `kernel_load_addr` 指出内核镜像的加载地址
+   - `entry_point` 指出内核镜像的入口地址。必须与上面构建的 ArceOS 内核镜像的入口地址一致
+   - `kernel_load_addr` 指出内核镜像的加载地址。默认与 `entry_point` 一致
    - 其他
 
 3. 执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
@@ -130,12 +137,14 @@
 
 ### 从内存加载运行
 
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
 1. 修改对应的 `./configs/vms/arceos-aarch64.toml` 中的配置项
    ![](../assets/quickstart/aarch64_qemu_arceos_config_mem.png)
    - `image_location="memory"` 配置项
    - `kernel_path` 指定内核镜像在工作空间中的相对/绝对路径
-   - `entry_point` 指出内核镜像的入口地址
-   - `kernel_load_addr` 指出内核镜像的加载地址
+   - `entry_point` 指出内核镜像的入口地址。必须与上面构建的 ArceOS 内核镜像的入口地址一致
+   - `kernel_load_addr` 指出内核镜像的加载地址。默认与 `entry_point` 一致
    - 其他
 
 2. 执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
@@ -229,6 +238,8 @@
    ```
 
 ## NimbOS
+
+### 准备 NimbOS 镜像
 
 [NimbOS](https://github.com/arceos-hypervisor/nimbos) 仓库的 [release](https://github.com/arceos-hypervisor/nimbos/releases/) 页面已经编译生成了可以直接运行的 NimbOS 二进制镜像文件压缩包：
 * 不带 `_usertests` 后缀的 NimbOS 二进制镜像包中编译的 NimbOS 启动后会进入 NimbOS 的 shell，本示例启动的就是这个 NimbOS
@@ -404,13 +415,19 @@
 
 ## Linux
 
-首先，获取 Linux 主线代码 `git clone git@github.com:arceos-hypervisor/linux-6.2.0.git`，然后执行 `make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig` 再执行 `make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)` 以获取 `Image`
+### 准备 Linux 镜像
 
-然后，执行 `dtc -I dts -O dtb -o linux-qemu.dtb configs/vms/linux-qemu.dts` 编译 Linux 客户机需要使用的设备树文件 `linux-qemu.dtb`
+1. 获取 Linux 主线代码 `git clone git@github.com:arceos-hypervisor/linux-6.2.0.git`
 
-### ~~从文件系统加载运行~~
+2. 在 Linux 源码目录中执行 `make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig`，再执行 `make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)` 以获取 `Image`
 
-1. 执行 `make ubuntu_img ARCH=aarch64` 制作一个简单的根文件系统镜像 `disk.img` 作为 Linux 客户机启动之后的文件系统，然后手动挂载 `disk.img`，然后将 Image 和 linux-qemu.dtb 复制到该文件系统中
+### 从文件系统加载运行
+
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
+1. 执行 `dtc -I dts -O dtb -o linux-qemu.dtb configs/vms/linux-qemu.dts` 编译 Linux 客户机需要使用的设备树文件 `linux-qemu.dtb`
+
+2. 执行 `make ubuntu_img ARCH=aarch64` 制作一个简单的根文件系统镜像 `disk.img` 作为 Linux 客户机启动之后的文件系统，然后手动挂载 `disk.img`，然后将 Image 和 linux-qemu.dtb 复制到该文件系统中
 
       ```bash
       $ mkdir -p tmp
@@ -420,7 +437,7 @@
       $ sudo umount tmp
       ```
 
-2. 修改对应的 `./configs/vms/linux-qemu-aarch64.toml` 文件中的配置项
+3. 修改对应的 `./configs/vms/linux-qemu-aarch64.toml` 文件中的配置项
    ![](../assets/quickstart/aarch64_qemu_linux_config_fs.png)
    - `image_location="fs"` 表示从文件系统加载
    - `kernel_path` 指出内核镜像在文件系统中的路径
@@ -428,9 +445,11 @@
    - `kernel_load_addr` 指出内核镜像的加载地址
    - 其他
 
-3. 执行 `make ARCH=aarch64 VM_CONFIGS=configs/vms/linux-qemu-aarch64.toml LOG=debug BUS=mmio NET=y FEATURES=page-alloc-64g,ext4fs APP_FEATURES=fs MEM=8g BLK=y run` 构建 AxVisor，并在 QEMU 中启动。
+4. 执行 `make ARCH=aarch64 VM_CONFIGS=configs/vms/linux-qemu-aarch64.toml LOG=debug BUS=mmio NET=y FEATURES=page-alloc-64g,ext4fs APP_FEATURES=fs MEM=8g BLK=y run` 构建 AxVisor，并在 QEMU 中启动。
 
 ### 从内存加载运行
+
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
 
 1. 执行 `make ubuntu_img ARCH=aarch64` 制作一个简单的根文件系统镜像 `disk.img` 作为 Linux 客户机启动之后的文件系统
 
@@ -890,9 +909,13 @@
 
 ## ArceOS + Linux
 
+### 准备相关镜像
+
 首先，根据以上两个章节的介绍分别制作 `helloworld_aarch64-qemu-virt.bin`、`Image` 及 `linux-qemu.dtb` 镜像文件
 
-### ~~从文件系统加载运行~~
+### 从文件系统加载运行
+
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
 
 1. 执行 `make ubuntu_img ARCH=aarch64` 制作一个简单的根文件系统镜像 `disk.img` 作为 Linux 客户机启动之后的文件系统，然后手动挂载 `disk.img`，然后将 Image 和 linux-qemu.dtb 复制到该文件系统中
 
@@ -923,6 +946,8 @@
 
 ### 从内存加载运行
 
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
 1. 执行 `make ubuntu_img ARCH=aarch64` 制作一个简单的根文件系统镜像 `disk.img` 作为 Linux 客户机启动之后的文件系统
 
 2. 修改对应的 `./configs/vms/linux-qemu-aarch64.toml` 和 `arceos-aarch64.toml` 中的配置项
@@ -940,7 +965,6 @@
    ```
 
 4. 启动另一个终端，然后执行 `telnet localhost 4321`，上一个终端将继续运行，并输出第一个虚拟机启动信息，第二个虚拟机启动信息将在当前终端输出。
-
 
 
 ## 注意事项
@@ -972,9 +996,7 @@ export PATH=/path/to/qemu-9.2.2/build:$PATH
 
 最后，执行 `source ~/.bashrc` 更新当前 shell 即可
 
-
 ## 已知问题
 
 1. ArceOS 从内存中加载启动时，如果没有 disk.img 将报错
-2. Linux 无法从文件系统加载启动
-3. 多客户机，例如 ArceOS + Linux，如果其中一个虚拟机结束，将无法正常启动第二个虚拟机
+
