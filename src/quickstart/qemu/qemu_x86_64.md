@@ -2,6 +2,12 @@
 
 目前，在 QEMU x86_64 平台上已经对独立运行 ArceOS 和 nimbos 进行了验证。
 
+> 前提条件：
+> - CPU 虚拟化已启用
+> - KVM 内核模块正常
+> - 当前用户在 `kvm` 组中
+> - `/dev/kvm` 权限正常
+
 ## ArceOS
 
 ### 准备 ArceOS 镜像
@@ -31,10 +37,10 @@
 
 2. 修改对应的 `./configs/vms/arceos-x86_64.toml` 文件中的配置项
    
-   ```
+   ```toml
    [kernel]
    # The entry point of the kernel image.
-   entry_point = 0x8000
+   entry_point = 0x20_0000
    # The location of image: "memory" | "fs".
    # Load from file system.
    image_location = "fs"
@@ -43,7 +49,7 @@
    # The load address of the BIOS image.
    bios_load_addr = 0x8000
    # The file path of the kernel image.
-   kernel_path = "/arceos/examples/helloworld/helloworld_x86_64-qemu-q35.bin"
+   kernel_path = "helloworld_x86_64-qemu-q35.bin"
    # The load address of the kernel image.
    kernel_load_addr = 0x20_0000
    ```
@@ -57,7 +63,7 @@
    - 其他
    
 3. 执行 `make ACCEL=y ARCH=x86_64 LOG=info VM_CONFIGS=configs/vms/arceos-x86_64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
-   ```bash
+   ```plaintext
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
         d88P888                           888     888 Y88b.
@@ -209,10 +215,10 @@
 
 1. 修改对应的 `./configs/vms/arceos-x86_64.toml` 中的配置项，注意设置 `kernel_path`  和 `bios_path` 为 arceos 二进制内核镜像在工作空间中的相对/绝对路径
    
-   ```
+   ```toml
    [kernel]
    # The entry point of the kernel image.
-   entry_point = 0x8000
+   entry_point = 0x20_0000
    # The location of image: "memory" | "fs".
    # Load from file system.
    image_location = "memory"
@@ -235,7 +241,7 @@
    - 其他
    
 2. 执行 `make ACCEL=y ARCH=x86_64 LOG=info VM_CONFIGS=configs/vms/arceos-x86_64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
-   ```bash
+   ```plaintext
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
         d88P888                           888     888 Y88b.
@@ -372,14 +378,18 @@
 ### 准备 NimbOS 镜像
 
 [NimbOS](https://github.com/arceos-hypervisor/nimbos) 仓库的 [release](https://github.com/arceos-hypervisor/nimbos/releases/) 页面已经编译生成了可以直接运行的 NimbOS 二进制镜像文件压缩包：
+
 * 不带 `_usertests` 后缀的 NimbOS 二进制镜像包中编译的 NimbOS 启动后会进入 NimbOS 的 shell，本示例启动的就是这个 NimbOS
 * 带 `usertests` 后缀的 NimbOS 二进制镜像压缩包中编译的 NimbOS 启动后会自动运行用户态测例用于测试，这个镜像用于 AxVisor 的CI测试，见 [setup-nimbos-guest-image/action.yml](https://github.com/arceos-hypervisor/axvisor/blob/master/.github/workflows/actions/setup-nimbos-guest-image/action.yml)
 
 ### 从文件系统加载运行
 
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
 1. 制作一个磁盘镜像文件，并将客户机镜像放到文件系统中
 
    1. 使用 `make disk_img` 命令生成一个空的 FAT32 磁盘镜像文件 `disk.img`
+
    2. 手动挂载 `disk.img`，然后拉取并解压二进制镜像
 
       ```bash
@@ -387,7 +397,7 @@
       $ sudo mount disk.img tmp
       $ wget https://github.com/arceos-hypervisor/nimbos/releases/download/v0.7/x86_64.zip
       $ unzip x86_64.zip # 得到 nimbos.bin
-      $ sudo mv nimbos.bin tmp/nimbos.bin
+      $ sudo mv nimbos.bin tmp/nimbos-x86_64.bin
       $ sudo wget https://github.com/arceos-hypervisor/axvm-bios-x86/releases/download/v0.1/axvm-bios.bin
       $ sudo cp axvm-bios.bin tmp/  #axvm-bios.bin对应配置文件中的bios_path
       $ sudo umount tmp
@@ -403,8 +413,9 @@
    - 其他
    
 3. 执行 `make ACCEL=y ARCH=x86_64 LOG=info VM_CONFIGS=configs/vms/nimbos-x86_64.toml FEATURES=page-alloc-64g APP_FEATURES=fs defconfig` 创建 `.axconfig.toml` 配置文件
+
 4. 执行 `make ACCEL=y ARCH=x86_64 LOG=info VM_CONFIGS=configs/vms/nimbos-x86_64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
-   ```bash
+   ```plaintext
    Booting from ROM..
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
@@ -572,7 +583,7 @@
 
 1. 修改对应的 `./configs/vms/nimbos-x86_64.toml` 中的配置项，注意设置 `kernel_path`  和 `bios_path` 为 nimbos 二进制内核镜像在工作空间中的相对/绝对路径
 
-   ```bash
+   ```toml
    [kernel]
    # The entry point of the kernel image.
    entry_point = 0x8000
@@ -599,7 +610,7 @@
 
 2. 执行 `make ACCEL=y ARCH=x86_64 LOG=info VM_CONFIGS=configs/vms/nimbos-x86_64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
 
-   ```bash
+   ```plaintext
    Booting from ROM..
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
@@ -749,8 +760,6 @@
    Rust user shell
    >> 
    ```
-
-
 
 ## 注意事项
 
