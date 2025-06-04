@@ -8,7 +8,7 @@
 
 1. 获取 ArceOS 主线代码 `git clone https://github.com/arceos-org/arceos.git`
 
-2. 在 `arceos` 源码目录中执行 `make ARCH=riscv64 SMP=1 A=examples/helloworld` 获得 `examples/helloworld/helloworld_riscv64-qemu-q35.bin`
+2. 在 `arceos` 源码目录中执行 `make ARCH=riscv64 SMP=1 A=examples/helloworld` 获得 `examples/helloworld/helloworld_riscv64-qemu-virt.bin`
 
 ### 从文件系统加载运行
 
@@ -23,23 +23,23 @@
       ```bash
       $ mkdir -p tmp
       $ sudo mount disk.img tmp
-      $ sudo cp helloworld_riscv64-qemu-q35.bin tmp/
+      $ sudo cp /path/to/helloworld_riscv64-qemu-virt.bin tmp/
       $ sudo umount tmp
       ```
 
 2. 修改对应的 `./configs/vms/arceos-riscv64.toml` 文件中的配置项
 
-   ```
+   ```toml
    [kernel]
    # The entry point of the kernel image.
-   entry_point = 0x8000
+   entry_point = 0x8020_0000
    # The location of image: "memory" | "fs".
    # Load from file system.
    image_location = "fs"
    # The file path of the kernel image.
-   kernel_path = "/arceos/examples/helloworld/helloworld_riscv64-qemu-q35.bin"
+   kernel_path = "/path/to/helloworld_riscv64-qemu-virt.bin"
    # The load address of the kernel image.
-   kernel_load_addr = 0x20_0000
+   kernel_load_addr = 0x8020_0000
    ```
 
    - `image_location="fs"` 表示从文件系统加载
@@ -50,7 +50,7 @@
 
 3. 执行 `make ACCEL=n ARCH=riscv64 LOG=info VM_CONFIGS=configs/vms/arceos-riscv64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
 
-   ```bash
+   ```plaintext
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
         d88P888                           888     888 Y88b.
@@ -202,17 +202,17 @@
 
 1. 修改对应的 `./configs/vms/arceos-riscv64.toml` 中的配置项
 
-   ```
+   ```toml
    [kernel]
    # The entry point of the kernel image.
-   entry_point = 0x8000
+   entry_point = 0x8020_0000
    # The location of image: "memory" | "fs".
    # Load from file system.
    image_location = "memory"
    # The file path of the kernel image.
-   kernel_path = "/arceos/examples/helloworld/helloworld_riscv64-qemu-q35.bin"
+   kernel_path = "/path/to/helloworld_riscv64-qemu-virt.bin"
    # The load address of the kernel image.
-   kernel_load_addr = 0x20_0000
+   kernel_load_addr = 0x8020_0000
    ```
 
    - `image_location="memory"` 配置项
@@ -223,7 +223,7 @@
 
 2. 执行 `make ACCEL=n ARCH=riscv64 LOG=info VM_CONFIGS=configs/vms/arceos-riscv64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
 
-   ```bash
+   ```plaintext
           d8888                            .d88888b.   .d8888b.
          d88888                           d88P" "Y88b d88P  Y88b
         d88P888                           888     888 Y88b.
@@ -322,6 +322,8 @@
 
 ### 从文件系统加载运行
 
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+
 1. 制作一个磁盘镜像文件，并将客户机镜像放到文件系统中
 
    1. 使用 `make disk_img` 命令生成一个空的 FAT32 磁盘镜像文件 `disk.img`
@@ -333,7 +335,7 @@
       $ sudo mount disk.img tmp
       $ wget https://github.com/arceos-hypervisor/nimbos/releases/download/v0.7/riscv64.zip
       $ unzip riscv64.zip # 得到 nimbos.bin
-      $ sudo mv nimbos.bin tmp/nimbos.bin
+      $ sudo mv nimbos.bin tmp/nimbos-riscv64.bin
       $ sudo umount tmp
       ```
 
@@ -349,7 +351,7 @@
 
 4. 执行 `make ACCEL=n ARCH=riscv64 LOG=info VM_CONFIGS=configs/vms/nimbos-riscv64.toml FEATURES=page-alloc-64g APP_FEATURES=fs run` 构建 AxVisor，并在 QEMU 中启动。
 
-   ```bash
+   ```plaintext
    qemu-system-riscv64 -m 4G -smp 1 -machine virt -bios default -kernel /code/new/axvisor/axvisor_riscv64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=disk.img -nographic
    
    OpenSBI v1.3
@@ -554,7 +556,7 @@
 
      1. 修改对应的 `./configs/vms/nimbos-riscv64.toml` 中的配置项，注意设置 `kernel_path`  和 `bios_path` 为 nimbos 二进制内核镜像在工作空间中的相对/绝对路径
 
-        ```bash
+        ```toml
         [kernel]
         # The entry point of the kernel image.
         entry_point = 0x9020_0000
@@ -577,7 +579,7 @@
 
      2. 执行 `make ACCEL=n ARCH=riscv64 LOG=info VM_CONFIGS=configs/vms/nimbos-riscv64.toml FEATURES=page-alloc-64g run` 构建 AxVisor，并在 QEMU 中启动。
 
-        ```bash
+        ```plaintext
         qemu-system-riscv64 -m 4G -smp 1 -machine virt -bios default -kernel /code/new/axvisor/axvisor_riscv64-qemu-virt.bin -device virtio-blk-pci,drive=disk0 -drive id=disk0,if=none,format=raw,file=disk.img -nographic
         
         OpenSBI v1.3
@@ -764,6 +766,3 @@
         Rust user shell
         >> 
         ```
-
-        
-
