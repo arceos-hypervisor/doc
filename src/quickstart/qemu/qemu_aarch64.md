@@ -485,7 +485,7 @@
 
 ### 从文件系统加载运行
 
-获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
+获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，**（axvisor通过fs启动linux暂未合并主线，若想尝试可切换至dev/dyn分支）**，然后在 `axvisor` 源码目录中执行如下步骤：
 
 1. 执行 `dtc -I dts -O dtb -o linux-qemu.dtb configs/vms/linux-qemu.dts` 编译 Linux 客户机需要使用的设备树文件 `linux-qemu.dtb`
 
@@ -507,8 +507,440 @@
    - `kernel_load_addr` 指出内核镜像的加载地址
    - 其他
 
-4. 执行 `make ARCH=aarch64 VM_CONFIGS=configs/vms/linux-qemu-aarch64.toml LOG=debug BUS=mmio NET=y FEATURES=page-alloc-64g,ext4fs APP_FEATURES=fs MEM=8g BLK=y run` 构建 AxVisor，并在 QEMU 中启动。
+4. 执行 `make ARCH=aarch64 VM_CONFIGS=configs/vms/linux-qemu-aarch64.toml LOG=info NET=y FEATURES=page-alloc-64g,bus-mmio,ext4fs BUS=mmio APP_FEATURES=fs MEM=8g BLK=y run` 构建 AxVisor，并在 QEMU 中启动。
+   ```palintext
+          d8888                            .d88888b.   .d8888b.
+         d88888                           d88P" "Y88b d88P  Y88b
+        d88P888                           888     888 Y88b.
+       d88P 888 888d888  .d8888b  .d88b.  888     888  "Y888b.
+      d88P  888 888P"   d88P"    d8P  Y8b 888     888     "Y88b.
+     d88P   888 888     888      88888888 888     888       "888
+    d8888888888 888     Y88b.    Y8b.     Y88b. .d88P Y88b  d88P
+   d88P     888 888      "Y8888P  "Y8888   "Y88888P"   "Y8888P"
 
+   arch = aarch64
+   platform = aarch64-qemu-virt-hv
+   target = aarch64-unknown-none-softfloat
+   build_mode = release
+   log_level = info
+   smp = 1
+
+   [  0.013162 0 axruntime:138] Logging is enabled.
+   [  0.015679 0 axruntime:139] Primary CPU 0 started, dtb = 0x0.
+   [  0.016604 0 axruntime:141] Found physcial memory regions:
+   [  0.017544 0 axruntime:143]   [PA:0x40080000, PA:0x40106000) .text (READ | EXECUTE | RESERVED)
+   [  0.018877 0 axruntime:143]   [PA:0x40106000, PA:0x4011b000) .rodata (READ | RESERVED)
+   [  0.019466 0 axruntime:143]   [PA:0x4011b000, PA:0x40121000) .data .tdata .tbss .percpu (READ | WRITE | RESERVED)
+   [  0.020087 0 axruntime:143]   [PA:0x40121000, PA:0x40161000) boot stack (READ | WRITE | RESERVED)
+   [  0.020666 0 axruntime:143]   [PA:0x40161000, PA:0x40389000) .bss (READ | WRITE | RESERVED)
+   [  0.021225 0 axruntime:143]   [PA:0x40389000, PA:0xc0000000) free memory (READ | WRITE | FREE)
+   [  0.021842 0 axruntime:143]   [PA:0x9000000, PA:0x9001000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.022416 0 axruntime:143]   [PA:0x9040000, PA:0x9041000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.022988 0 axruntime:143]   [PA:0x9100000, PA:0x9101000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.023525 0 axruntime:143]   [PA:0x8000000, PA:0x8020000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.024022 0 axruntime:143]   [PA:0x80a0000, PA:0x9000000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.024570 0 axruntime:143]   [PA:0xa000000, PA:0xa004000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.025100 0 axruntime:143]   [PA:0x10000000, PA:0x3eff0000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.025616 0 axruntime:143]   [PA:0x4010000000, PA:0x4020000000) mmio (READ | WRITE | DEVICE | RESERVED)
+   [  0.026345 0 axruntime:224] Initialize global memory allocator...
+   [  0.026857 0 axruntime:225]   use TLSF allocator.
+   [  0.033519 0 axmm:72] Initialize virtual memory management...
+   [  0.504984 0 axruntime:158] Initialize platform devices...
+   [  0.505498 0 axhal::platform::aarch64_common::gic:67] Initialize GICv2...
+   [  0.507939 0 axtask::api:73] Initialize scheduling...
+   [  0.510938 0:2 axtask::api:79]   use FIFO scheduler.
+   [  0.511810 0:2 axdriver:172] Initialize device drivers...
+   [  0.512378 0:2 axdriver:173]   device model: static
+   [  0.514269 0:2 virtio_drivers::device::blk:59] config: 0xa003f00
+   [  0.515180 0:2 virtio_drivers::device::blk:64] found a block device of size 131072KB
+   [  0.517593 0:2 axdriver::bus::mmio:12] registered a new Block device at [PA:0xa003e00, PA:0xa004000): "virtio-blk"
+   [  0.520378 0:2 axfs:41] Initialize filesystems...
+   [  0.521220 0:2 axfs:44]   use block device 0: "virtio-blk"
+   [  0.522481 0:2 axfs::fs::ext4fs:32] Got Disk size:134217728, position:0
+   [  0.524183 0:2 lwext4_rust::blockdev:92] New an Ext4 Block Device
+   [  0.529566 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.530555 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.530947 0:2 lwext4_rust::ulibc:30] [lwext4] "[info]  sblock features_incompatible:\n"
+   [  0.531805 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.532208 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.532594 0:2 lwext4_rust::ulibc:30] [lwext4] "filetype\n"
+   [  0.533054 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.533502 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.533893 0:2 lwext4_rust::ulibc:30] [lwext4] "recover\n"
+   [  0.534400 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.534766 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.535195 0:2 lwext4_rust::ulibc:30] [lwext4] "extents\n"
+   [  0.535701 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.536078 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.536482 0:2 lwext4_rust::ulibc:30] [lwext4] "64bit\n"
+   [  0.536939 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.537339 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.537759 0:2 lwext4_rust::ulibc:30] [lwext4] "flex_bg\n"
+   [  0.538313 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.538675 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.539085 0:2 lwext4_rust::ulibc:30] [lwext4] "[info]  sblock features_compatible:\n"
+   [  0.539713 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.540078 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.540551 0:2 lwext4_rust::ulibc:30] [lwext4] "has_journal\n"
+   [  0.541104 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.541483 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.541868 0:2 lwext4_rust::ulibc:30] [lwext4] "ext_attr\n"
+   [  0.542354 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.542734 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.543156 0:2 lwext4_rust::ulibc:30] [lwext4] "resize_inode\n"
+   [  0.543627 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.543992 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.544421 0:2 lwext4_rust::ulibc:30] [lwext4] "dir_index\n"
+   [  0.544877 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.545281 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.545705 0:2 lwext4_rust::ulibc:30] [lwext4] "[info]  sblock features_read_only:\n"
+   [  0.546335 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.546702 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.547112 0:2 lwext4_rust::ulibc:30] [lwext4] "sparse_super\n"
+   [  0.547605 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.547969 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.548393 0:2 lwext4_rust::ulibc:30] [lwext4] "large_file\n"
+   [  0.548872 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.549274 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.549665 0:2 lwext4_rust::ulibc:30] [lwext4] "huge_file\n"
+   [  0.550143 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.550545 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.550946 0:2 lwext4_rust::ulibc:30] [lwext4] "dir_nlink\n"
+   [  0.551426 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.551799 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.552222 0:2 lwext4_rust::ulibc:30] [lwext4] "extra_isize\n"
+   [  0.552715 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.553102 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.553508 0:2 lwext4_rust::ulibc:30] [lwext4] "metadata_csum\n"
+   [  0.554162 0:2 lwext4_rust::ulibc:30] [lwext4] "%s"
+   [  0.554529 0:2 lwext4_rust::ulibc:30] [lwext4] "l: %d   "
+   [  0.554920 0:2 lwext4_rust::ulibc:30] [lwext4] "[warn]  last umount error: superblock fs_error flag\n"
+   [  0.566532 0:2 lwext4_rust::blockdev:253] lwext4 mount Okay
+   [  0.567385 0:2 lwext4_rust::blockdev:305] ls /
+   [  0.571443 0:2 lwext4_rust::blockdev:314]   [dir] .
+   [  0.573053 0:2 lwext4_rust::blockdev:314]   [dir] ..
+   [  0.574654 0:2 lwext4_rust::blockdev:314]   [dir] lost+found
+   [  0.576296 0:2 lwext4_rust::blockdev:314]   [sym] bin
+   [  0.577923 0:2 lwext4_rust::blockdev:314]   [dir] boot
+   [  0.579488 0:2 lwext4_rust::blockdev:314]   [dir] dev
+   [  0.581040 0:2 lwext4_rust::blockdev:314]   [dir] etc
+   [  0.582666 0:2 lwext4_rust::blockdev:314]   [dir] home
+   [  0.584204 0:2 lwext4_rust::blockdev:314]   [sym] lib
+   [  0.585737 0:2 lwext4_rust::blockdev:314]   [dir] media
+   [  0.587274 0:2 lwext4_rust::blockdev:314]   [dir] mnt
+   [  0.588833 0:2 lwext4_rust::blockdev:314]   [dir] opt
+   [  0.590387 0:2 lwext4_rust::blockdev:314]   [dir] proc
+   [  0.591939 0:2 lwext4_rust::blockdev:314]   [dir] root
+   [  0.593504 0:2 lwext4_rust::blockdev:314]   [dir] run
+   [  0.595051 0:2 lwext4_rust::blockdev:314]   [sym] sbin
+   [  0.596602 0:2 lwext4_rust::blockdev:314]   [dir] srv
+   [  0.598166 0:2 lwext4_rust::blockdev:314]   [dir] sys
+   [  0.599712 0:2 lwext4_rust::blockdev:314]   [dir] tmp
+   [  0.601248 0:2 lwext4_rust::blockdev:314]   [dir] usr
+   [  0.602790 0:2 lwext4_rust::blockdev:314]   [dir] var
+   [  0.604414 0:2 lwext4_rust::blockdev:314]   [fil] Image
+   [  0.606103 0:2 lwext4_rust::blockdev:314]   [fil] linux-qemu.dtb
+   [  0.607868 0:2 lwext4_rust::blockdev:323] 
+   [  0.608619 0:2 lwext4_rust::blockdev:342] ********************
+   [  0.609150 0:2 lwext4_rust::blockdev:343] ext4_mount_point_stats
+   [  0.609745 0:2 lwext4_rust::blockdev:344] inodes_count = 8000
+   [  0.610494 0:2 lwext4_rust::blockdev:345] free_inodes_count = 724c
+   [  0.611075 0:2 lwext4_rust::blockdev:346] blocks_count = 8000
+   [  0.611805 0:2 lwext4_rust::blockdev:347] free_blocks_count = 3eb
+   [  0.612380 0:2 lwext4_rust::blockdev:348] block_size = 1000
+   [  0.612937 0:2 lwext4_rust::blockdev:349] block_group_count = 1
+   [  0.613507 0:2 lwext4_rust::blockdev:350] blocks_per_group= 8000
+   [  0.614075 0:2 lwext4_rust::blockdev:351] inodes_per_group = 8000
+   [  0.614673 0:2 lwext4_rust::blockdev:354] volume_name = ""
+   [  0.615183 0:2 lwext4_rust::blockdev:355] ********************
+
+   [  0.615712 0:2 lwext4_rust::blockdev:362] ********************
+   [  0.616245 0:2 lwext4_rust::blockdev:363] ext4 blockdev stats
+   [  0.616805 0:2 lwext4_rust::blockdev:365] bdev->bread_ctr = 6
+   [  0.617524 0:2 lwext4_rust::blockdev:366] bdev->bwrite_ctr = 3
+   [  0.618074 0:2 lwext4_rust::blockdev:368] bcache->ref_blocks = 3
+   [  0.618625 0:2 lwext4_rust::blockdev:369] bcache->max_ref_blocks = 3
+   [  0.619189 0:2 lwext4_rust::blockdev:373] bcache->lru_ctr = 52
+   [  0.619769 0:2 lwext4_rust::blockdev:375] ********************
+
+   [  0.620526 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /
+   [  0.623755 0:2 axfs::fs::ext4fs:142] create Dir on Ext4fs: /dev
+   [  0.624463 0:2 axfs::fs::ext4fs:70] path_deal_with: /dev
+   [  0.627211 0:2 axfs::fs::ext4fs:89] dealt with full path: /dev
+   [  0.630473 0:2 axfs::fs::ext4fs:70] path_deal_with: /dev
+   [  0.630869 0:2 axfs::fs::ext4fs:89] dealt with full path: /dev
+   [  0.631594 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /dev
+   [  0.632951 0:2 axfs::fs::ext4fs:204] Get the parent dir of /dev
+   [  0.633702 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /
+   [  0.636092 0:2 axfs::fs::ext4fs:142] create Dir on Ext4fs: /tmp
+   [  0.636502 0:2 axfs::fs::ext4fs:70] path_deal_with: /tmp
+   [  0.636889 0:2 axfs::fs::ext4fs:89] dealt with full path: /tmp
+   [  0.638459 0:2 axfs::fs::ext4fs:70] path_deal_with: /tmp
+   [  0.638854 0:2 axfs::fs::ext4fs:89] dealt with full path: /tmp
+   [  0.639608 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /tmp
+   [  0.640105 0:2 axfs::fs::ext4fs:204] Get the parent dir of /tmp
+   [  0.640510 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /
+   [  0.647166 0:2 axfs::fs::ext4fs:142] create Dir on Ext4fs: /proc
+   [  0.647579 0:2 axfs::fs::ext4fs:70] path_deal_with: /proc
+   [  0.647968 0:2 axfs::fs::ext4fs:89] dealt with full path: /proc
+   [  0.649267 0:2 axfs::fs::ext4fs:70] path_deal_with: /proc
+   [  0.649664 0:2 axfs::fs::ext4fs:89] dealt with full path: /proc
+   [  0.650221 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /proc
+   [  0.650670 0:2 axfs::fs::ext4fs:204] Get the parent dir of /proc
+   [  0.651082 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /
+   [  0.652642 0:2 axfs::fs::ext4fs:142] create Dir on Ext4fs: /sys
+   [  0.653050 0:2 axfs::fs::ext4fs:70] path_deal_with: /sys
+   [  0.653437 0:2 axfs::fs::ext4fs:89] dealt with full path: /sys
+   [  0.654193 0:2 axfs::fs::ext4fs:70] path_deal_with: /sys
+   [  0.654584 0:2 axfs::fs::ext4fs:89] dealt with full path: /sys
+   [  0.655095 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /sys
+   [  0.655537 0:2 axfs::fs::ext4fs:204] Get the parent dir of /sys
+   [  0.655937 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_DIR /
+   [  0.657102 0:2 axruntime:190] Initialize interrupt handlers...
+   [  0.659088 0:2 axruntime:202] Primary CPU 0 init OK.
+
+
+       _         __     ___
+      / \   __  _\ \   / (_)___  ___  _ __
+     / _ \  \ \/ /\ \ / /| / __|/ _ \| '__|
+    / ___ \  >  <  \ V / | \__ \ (_) | |
+   /_/   \_\/_/\_\  \_/  |_|___/\___/|_|
+
+
+   by AxVisor Team
+
+   [  0.661595 0:2 axvisor:21] Starting virtualization...
+   [  0.662047 0:2 axvisor:22] Hardware support: true
+   [  0.666137 0:4 axvisor::vmm::timer:101] Initing HV Timer...
+   [  0.666832 0:4 axvisor::hal:122] Hardware virtualization support enabled on core 0
+   [  0.721331 0:2 axvisor::vmm::config:33] Creating VM[1] "linux-qemu"
+   [  0.723709 0:2 axvm::vm:114] Setting up memory region: [0x80000000~0xc0000000] READ | WRITE | EXECUTE
+   [  1.154125 0:2 axvm::vm:166] Setting up passthrough device memory region: [0x8000000~0x8050000] -> [0x8000000~0x8050000]
+   [  1.155571 0:2 axvm::vm:166] Setting up passthrough device memory region: [0x9000000~0x9001000] -> [0x9000000~0x9001000]
+   [  1.156470 0:2 axvm::vm:166] Setting up passthrough device memory region: [0x9010000~0x9011000] -> [0x9010000~0x9011000]
+   [  1.157067 0:2 axvm::vm:166] Setting up passthrough device memory region: [0x9030000~0x9031000] -> [0x9030000~0x9031000]
+   [  1.157650 0:2 axvm::vm:166] Setting up passthrough device memory region: [0xa000000~0xa004000] -> [0xa000000~0xa004000]
+   [  1.158713 0:2 axvm::vm:202] VM[1] created
+   [  1.159495 0:2 axvm::vm:217] VM[1] vcpus set up
+   [  1.160206 0:2 axvisor::vmm::config:40] VM[1] created success, loading images...
+   [  1.160988 0:2 axvisor::vmm::images::fs:153] Loading VM images from filesystem
+   [  1.162440 0:2 axfs::fs::ext4fs:89] dealt with full path: /Image
+   [  1.163897 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_REG_FILE /Image
+   [  1.167163 0:2 axfs::fs::ext4fs:130] get_attr of File "/Image", size: 26089984, blocks: 50957
+   [  1.168499 0:2 axfs::fs::ext4fs:130] get_attr of File "/Image", size: 26089984, blocks: 50957
+   [  3.303086 0:2 axfs::fs::ext4fs:89] dealt with full path: /linux-qemu.dtb
+   [  3.303679 0:2 axfs::fs::ext4fs:62] FileWrapper new EXT4_DE_REG_FILE /linux-qemu.dtb
+   [  3.304497 0:2 axfs::fs::ext4fs:130] get_attr of File "/linux-qemu.dtb", size: 6252, blocks: 13
+   [  3.305357 0:2 axfs::fs::ext4fs:130] get_attr of File "/linux-qemu.dtb", size: 6252, blocks: 13
+   [  3.328436 0:2 axvisor::vmm:35] Setting up vcpus...
+   [  3.330223 0:2 axvisor::vmm::vcpus:219] Initializing VM[1]'s 1 vcpus
+   [  3.331181 0:2 axvisor::vmm::vcpus:250] Spawning task for VM[1] VCpu[0]
+   [  3.332723 0:2 axvisor::vmm::vcpus:262] VCpu task Task(5, "VM[1]-VCpu[0]") created cpumask: [0, ]
+   [  3.334047 0:2 axvisor::vmm:43] VMM starting, booting VMs...
+   [  3.334648 0:2 axvm::vm:284] Booting VM[1]
+   [  3.335286 0:2 axvisor::vmm:49] VM[1] boot success
+   [  3.335995 0:2 axvisor::vmm:60] a VM exited, current running VM count: 1
+   [  3.337830 0:5 axvisor::vmm::vcpus:283] VM[1] VCpu[0] waiting for running
+   [  3.338682 0:5 axvisor::vmm::vcpus:286] VM[1] VCpu[0] running...
+   [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd083]
+   [    0.000000] Linux version 5.4.0 (root@josen) (gcc version 10.3.1 20210621 (GNU Toolchain for the A-profile Architecture 10.3-2021.07 (arm-10.29))) #1 SMP PREEMPT Fri Feb 28 06:11:15 UTC 2025
+   [    0.000000] Machine model: linux,dummy-virt
+   [    0.000000] efi: Getting EFI parameters from FDT:
+   [    0.000000] efi: UEFI not found.
+   [    0.000000] cma: Reserved 32 MiB at 0x00000000be000000
+   [    0.000000] earlycon: pl11 at MMIO 0x0000000009000000 (options '')
+   [    0.000000] printk: bootconsole [pl11] enabled
+   [    0.000000] NUMA: No NUMA configuration found
+   [    0.000000] NUMA: Faking a node at [mem 0x0000000080000000-0x00000000bfffffff]
+   [    0.000000] NUMA: NODE_DATA [mem 0xbddf4800-0xbddf5fff]
+   [    0.000000] Zone ranges:
+   [    0.000000]   DMA32    [mem 0x0000000080000000-0x00000000bfffffff]
+   [    0.000000]   Normal   empty
+   [    0.000000] Movable zone start for each node
+   [    0.000000] Early memory node ranges
+   [    0.000000]   node   0: [mem 0x0000000080000000-0x00000000bfffffff]
+   [    0.000000] Initmem setup node 0 [mem 0x0000000080000000-0x00000000bfffffff]
+   [    0.000000] psci: probing for conduit method from DT.
+   [    0.000000] psci: PSCIv1.1 detected in firmware.
+   [    0.000000] psci: Using standard PSCI v0.2 function IDs
+   [    0.000000] psci: Trusted OS migration not required
+   [    0.000000] psci: SMC Calling Convention v1.0
+   [    0.000000] percpu: Embedded 22 pages/cpu s52952 r8192 d28968 u90112
+   [    0.000000] Detected PIPT I-cache on CPU0
+   [    0.000000] CPU features: detected: EL2 vector hardening
+   [    0.000000] CPU features: kernel page table isolation forced ON by KASLR
+   [    0.000000] CPU features: detected: Kernel page table isolation (KPTI)
+   [    0.000000] ARM_SMCCC_ARCH_WORKAROUND_1 missing from firmware
+   [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 258048
+   [    0.000000] Policy zone: DMA32
+   [    0.000000] Kernel command line: earlycon console=ttyAMA0 root=/dev/vda rw audit=0 default_hugepagesz=32M hugepagesz=32M hugepages=4
+   [    0.000000] audit: disabled (until reboot)
+   [    0.000000] Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+   [    0.000000] Inode-cache hash table entries: 65536 (order: 7, 524288 bytes, linear)
+   [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+   [    0.000000] Memory: 838672K/1048576K available (12092K kernel code, 1862K rwdata, 6384K rodata, 5056K init, 448K bss, 177136K reserved, 32768K cma-reserved)
+   [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+   [    0.000000] rcu: Preemptible hierarchical RCU implementation.
+   [    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=1.
+   [    0.000000]  Tasks RCU enabled.
+   [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+   [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+   [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+   [    0.000000] GICv2m: range[mem 0x08020000-0x08020fff], SPI[80:143]
+   [    0.000000] random: get_random_bytes called from start_kernel+0x2b4/0x448 with crng_init=0
+   [    0.000000] arch_timer: cp15 timer(s) running at 62.50MHz (virt).
+   [    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x1cd42e208c, max_idle_ns: 881590405314 ns
+   [    0.000300] sched_clock: 56 bits at 62MHz, resolution 16ns, wraps every 4398046511096ns
+   [    0.021052] Console: colour dummy device 80x25
+   [    0.027704] Calibrating delay loop (skipped), value calculated using timer frequency.. 125.00 BogoMIPS (lpj=250000)
+   [    0.028753] pid_max: default: 32768 minimum: 301
+   [    0.033091] LSM: Security Framework initializing
+   [    0.037810] Mount-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
+   [    0.038382] Mountpoint-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
+   [    0.126936] /cpus/cpu-map: empty cluster
+   [    0.175247] ASID allocator initialised with 32768 entries
+   [    0.178531] rcu: Hierarchical SRCU implementation.
+   [    0.207613] EFI services will not be available.
+   [    0.216053] smp: Bringing up secondary CPUs ...
+   [    0.216566] smp: Brought up 1 node, 1 CPU
+   [    0.216887] SMP: Total of 1 processors activated.
+   [    0.217445] CPU features: detected: 32-bit EL0 Support
+   [    0.218031] CPU features: detected: CRC32 instructions
+   [    0.337766] CPU: All CPU(s) started at EL1
+   [    0.338642] alternatives: patching kernel code
+   [    0.383895] devtmpfs: initialized
+   [    0.428672] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+   [    0.430105] futex hash table entries: 256 (order: 2, 16384 bytes, linear)
+   [    0.453873] pinctrl core: initialized pinctrl subsystem
+   [    0.491373] DMI not present or invalid.
+   [    0.506983] NET: Registered protocol family 16
+   [    0.568658] DMA: preallocated 256 KiB pool for atomic allocations
+   [    0.586994] cpuidle: using governor menu
+   [    0.591402] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+   [    0.609434] Serial: AMBA PL011 UART driver
+   [    0.780453] 9000000.pl011: ttyAMA0 at MMIO 0x9000000 (irq = 40, base_baud = 0) is a PL011 rev1
+   [    0.784598] printk: console [ttyAMA0] enabled
+   [    0.784598] printk: console [ttyAMA0] enabled
+   [    0.786117] printk: bootconsole [pl11] disabled
+   [    0.786117] printk: bootconsole [pl11] disabled
+   [    0.949795] HugeTLB registered 32.0 MiB page size, pre-allocated 4 pages
+   [    0.950394] HugeTLB registered 1.00 GiB page size, pre-allocated 0 pages
+   [    0.950796] HugeTLB registered 2.00 MiB page size, pre-allocated 0 pages
+   [    0.951229] HugeTLB registered 64.0 KiB page size, pre-allocated 0 pages
+   [    1.021972] cryptd: max_cpu_qlen set to 1000
+   [    1.081779] ACPI: Interpreter disabled.
+   [    1.105114] iommu: Default domain type: Translated
+   [    1.109153] vgaarb: loaded
+   [    1.114725] SCSI subsystem initialized
+   [    1.123869] usbcore: registered new interface driver usbfs
+   [    1.125137] usbcore: registered new interface driver hub
+   [    1.126425] usbcore: registered new device driver usb
+   [    1.137681] pps_core: LinuxPPS API ver. 1 registered
+   [    1.138017] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+   [    1.139026] PTP clock support registered
+   [    1.141246] EDAC MC: Ver: 3.0.0
+   [    1.161700] FPGA manager framework
+   [    1.164657] Advanced Linux Sound Architecture Driver Initialized.
+   [    1.199184] clocksource: Switched to clocksource arch_sys_counter
+   [    1.201943] VFS: Disk quotas dquot_6.6.0
+   [    1.202861] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+   [    1.212083] pnp: PnP ACPI: disabled
+   [    1.285909] thermal_sys: Registered thermal governor 'step_wise'
+   [    1.286158] thermal_sys: Registered thermal governor 'power_allocator'
+   [    1.291579] NET: Registered protocol family 2
+   [    1.307057] tcp_listen_portaddr_hash hash table entries: 512 (order: 1, 8192 bytes, linear)
+   [    1.307806] TCP established hash table entries: 8192 (order: 4, 65536 bytes, linear)
+   [    1.308700] TCP bind hash table entries: 8192 (order: 5, 131072 bytes, linear)
+   [    1.309512] TCP: Hash tables configured (established 8192 bind 8192)
+   [    1.313826] UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
+   [    1.315233] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
+   [    1.319902] NET: Registered protocol family 1
+   [    1.343529] RPC: Registered named UNIX socket transport module.
+   [    1.344043] RPC: Registered udp transport module.
+   [    1.344355] RPC: Registered tcp transport module.
+   [    1.344661] RPC: Registered tcp NFSv4.1 backchannel transport module.
+   [    1.345358] PCI: CLS 0 bytes, default 64
+   [    1.367728] hw perfevents: enabled with armv8_pmuv3 PMU driver, 7 counters available
+   [    1.369056] kvm [1]: HYP mode not available
+   [    1.457584] Initialise system trusted keyrings
+   [    1.462239] workingset: timestamp_bits=44 max_order=18 bucket_order=0
+   [    1.558147] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+   [    1.574739] NFS: Registering the id_resolver key type
+   [    1.575637] Key type id_resolver registered
+   [    1.575997] Key type id_legacy registered
+   [    1.576655] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+   [    1.579327] 9p: Installing v9fs 9p2000 file system support
+   [    1.597384] Key type asymmetric registered
+   [    1.597846] Asymmetric key parser 'x509' registered
+   [    1.599071] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 245)
+   [    1.599795] io scheduler mq-deadline registered
+   [    1.600306] io scheduler kyber registered
+   [    1.716763] pl061_gpio 9030000.pl061: PL061 GPIO chip registered
+   [    1.769773] EINJ: ACPI disabled.
+   [    1.962778] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+   [    1.994268] SuperH (H)SCI(F) driver initialized
+   [    2.003719] msm_serial: driver initialized
+   [    2.022026] cacheinfo: Unable to detect cache hierarchy for CPU 0
+   [    2.117351] loop: module loaded
+   [    2.173781] virtio_blk virtio1: [vda] 262144 512-byte logical blocks (134 MB/128 MiB)
+   [    2.325276] libphy: Fixed MDIO Bus: probed
+   [    2.329558] tun: Universal TUN/TAP device driver, 1.6
+   [    2.364261] thunder_xcv, ver 1.0
+   [    2.365020] thunder_bgx, ver 1.0
+   [    2.365715] nicpf, ver 1.0
+   [    2.375371] hclge is initializing
+   [    2.375887] hns3: Hisilicon Ethernet Network Driver for Hip08 Family - version
+   [    2.376364] hns3: Copyright (c) 2017 Huawei Corporation.
+   [    2.377736] e1000e: Intel(R) PRO/1000 Network Driver - 3.2.6-k
+   [    2.378149] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+   [    2.379336] igb: Intel(R) Gigabit Ethernet Network Driver - version 5.6.0-k
+   [    2.379753] igb: Copyright (c) 2007-2014 Intel Corporation.
+   [    2.380674] igbvf: Intel(R) Gigabit Virtual Function Network Driver - version 2.4.0-k
+   [    2.381168] igbvf: Copyright (c) 2009 - 2012 Intel Corporation.
+   [    2.386928] sky2: driver version 1.30
+   [    2.397403] VFIO - User Level meta-driver version: 0.3
+   [    2.424701] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+   [    2.425364] ehci-pci: EHCI PCI platform driver
+   [    2.426358] ehci-platform: EHCI generic platform driver
+   [    2.428872] ehci-orion: EHCI orion driver
+   [    2.430791] ehci-exynos: EHCI EXYNOS driver
+   [    2.432318] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+   [    2.432951] ohci-pci: OHCI PCI platform driver
+   [    2.433945] ohci-platform: OHCI generic platform driver
+   [    2.436296] ohci-exynos: OHCI EXYNOS driver
+   [    2.444692] usbcore: registered new interface driver usb-storage
+   [    2.491526] rtc-pl031 9010000.pl031: registered as rtc0
+   [    2.501170] i2c /dev entries driver
+   [    2.578984] sdhci: Secure Digital Host Controller Interface driver
+   [    2.579379] sdhci: Copyright(c) Pierre Ossman
+   [    2.585633] Synopsys Designware Multimedia Card Interface Driver
+   [    2.600244] sdhci-pltfm: SDHCI platform and OF driver helper
+   [    2.623755] ledtrig-cpu: registered to indicate activity on CPUs
+   [    2.643316] usbcore: registered new interface driver usbhid
+   [    2.643701] usbhid: USB HID core driver
+   [    2.704460] NET: Registered protocol family 17
+   [    2.709162] 9pnet: Installing 9P2000 support
+   [    2.710284] Key type dns_resolver registered
+   [    2.713927] registered taskstats version 1
+   [    2.714326] Loading compiled-in X.509 certificates
+   [    2.747078] input: gpio-keys as /devices/platform/gpio-keys/input/input0
+   [    2.756507] rtc-pl031 9010000.pl031: setting system clock to 2025-06-05T05:41:40 UTC (1749102100)
+   [    2.760300] ALSA device list:
+   [    2.760773]   No soundcards found.
+   [    2.773089] uart-pl011 9000000.pl011: no DMA platform data
+   [    2.867179] EXT4-fs (vda): warning: mounting unchecked fs, running e2fsck is recommended
+   [    2.911981] EXT4-fs (vda): recovery complete
+   [    2.919232] EXT4-fs (vda): mounted filesystem with ordered data mode. Opts: (null)
+   [    2.920639] VFS: Mounted root (ext4 filesystem) on device 254:0.
+   [    2.926848] devtmpfs: mounted
+   [    3.032764] Freeing unused kernel memory: 5056K
+   [    3.035219] Run /sbin/init as init process
+   [    3.049432] Run /etc/init as init process
+   [    3.051160] Run /bin/init as init process
+   [    3.057535] Run /bin/sh as init process
+   /bin/sh: 0: can't access tty; job control turned off
+   # 
+   ```
 ### 从内存加载运行
 
 获取 AxVisor 主线代码 `git clone git@github.com:arceos-hypervisor/axvisor.git`，然后在 `axvisor` 源码目录中执行如下步骤：
