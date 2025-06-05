@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Internationalization - AxVisor Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/css/custom.css">
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/language-picker.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">AxVisor Book</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh-CN">中文</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                        </ul>
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("en");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "development/docs/i18n.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "zh-CN") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+
+                          // When the user clicks a list item, the page jump is performed, just like clicking the internal <a> tag.
+                          langList.querySelectorAll("li").forEach(function(li) {
+                            li.addEventListener("click", function(event) {
+                              event.preventDefault();
+        
+                              let link = this.querySelector("a");
+                              if (link && window.location.href !== link.href) {
+                                window.location.href = link.href;
+                              }
+                            });
+                          });
+                        </script>
+
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/arceos-hypervisor/doc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This document uses the <a href="https://github.com/google/mdbook-i18n-helpers">mdbook-i18n-helpers</a> provided by Google to offer internationalization support. The mdbook-i18n-helpers mainly includes two executables: mdbook-xgettext and mdbook-gettext. Among them, mdbook-xgettext is a mdbook renderer that helps extract the source text that needs to be translated, while mdbook-gettext is a mdbook preprocessor responsible for re-injecting the translated text into the Markdown files.</p>
+<h1 id="translation"><a class="header" href="#translation">Translation</a></h1>
+<p>mdbook-i18n-helpers uses the GNU <a href="https://www.gnu.org/software/gettext/manual/html_node/index.html">Gettext</a> system for translation. GNU Gettext is a set of utilities that provides a framework in which we can easily translate into multiple languages. This system is widely used for translating open-source software and is also quite effective for translating documentation.</p>
+<h2 id="po-file"><a class="header" href="#po-file"><code>.po</code> file</a></h2>
+<p>In GNU Gettext, each language corresponds to a <code>.po</code> file named after the language code defined in ISO 639, such as <code>en.po</code>, which records all the original content that needs to be translated along with its corresponding translated content. Therefore, our translation work does not require copying the original Markdown files and manually tracking changes; we only need to modify the <code>.po</code> files.</p>
+<h2 id="new-translation"><a class="header" href="#new-translation">New translation</a></h2>
+<p>Once our original document is completed, we first need to create the corresponding <code>.po</code> files for the required languages to enable internationalization support. mdbook-xgettext can help us extract all the content that needs to be translated from the original document and generate a <code>.pot</code> file (a PO template). We can then create different language-specific <code>.po</code> files based on this template.</p>
+<ol>
+<li>
+<p>Executing the command <code>MDBOOK_OUTPUT='{"xgettext": {"pot-file": "messages.pot"}}' mdbook build -d po</code> will automatically extract all the content that needs to be translated from the original document and generate a <code>messages.pot</code> file. After running this command, the default po/messages.pot file will be created. This file serves as the template for creating the language-specific <code>.po</code> files.</p>
+<blockquote>
+<p>If you add the configuration <code>output.xgettext.pot-file = messages.pot</code> in the <code>book.toml</code> file, then every time you execute <code>mdbook build</code>, it will automatically output the <code>book/xgettext/messages.pot</code> file. This configuration ensures that the <code>.pot</code> file is generated consistently with each build, saving you from having to manually specify it every time.</p>
+</blockquote>
+<blockquote>
+<p>Do not edit the <code>po/messages.pot</code> file, nor should you commit it to your repository, as it is generated entirely from the source Markdown files.</p>
+</blockquote>
+</li>
+<li>
+<p>Execute <code>msginit -i po/messages.pot -l xx -o po/xx.po</code> to generate the corresponding language <code>.po</code> file. Here, <code>xx</code> refers to the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc.</p>
+<blockquote>
+<p>You can directly modify <code>po/messages.pot</code> to <code>po/xx.po</code>, but you must manually update the header (the first entry with <code>msgid </code>) to reflect the correct language.</p>
+</blockquote>
+</li>
+<li>
+<p>Manually translate the content corresponding to each <code>msgstr</code> in the <code>po/xx.po</code> file. Here, <code>xx</code> refers to the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc.</p>
+<blockquote>
+<p>Do not edit the <code>msgid</code> entries in the <code>po/xx.po</code> file. Only translate the corresponding <code>msgstr</code> entries.</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="update-translation"><a class="header" href="#update-translation">Update translation</a></h2>
+<p>As the content of the documentation gradually increases or decreases, the corresponding translation content also needs to be adjusted accordingly. In this case, we need to use <code>mdbook-xgettext</code> to re-extract all the translatable content from the documentation and generate a <code>.pot</code> file. Then, based on the <code>.pot</code> file, we update the corresponding <code>.po</code> files for each language, rather than simply editing the original document and <code>.po</code> files directly.</p>
+<ol>
+<li>
+<p>Executing the command <code>MDBOOK_OUTPUT='{"xgettext": {"pot-file": "messages.pot"}}' mdbook build -d po</code> will automatically extract all the content that needs to be translated from the original document and generate a <code>messages.pot</code> file. After running this command, the default po/messages.pot file will be created. This file serves as the template for creating the language-specific <code>.po</code> files.</p>
+<blockquote>
+<p>If you add the configuration <code>output.xgettext.pot-file = messages.pot</code> in the <code>book.toml</code> file, then every time you execute <code>mdbook build</code>, it will automatically output the <code>book/xgettext/messages.pot</code> file. This configuration ensures that the <code>.pot</code> file is generated consistently with each build, saving you from having to manually specify it every time.</p>
+</blockquote>
+<blockquote>
+<p>Do not edit the <code>po/messages.pot</code> file, nor should you commit it to your repository, as it is generated entirely from the source Markdown files.</p>
+</blockquote>
+</li>
+<li>
+<p>Run <code>msgmerge --update po/xx.po po/messages.pot</code> to update the corresponding language <code>.po</code> file. Here, <code>xx</code> refers to the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc.</p>
+<blockquote>
+<p>Unchanged content will remain as is, deleted messages will be marked as outdated, and updated messages will be marked as "fuzzy." "Fuzzy" entries will retain the previous translation, and we need to review them, update as necessary, and then remove the "fuzzy" tag.</p>
+</blockquote>
+</li>
+<li>
+<p>Manually translate the <code>msgstr</code> entries in the <code>po/xx.po</code> file that have changed. Here, <code>xx</code> refers to the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc. You only need to update the <code>msgstr</code> content that has been modified, based on the latest <code>.pot</code> file.</p>
+<blockquote>
+<p>Do not edit the <code>msgid</code> entries in the <code>po/xx.po</code> file. Only translate the corresponding <code>msgstr</code> entries.</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="apply-translation"><a class="header" href="#apply-translation">Apply translation</a></h1>
+<p>The application of our translated content is done through the <code>mdbook-gettext</code> preprocessor.</p>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>First, you need to add the following configuration items to our <code>book.toml</code> file in order to enable it in the project. This will allow <code>mdbook-gettext</code> to be run on the source code after operations like <code>{{ #include }}</code> are executed, making it possible to translate the included source code.</p>
+<pre><code class="language-toml">[preprocessor.gettext]
+after = ["links"]
+</code></pre>
+<p>To automatically reload our documentation whenever the <code>po/xx.po</code> file is changed, you need to add the following configuration item to the project's <code>book.toml</code> file:</p>
+<pre><code class="language-toml">[build]
+extra-watch-dirs = ["po"]
+</code></pre>
+<h2 id="build"><a class="header" href="#build">Build</a></h2>
+<p>After adding the above configuration, every time we execute <code>mdbook build</code>, it will automatically select and apply the corresponding <code>po/xx.po</code> file based on the language specified in the <code>book.language</code> setting in the <code>book.toml</code> file, and generate the documentation for the corresponding language under the <code>book</code> directory.</p>
+<blockquote>
+<p>If no language is set or if the corresponding <code>.po</code> file for the specified language cannot be found, the system will automatically use the untranslated content.</p>
+</blockquote>
+<p>To build the documentation for a specific language individually, you can use the command <code>MDBOOK_BOOK__LANGUAGE=xx mdbook build -d book/xx</code> to generate the <code>xx</code> language documentation in the <code>book/xx</code> directory. Here, <code>xx</code> is the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc.</p>
+<blockquote>
+<p>Each language corresponds to a separate, complete documentation.</p>
+</blockquote>
+<h2 id="online-preview"><a class="header" href="#online-preview">Online preview</a></h2>
+<p>Since the build generates the documentation for the specified language based on the <code>book.language</code> in the <code>book.toml</code> file, using the <code>mdbook serve</code> command will also allow you to view the documentation for the corresponding language locally online.</p>
+<p>To view the documentation for a specific language individually, you can use the command <code>MDBOOK_BOOK__LANGUAGE=xx mdbook serve -d book/xx</code> to preview it online. Here, <code>xx</code> is the language code defined in ISO 639, such as <code>en</code>, <code>zh-CN</code>, etc.</p>
+<h1 id="dynamic-switching"><a class="header" href="#dynamic-switching">Dynamic switching</a></h1>
+<p>Multilingual support requires dynamic switching, rather than independent deployment for each language. However, since <code>mdbook</code> itself does not support internationalization and its default theme does not include a menu for switching between different languages, we need to modify the default theme template files to implement dynamic language switching.</p>
+<h2 id="indexhbs"><a class="header" href="#indexhbs">index.hbs</a></h2>
+<p><code>index.hbs</code> is the base HTML template for all pages generated by <code>mdbook</code>. We can create a <code>theme/index.hbs</code> file and modify its contents. During the build process, <code>mdbook</code> will automatically use the <code>theme/index.hbs</code> file from the current directory, allowing us to implement a custom theme!</p>
+<p>For internationalization support, we first need to modify the existing <code>index.hbs</code> by adding an icon for switching languages on the right side of the top menu bar, along with a menu for various languages. We also need to implement the functionality where clicking the language icon displays the language menu, and selecting a language from the menu switches to the corresponding language's documentation. Furthermore, after switching to the selected language, the URL path should be updated accordingly, and the page should be refreshed to display the content in the selected language. For specific modifications, refer to the <code>theme/index.hbs</code> file!</p>
+<h2 id="add-styles"><a class="header" href="#add-styles">Add styles</a></h2>
+<p>To enhance the style, we also added a CSS file <code>theme/language-picker.css</code>, which is used to control the style of the newly added language selection menu. Additionally, to make this file take effect, it needs to be explicitly referenced in the <code>output.html.additional-css</code> section of the <code>book.toml</code> file.</p>
+<h1 id="deploy-to-github-pages"><a class="header" href="#deploy-to-github-pages">Deploy to GitHub Pages</a></h1>
+<p>The documentation generated by <code>mdbook</code> already supports deployment on GitHub Pages. However, after adding internationalization, some additional steps need to be performed.</p>
+<p>Without internationalization, we only need to build the documentation using <code>mdbook build</code>. However, after adding internationalization, it is necessary to build the documentation for each language and place the generated documentation for each language into subdirectories named after the language codes defined in ISO 639 within the original build directory (this is because we hardcoded the file names in the modified <code>index.hbs</code>). For specific changes, see <code>.github/workflows/build_deploy.yml</code>.</p>
+<h1 id="limitations"><a class="header" href="#limitations">Limitations</a></h1>
+<ol>
+<li>
+<p>Since <code>mdbook</code> itself does not support internationalization, it requires quite a few modifications to <code>mdbook</code>.</p>
+</li>
+<li>
+<p>The search functionality in <code>mdbook</code> does not support Chinese.</p>
+</li>
+<li>
+<p>目前无法再本地同时预览多个语言的版本（我们添加的动态切换无效），这是由于 mdbook 会清理掉其他语言的文档。暂时的解决方法是，在启动 <code>mdbook serve</code> 之后，再把构建的其他语言的文档放到 <code>book</code> 目录下<style>.scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: flex; } }</style><button type="button" aria-label="scroll-to-top" class="scroll-to-top hidden" onclick="scrollToTop()"> <i class="fa fa-angle-up"></i></button><script>const scrollToTop = () =&gt; window.scroll({ top: 0, behavior: "smooth" }); window.addEventListener("scroll", () =&gt; { const button = document.querySelector(".scroll-to-top"); button.classList.toggle("hidden", window.scrollY &lt;200); });</script><style>.announcement-banner { --site-announcement-bar-stripe-color1: #e5e7eb; --site-announcement-bar-stripe-color2: #d1d5db; z-index: 150; position: relative; flex-direction: column; justify-content: center; align-items: center; margin: 0; padding: 1rem 3.5rem; background: repeating-linear-gradient( 45deg, var(--site-announcement-bar-stripe-color1), var(--site-announcement-bar-stripe-color1) 20px, var(--site-announcement-bar-stripe-color2) 10px, var(--site-announcement-bar-stripe-color2) 40px ); } html:is(.navy, .coal, .ayu) .announcement-banner { --site-announcement-bar-stripe-color1: #1f2937; --site-announcement-bar-stripe-color2: #111827; } .announcement-banner p { color: var(--fg); width: 100%; margin: 0; padding: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; text-wrap: balance; } .announcement-banner button[data-close] { top: 50%; right: 1rem; position: absolute; transform: translateY(-50%); width: 3rem; height: 3rem; cursor: pointer !important; border: none; font-weight: 900; border-radius: 50%; background-color: transparent; }</style><div style="display: none" data-id="0.2.11" class="announcement-banner"> <p><em>正在逐步完善中。。。</em></p> <button type="button" data-close>X</button></div><script>(() =&gt; { const banner = document.querySelector(".announcement-banner"); const id = banner.getAttribute("data-id"); const message = banner.querySelector("p").textContent; const localData = JSON.parse(localStorage.getItem("mdbook-announcement-banner")); if (!localData || localData.id !== id || localData.hide !== true) { banner.style.display = "flex"; const page = document.querySelector(".page"); page.parentNode.insertBefore(banner, page); banner.querySelector("button").addEventListener("click", () =&gt; { banner.remove(); localStorage.setItem("mdbook-announcement-banner", JSON.stringify({ id, hide: true, message })); }); } })();</script><style>.giscus { margin-top: 6rem; }</style><script src="https://giscus.app/client.js" data-repo="arceos-hypervisor/doc" data-repo-id="R_kgDOLMHfvQ" data-category="Comments" data-category-id="DIC_kwDOLMHfvc4CoqAB" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-loading="eager" crossorigin="anonymous" data-theme="light" async></script><script>(() =&gt; { const giscusScript = document.querySelector("script[data-repo][data-repo-id]"); if (giscusScript?.getAttribute("data-theme") !== "book") return; const mapTheme = (theme) =&gt; (["light", "rust"].includes(theme) ? "light" : "dark"); const bookTheme = localStorage.getItem("mdbook-theme") || html.getAttribute("class"); giscusScript.setAttribute("data-theme", mapTheme(bookTheme)); document.querySelectorAll("button[role='menuitem'].theme").forEach((btn) =&gt; { btn.addEventListener("click", (event) =&gt; { const theme = mapTheme(event.target.id); const iframe = document.querySelector("iframe.giscus-frame"); if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, "*"); }); }); })();</script><style>footer { text-align: center; text-wrap: balance; margin-top: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; } footer p { margin: 0; }</style><footer><p>Copyright © 2025 • Created by ArceOS Team</p></footer></p>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../development/docs/docs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../debug/debug.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../development/docs/docs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../debug/debug.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>

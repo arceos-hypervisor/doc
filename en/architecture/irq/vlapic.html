@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>vLapic - AxVisor Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/css/custom.css">
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/language-picker.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">AxVisor Book</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh-CN">中文</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                        </ul>
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("en");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "architecture/irq/vlapic.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "zh-CN") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+
+                          // When the user clicks a list item, the page jump is performed, just like clicking the internal <a> tag.
+                          langList.querySelectorAll("li").forEach(function(li) {
+                            li.addEventListener("click", function(event) {
+                              event.preventDefault();
+        
+                              let link = this.querySelector("a");
+                              if (link && window.location.href !== link.href) {
+                                window.location.href = link.href;
+                              }
+                            });
+                          });
+                        </script>
+
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/arceos-hypervisor/doc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="虚拟-local-apic"><a class="header" href="#虚拟-local-apic">虚拟 Local APIC</a></h1>
+<p>本节描述了虚拟 Local APIC 的实现。</p>
+<h2 id="全虚拟化"><a class="header" href="#全虚拟化">全虚拟化</a></h2>
+<h3 id="寄存器虚拟化"><a class="header" href="#寄存器虚拟化">寄存器虚拟化：</a></h3>
+<p>Local APIC 的寄存器通过内存映射（MMIO）访问。虚拟机对 APIC 寄存器的读写会触发 VM-exit，由虚拟化层（如 VMM/Hypervisor）模拟这些操作，维护每个虚拟 CPU（vCPU）的虚拟寄存器状态。</p>
+<h3 id="中断注入"><a class="header" href="#中断注入">中断注入：</a></h3>
+<p>当物理中断需要传递给虚拟机时，虚拟化层将其转换为虚拟中断（如虚拟 IRQ），并通过修改虚拟 APIC 的状态（如 IRR/ISR 寄存器）或直接注入中断（如 Intel 的 vmcs VM_ENTRY_INTR_INFO）通知虚拟机。</p>
+<h3 id="定时器虚拟化"><a class="header" href="#定时器虚拟化">定时器虚拟化：</a></h3>
+<p>虚拟 APIC 定时器需根据虚拟机的配置（如周期和计数）模拟中断。Hypervisor 可能使用物理定时器（如 host 的 hrtimer）或时间偏移技术来触发虚拟中断。</p>
+<h2 id="硬件辅助虚拟化"><a class="header" href="#硬件辅助虚拟化">硬件辅助虚拟化</a></h2>
+<p>现代 CPU（如 Intel VT-x 和 AMD-V）提供了硬件加速特性，显著优化性能：</p>
+<h3 id="apicvintel--avicamd"><a class="header" href="#apicvintel--avicamd">APICv（Intel） / AVIC（AMD）：</a></h3>
+<p>硬件直接支持虚拟 APIC 状态维护，减少 VM-exit。例如：</p>
+<ul>
+<li>
+<p>Virtual APIC Page：在 VMCS 中维护虚拟 APIC 的寄存器，允许虚拟机直接访问，无需陷入。</p>
+</li>
+<li>
+<p>中断投递优化：硬件自动将中断路由到目标 vCPU 的虚拟 APIC。</p>
+</li>
+<li>
+<p>自动处理 EOI：某些中断的确认（EOI）由硬件处理，避免 VM-exit。</p>
+</li>
+</ul>
+<h3 id="posted-interruptsintel"><a class="header" href="#posted-interruptsintel">Posted Interrupts（Intel）：</a></h3>
+<ul>
+<li>物理中断可直接“投递”到虚拟机的虚拟 APIC，绕过 Hypervisor 干预，极大降低延迟。</li>
+</ul>
+<h2 id="具体实现"><a class="header" href="#具体实现">具体实现</a></h2>
+<p>代码位于 <a href="https://github.com/arceos-hypervisor/x86_vlapic">x86-vlapic</a></p>
+<p><code>EmulatedLocalApic</code> 实现了虚拟中断的基本方法，通过 <code>handle_read</code> <code>handle_write</code> 实现读写虚拟中断寄存器的功能。</p>
+<p><code>VirtualApicRegs</code> 包含了 <code>APIC</code> 所有寄存器，保存客户机虚拟中断的寄存器状态</p>
+<h3 id="local-apic-寄存器"><a class="header" href="#local-apic-寄存器">Local APIC 寄存器</a></h3>
+<p>本地APIC寄存器被内存映射到MP/MADT表中可找到的地址。若使用分页，请确保将这些寄存器映射到虚拟内存。每个寄存器均为32位长，并期望以32位整数形式进行读写。尽管每个寄存器占用4个字节，但它们都按16字节边界对齐。 本地APIC寄存器列表（待办事项：为所有寄存器添加描述）：</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>register_structs! {
+    #[allow(non_snake_case)]
+    pub LocalAPICRegs {
+        (0x00 =&gt; _reserved0),
+        /// Local APIC ID register (VID): the 32-bit field located at offset 000H on the virtual-APIC page.
+        (0x20 =&gt; pub ID: ReadWrite&lt;u32&gt;),
+        (0x24 =&gt; _reserved1),
+        /// Local APIC Version register (VVER): the 32-bit field located at offset 030H on the virtual-APIC page.
+        (0x30 =&gt; pub VERSION: ReadOnly&lt;u32&gt;),
+        (0x34 =&gt; _reserved2),
+        /// Virtual task-priority register (VTPR): the 32-bit field located at offset 080H on the virtual-APIC page.
+        (0x80 =&gt; pub TPR: ReadWrite&lt;u32&gt;),
+        (0x84 =&gt; _reserved3),
+        /// Virtual APIC-priority register (VAPR): the 32-bit field located at offset 090H on the virtual-APIC page.
+        (0x90 =&gt; pub APR: ReadOnly&lt;u32&gt;),
+        (0x94 =&gt; _reserved4),
+        /// Virtual processor-priority register (VPPR): the 32-bit field located at offset 0A0H on the virtual-APIC page.
+        (0xA0 =&gt; pub PPR: ReadOnly&lt;u32&gt;),
+        (0xA4 =&gt; _reserved5),
+        /// Virtual end-of-interrupt register (VEOI): the 32-bit field located at offset 0B0H on the virtual-APIC page.
+        (0xB0 =&gt; pub EOI: WriteOnly&lt;u32&gt;),
+        (0xB4 =&gt; _reserved6),
+        /// Virtual Remote Read Register (RRD): the 32-bit field located at offset 0C0H on the virtual-APIC page.
+        (0xC0 =&gt; pub RRD: ReadOnly&lt;u32&gt;),
+        (0xC4 =&gt; _reserved7),
+        /// Virtual Logical Destination Register (LDR): the 32-bit field located at offset 0D0H on the virtual-APIC page.
+        (0xD0 =&gt; pub LDR: ReadWrite&lt;u32&gt;),
+        (0xD4 =&gt; _reserved8),
+        /// Virtual Destination Format Register (DFR): the 32-bit field located at offset 0E0H on the virtual-APIC page.
+        (0xE0 =&gt; pub DFR: ReadWrite&lt;u32&gt;),
+        (0xE4 =&gt; _reserved9),
+        /// Virtual Spurious Interrupt Vector Register (SVR): the 32-bit field located at offset 0F0H on the virtual-APIC page.
+        (0xF0 =&gt; pub SVR: SpuriousInterruptVectorRegisterMmio),
+        (0xF4 =&gt; _reserved10),
+        /// Virtual interrupt-service register (VISR):
+        /// the 256-bit value comprising eight non-contiguous 32-bit fields at offsets
+        /// 100H, 110H, 120H, 130H, 140H, 150H, 160H, and 170H on the virtual-APIC page.
+        (0x100 =&gt; pub ISR: [ReadOnly&lt;u128&gt;; 8]),
+        /// Virtual trigger-mode register (VTMR):
+        /// the 256-bit value comprising eight non-contiguous 32-bit fields at offsets
+        /// 180H, 190H, 1A0H, 1B0H, 1C0H, 1D0H, 1E0H, and 1F0H on the virtual-APIC page.
+        (0x180 =&gt; pub TMR: [ReadOnly&lt;u128&gt;; 8]),
+        /// Virtual interrupt-request register (VIRR):
+        /// the 256-bit value comprising eight non-contiguous 32-bit fields at offsets
+        /// 200H, 210H, 220H, 230H, 240H, 250H, 260H, and 270H on the virtual-APIC page.
+        /// Bit x of the VIRR is at bit position (x &amp; 1FH) at offset (200H | ((x &amp; E0H) » 1)).
+        /// The processor uses only the low 4 bytes of each of the 16-Byte fields at offsets 200H, 210H, 220H, 230H, 240H, 250H, 260H, and 270H.
+        (0x200 =&gt; pub IRR: [ReadOnly&lt;u128&gt;; 8]),
+        /// Virtual error-status register (VESR): the 32-bit field located at offset 280H on the virtual-APIC page.
+        (0x280 =&gt; pub ESR: ReadWrite&lt;u32&gt;),
+        (0x284 =&gt; _reserved11),
+        /// Virtual LVT Corrected Machine Check Interrupt (CMCI) Register
+        (0x2F0 =&gt; pub LVT_CMCI: LvtCmciRegisterMmio),
+        (0x2F4 =&gt; _reserved12),
+        /// Virtual Interrupt Command Register (ICR): the 64-bit field located at offset 300H on the virtual-APIC page.
+        (0x300 =&gt; pub ICR_LO: ReadWrite&lt;u32&gt;),
+        (0x304 =&gt; _reserved13),
+        (0x310 =&gt; pub ICR_HI: ReadWrite&lt;u32&gt;),
+        (0x314 =&gt; _reserved14),
+        /// Virtual LVT Timer Register: the 32-bit field located at offset 320H on the virtual-APIC page.
+        (0x320 =&gt; pub LVT_TIMER: LvtTimerRegisterMmio),
+        (0x324 =&gt; _reserved15),
+        /// Virtual LVT Thermal Sensor register: the 32-bit field located at offset 330H on the virtual-APIC page.
+        (0x330 =&gt; pub LVT_THERMAL: LvtThermalMonitorRegisterMmio),
+        (0x334 =&gt; _reserved16),
+        /// Virtual LVT Performance Monitoring Counters register: the 32-bit field located at offset 340H on the virtual-APIC page.
+        (0x340 =&gt; pub LVT_PMI: LvtPerformanceCounterRegisterMmio),
+        (0x344 =&gt; _reserved17),
+        /// Virtual LVT LINT0 register: the 32-bit field located at offset 350H on the virtual-APIC page.
+        (0x350 =&gt; pub LVT_LINT0: LvtLint0RegisterMmio),
+        (0x354 =&gt; _reserved18),
+        /// Virtual LVT LINT1 register: the 32-bit field located at offset 360H on the virtual-APIC page.
+        (0x360 =&gt; pub LVT_LINT1: LvtLint1RegisterMmio),
+        (0x364 =&gt; _reserved19),
+        /// Virtual LVT Error register: the 32-bit field located at offset 370H on the virtual-APIC page.
+        (0x370 =&gt; pub LVT_ERROR: LvtErrorRegisterMmio),
+        (0x374 =&gt; _reserved20),
+        /// Virtual Initial Count Register (for Timer): the 32-bit field located at offset 380H on the virtual-APIC page.
+        (0x380 =&gt; pub ICR_TIMER: ReadWrite&lt;u32&gt;),
+        (0x384 =&gt; _reserved21),
+        /// Virtual Current Count Register (for Timer): the 32-bit field located at offset 390H on the virtual-APIC page.
+        (0x390 =&gt; pub CCR_TIMER: ReadOnly&lt;u32&gt;),
+        (0x394 =&gt; _reserved22),
+        /// Virtual Divide Configuration Register (for Timer): the 32-bit field located at offset 3E0H on the virtual-APIC page.
+        (0x3E0 =&gt; pub DCR_TIMER: ReadWrite&lt;u32&gt;),
+        (0x3E4 =&gt; _reserved23),
+        /// Virtual SELF IPI Register: the 32-bit field located at offset 3F0H on the virtual-APIC page.
+        (0x3F0 =&gt; pub SELF_IPI: WriteOnly&lt;u32&gt;),
+        (0x3F4 =&gt; _reserved24),
+        (0x1000 =&gt; @END),
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="eoi-寄存器"><a class="header" href="#eoi-寄存器">EOI 寄存器</a></h3>
+<p>使用值0向偏移量为0xB0的寄存器写入，以信号通知中断结束。使用非零值可能会导致通用保护故障。</p>
+<h3 id="local-vector-table-寄存器"><a class="header" href="#local-vector-table-寄存器">Local Vector Table 寄存器</a></h3>
+<p>处理器和LAPIC自身可以生成一些特殊的中断。虽然外部中断是在I/O APIC中配置的，但这些中断必须使用LAPIC中的寄存器进行配置。最有趣的寄存器包括：0x320 = LAPIC定时器，0x350 = LINT0，0x360 = LINT1。更多详情请参见 <code>Intel SDM vol 3</code>。</p>
+<p>寄存器格式：</p>
+<div class="table-wrapper"><table><thead><tr><th>位范围</th><th>描述</th></tr></thead><tbody>
+<tr><td>0-7</td><td>向量编号</td></tr>
+<tr><td>8-10（定时器保留）</td><td>如果是NMI则为100b</td></tr>
+<tr><td>11</td><td>保留</td></tr>
+<tr><td>12</td><td>如果中断挂起则设置</td></tr>
+<tr><td>13（定时器保留）</td><td>极性，设置为低电平触发</td></tr>
+<tr><td>14（定时器保留）</td><td>远程IRR</td></tr>
+<tr><td>15（定时器保留）</td><td>触发模式，设置为电平触发</td></tr>
+<tr><td>16</td><td>设置以屏蔽</td></tr>
+<tr><td>17-31</td><td>保留</td></tr>
+</tbody></table>
+</div>
+<h3 id="spurious-interrupt-vector-寄存器"><a class="header" href="#spurious-interrupt-vector-寄存器">Spurious Interrupt Vector 寄存器</a></h3>
+<p>偏移量是0xF0。低字节包含伪中断的编号。如上所述，您应该将此设置为0xFF。要启用APIC，请设置此寄存器的第8位（或0x100）。如果设置了第12位，则EOI消息不会被广播。其余的所有位目前都是保留的。</p>
+<h3 id="interrupt-command-寄存器-icr"><a class="header" href="#interrupt-command-寄存器-icr">Interrupt Command 寄存器 (ICR)</a></h3>
+<p>中断命令寄存器由两个32位寄存器组成；一个位于0x300，另一个位于0x310。它用于向不同的处理器发送中断。中断是在0x300被写入时发出的，而不是在0x310被写入时发出的。因此，要发送中断命令，应该首先写入0x310，然后写入0x300。在0x310处有一个位于位24-27的字段，它是目标处理器的本地APIC ID（针对物理目的地模式）。这里是0x300的结构：</p>
+<div class="table-wrapper"><table><thead><tr><th>位范围</th><th>描述</th></tr></thead><tbody>
+<tr><td>0-7</td><td>向量编号，或SIPI的起始页号</td></tr>
+<tr><td>8-10</td><td>交付模式。0表示正常，1表示最低优先级，2表示SMI，4表示NMI，5可以是INIT或INIT级别解除，6表示SIPI</td></tr>
+<tr><td>11</td><td>目的地模式。清除表示物理目的地，或者设置表示逻辑目的地。如果该位被清除，则0x310中的目的地字段被视为正常处理</td></tr>
+<tr><td>12</td><td>交付状态。当中断被目标接受时清除。通常应在发送中断后等待此位清除</td></tr>
+<tr><td>13</td><td>保留</td></tr>
+<tr><td>14</td><td>清除表示INIT级别解除，否则设置</td></tr>
+<tr><td>15</td><td>设置表示INIT级别解除，否则清除</td></tr>
+<tr><td>18-19</td><td>目的地类型。如果&gt;0，则忽略0x310中的目的地字段。1总是发送中断给自己，2发送给所有处理器，3发送给除当前处理器外的所有处理器。最好避免使用模式1、2和3，并坚持使用0</td></tr>
+<tr><td>20-31</td><td>保留</td></tr>
+</tbody></table>
+</div><style>.scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: flex; } }</style><button type="button" aria-label="scroll-to-top" class="scroll-to-top hidden" onclick="scrollToTop()"> <i class="fa fa-angle-up"></i></button><script>const scrollToTop = () => window.scroll({ top: 0, behavior: "smooth" }); window.addEventListener("scroll", () => { const button = document.querySelector(".scroll-to-top"); button.classList.toggle("hidden", window.scrollY <200); });</script><style>.announcement-banner { --site-announcement-bar-stripe-color1: #e5e7eb; --site-announcement-bar-stripe-color2: #d1d5db; z-index: 150; position: relative; flex-direction: column; justify-content: center; align-items: center; margin: 0; padding: 1rem 3.5rem; background: repeating-linear-gradient( 45deg, var(--site-announcement-bar-stripe-color1), var(--site-announcement-bar-stripe-color1) 20px, var(--site-announcement-bar-stripe-color2) 10px, var(--site-announcement-bar-stripe-color2) 40px ); } html:is(.navy, .coal, .ayu) .announcement-banner { --site-announcement-bar-stripe-color1: #1f2937; --site-announcement-bar-stripe-color2: #111827; } .announcement-banner p { color: var(--fg); width: 100%; margin: 0; padding: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; text-wrap: balance; } .announcement-banner button[data-close] { top: 50%; right: 1rem; position: absolute; transform: translateY(-50%); width: 3rem; height: 3rem; cursor: pointer !important; border: none; font-weight: 900; border-radius: 50%; background-color: transparent; }</style><div style="display: none" data-id="0.2.11" class="announcement-banner"> <p><em>正在逐步完善中。。。</em></p> <button type="button" data-close>X</button></div><script>(() => { const banner = document.querySelector(".announcement-banner"); const id = banner.getAttribute("data-id"); const message = banner.querySelector("p").textContent; const localData = JSON.parse(localStorage.getItem("mdbook-announcement-banner")); if (!localData || localData.id !== id || localData.hide !== true) { banner.style.display = "flex"; const page = document.querySelector(".page"); page.parentNode.insertBefore(banner, page); banner.querySelector("button").addEventListener("click", () => { banner.remove(); localStorage.setItem("mdbook-announcement-banner", JSON.stringify({ id, hide: true, message })); }); } })();</script><style>.giscus { margin-top: 6rem; }</style><script src="https://giscus.app/client.js" data-repo="arceos-hypervisor/doc" data-repo-id="R_kgDOLMHfvQ" data-category="Comments" data-category-id="DIC_kwDOLMHfvc4CoqAB" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-loading="eager" crossorigin="anonymous" data-theme="light" async></script><script>(() => { const giscusScript = document.querySelector("script[data-repo][data-repo-id]"); if (giscusScript?.getAttribute("data-theme") !== "book") return; const mapTheme = (theme) => (["light", "rust"].includes(theme) ? "light" : "dark"); const bookTheme = localStorage.getItem("mdbook-theme") || html.getAttribute("class"); giscusScript.setAttribute("data-theme", mapTheme(bookTheme)); document.querySelectorAll("button[role='menuitem'].theme").forEach((btn) => { btn.addEventListener("click", (event) => { const theme = mapTheme(event.target.id); const iframe = document.querySelector("iframe.giscus-frame"); if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, "*"); }); }); })();</script><style>footer { text-align: center; text-wrap: balance; margin-top: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; } footer p { margin: 0; }</style><footer><p>Copyright © 2025 • Created by ArceOS Team</p></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../architecture/irq/vgic.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../architecture/device/passthrough_device.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../architecture/irq/vgic.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../architecture/device/passthrough_device.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>
