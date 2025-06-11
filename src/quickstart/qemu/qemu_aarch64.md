@@ -1689,3 +1689,24 @@ export PATH=/path/to/qemu-9.2.2/build:$PATH
 ## 已知问题
 
 1. ArceOS 从内存中加载启动时，如果没有 disk.img 将报错
+2. 通过fs方式启动linux时，如果出现以下报错
+
+```bash
+error: could not find native static library `lwext4-aarch64`, perhaps an -L flag is missing?
+
+error: could not compile `lwext4_rust` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make: *** [scripts/make/build.mk:42: _cargo_build] Error 101
+```
+
+有可能是本地缺少交叉编译环境 `aarch64-linux-musl-cross` 或 `cmake(version < 3.5)`
+
+```bash
+# install aarch64-linux-musl-cross
+wget https://musl.cc/aarch64-linux-musl-cross.tgz
+sudo tar -xvf aarch64-linux-musl-cross.tgz -C /opt/
+echo 'export PATH=/opt/aarch64-linux-musl-cross/bin/:$PATH' >> ~/.bashrc
+source ~/.bashrc
+# install cmake
+sudo apt-get install cmake
+```
