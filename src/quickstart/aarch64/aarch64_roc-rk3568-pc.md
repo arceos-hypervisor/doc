@@ -1,6 +1,6 @@
 # ROC-RK3568-PC
 
-对于在 ROC-RK3568-PC 开发板上运行，我们需要将相关镜像直接部署到开发板上，关于如何在 ROC-RK3568-PC 开发板上进行部署，详见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述。我们同时验证了单核和多核启动，以下示例以单核为例。
+对于在 ROC-RK3568-PC 开发板上运行，我们需要将相关镜像直接部署到开发板上，关于如何在 ROC-RK3568-PC 开发板上进行部署，详见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述。我们同时验证了单核和多核启动，以下示例以单核为例。注意，axvisor自身使用的配置信息为板载的dtb文件，故如果需要修改axvisor使用的配置，需要提前修改板载的dtb文件。
 
 ## ArceOS
 
@@ -20,7 +20,7 @@
 
 2. 将 ArceOS 镜像以及设备树放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
-3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=debug VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn,fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=debug VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 4. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
@@ -30,7 +30,7 @@
 
 1. 修改 `configs/vms/arceos-aarch64-rk3568_smp1.toml` 配置文件。对于从内存系统加载 ArceOS 镜像，需要将 `kernel_path` 和 `dtb_path` 设置为 ArceOS 镜像和设备树的绝对路径，并且修改 `image_location = "memory"` 指定从内存加载。
 
-2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 PLATFORM=aarch64-dyn` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 3. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
@@ -54,7 +54,7 @@
 
 2. 将 Linux 镜像以及设备树放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
-3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=debug VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn,fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=debug VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 4. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
@@ -64,7 +64,7 @@
 
 1. 修改 `configs/vms/linux-aarch64-rk3568_smp1.toml` 配置文件。对于从内存系统加载 Linux 镜像，需要将 `kernel_path` 和 `dtb_path` 设置为 Linux 镜像和设备树的绝对路径，并且修改 `image_location = "memory"` 指定从内存加载。
 
-2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 ` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 3. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
@@ -95,7 +95,7 @@
 
 2. 将 ArceOS 镜像和设备树以及 Linux 镜像和设备树放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
-3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn,fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+3. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 4. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
@@ -105,7 +105,7 @@
 
 1. 根据以上两个章节的介绍，分别修改好 `configs/vms/arceos-aarch64-rk3568_smp1.toml` 和 `configs/vms/linux-aarch64-rk3568_smp1.toml` 配置文件。
 
-2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=plat-dyn,fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
+2. 准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 `make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,bus-mmio,driver-rk3568-emmc` 构建 AxVisor 镜像 `axvisor_aarch64-qemu-virt-hv.bin`
 
 3. 将 `axvisor_aarch64-qemu-virt-hv.bin` 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！
 
