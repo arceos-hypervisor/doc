@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ROC-RK3568-PC - AxVisor Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/css/custom.css">
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/language-picker.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">AxVisor Book</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh-CN">中文</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                        </ul>
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("en");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "quickstart/aarch64/aarch64_roc-rk3568-pc.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "zh-CN") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+
+                          // When the user clicks a list item, the page jump is performed, just like clicking the internal <a> tag.
+                          langList.querySelectorAll("li").forEach(function(li) {
+                            li.addEventListener("click", function(event) {
+                              event.preventDefault();
+        
+                              let link = this.querySelector("a");
+                              if (link && window.location.href !== link.href) {
+                                window.location.href = link.href;
+                              }
+                            });
+                          });
+                        </script>
+
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/arceos-hypervisor/doc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="roc-rk3568-pc"><a class="header" href="#roc-rk3568-pc">ROC-RK3568-PC</a></h1>
+<p>对于在 ROC-RK3568-PC 开发板上的 AxVisor 中运行 ArceOS 及 Linux，我们需要将相关镜像直接部署到开发板上，关于如何在 ROC-RK3568-PC 开发板上进行部署，详见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述。我们同时验证了单核和多核启动，以下示例以单核为例。</p>
+<blockquote>
+<p>注意，axvisor自身使用的配置信息为板载的 dtb 文件，故如果需要修改 axvisor 使用的配置，需要提前修改板载的 dtb 文件。</p>
+</blockquote>
+<h2 id="arceos"><a class="header" href="#arceos">ArceOS</a></h2>
+<h3 id="准备-arceos-镜像"><a class="header" href="#准备-arceos-镜像">准备 ArceOS 镜像</a></h3>
+<ol>
+<li>
+<p>获取 ArceOS 源码 <code>git clone git@github.com:arceos-hypervisor/arceos.git</code>。由于目前 ArceOS 还没有合并支持设备树的分支，因此我们需要执行 <code>git checkout 45-动态plat-make-脚本接口适配</code> 切换分支</p>
+</li>
+<li>
+<p>执行 <code>make A=examples/helloworld PLATFORM=aarch64-dyn SMP=1 LOG=info</code> 构建出 ArceOS 镜像 <code>examples/helloworld/helloworld_aarch64-dyn.bin</code></p>
+</li>
+</ol>
+<h3 id="准备-arceos-设备树"><a class="header" href="#准备-arceos-设备树">准备 ArceOS 设备树</a></h3>
+<p>在 AxVisor 源码目录中执行 <code>dtc -I dts -O dtb -o configs/vms/arceos-aarch64-rk3568_smp1.dtb configs/vms/arceos-aarch64-rk3568_smp1.dts</code> 获取 ArceOS 需要的设备树文件 <code>arceos-aarch64-rk3568_smp1.dtb</code>。</p>
+<h3 id="从文件系统加载运行"><a class="header" href="#从文件系统加载运行">从文件系统加载运行</a></h3>
+<ol>
+<li>
+<p>修改 <code>configs/vms/arceos-aarch64-rk3568_smp1.toml</code> 配置文件。对于从文件系统加载 ArceOS 镜像，需要将 <code>kernel_path</code> 和 <code>dtb_path</code> 设置为 ArceOS 镜像和设备树在 rootfs 中的路径，并且修改 <code>image_location = "fs"</code> 指定从文件系统加载。</p>
+</li>
+<li>
+<p>将 ArceOS 镜像 <code>helloworld_aarch64-dyn.bin</code> 以及设备树 <code>arceos-aarch64-rk3568_smp1.dtb</code> 放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=debug VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,driver-rk3568-emmc</code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h3 id="从内存加载运行"><a class="header" href="#从内存加载运行">从内存加载运行</a></h3>
+<ol>
+<li>
+<p>修改 <code>configs/vms/arceos-aarch64-rk3568_smp1.toml</code> 配置文件。对于从内存系统加载 ArceOS 镜像，需要将 <code>kernel_path</code> 和 <code>dtb_path</code> 设置为 ArceOS 镜像和设备树的绝对路径，并且修改 <code>image_location = "memory"</code> 指定从内存加载。</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml SMP=4 PLATFORM=aarch64-dyn</code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 <code>boot.img</code> 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
+<h3 id="准备-linux-镜像"><a class="header" href="#准备-linux-镜像">准备 Linux 镜像</a></h3>
+<p>直接用 ROC-RK3568-PC 的 SDK 按照 <code>firefly_rk3568_roc-rk3568-pc_ubuntu_defconfig</code> 这个配置文件构建出所有的镜像文件，内核镜像直接使用生成的 <code>kernel/arch/arm64/boot/Image</code></p>
+<blockquote>
+<p>单核与多核共用同一个内核镜像即可，因为 Linux 内核启动时，会根据设备树中的配置来决定启动多少个 CPU</p>
+</blockquote>
+<h3 id="准备-linux-设备树"><a class="header" href="#准备-linux-设备树">准备 Linux 设备树</a></h3>
+<p>在 AxVisor 源码目录中执行 <code>dtc -I dts -O dtb -o configs/vms/linux-aarch64-rk3568_smp1.dtb configs/vms/linux-aarch64-rk3568_smp1.dts</code> 获取 Linux 需要的设备树文件。</p>
+<h3 id="从文件系统加载运行-1"><a class="header" href="#从文件系统加载运行-1">从文件系统加载运行</a></h3>
+<ol>
+<li>
+<p>修改 <code>configs/vms/linux-aarch64-rk3568_smp1.toml</code> 配置文件。对于从文件系统加载 Linux 镜像，需要将 <code>kernel_path</code> 和 <code>dtb_path</code> 设置为 Linux 镜像和设备树在 rootfs 中的路径，并且修改 <code>image_location = "fs"</code> 指定从文件系统加载。</p>
+</li>
+<li>
+<p>将 Linux 镜像 <code>Image</code> 以及设备树 <code>linux-aarch64-rk3568_smp1.dtb</code> 放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=debug VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,driver-rk3568-emmc</code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 <code>boot.img</code> 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h3 id="从内存加载运行-1"><a class="header" href="#从内存加载运行-1">从内存加载运行</a></h3>
+<ol>
+<li>
+<p>修改 <code>configs/vms/linux-aarch64-rk3568_smp1.toml</code> 配置文件。对于从内存系统加载 Linux 镜像，需要将 <code>kernel_path</code> 和 <code>dtb_path</code> 设置为 Linux 镜像和设备树的绝对路径，并且修改 <code>image_location = "memory"</code> 指定从内存加载。</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 </code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 <code>boot.img</code> 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h2 id="linux--arceos"><a class="header" href="#linux--arceos">Linux + ArceOS</a></h2>
+<p>对于同时运行 Linux 和 ArceOS，由于开发板上默认只提供一个 UART2 作为控制台，因此，我们需要根据自己的需要更换 Linux 或 ArceOS 的控制台。主要有以下几种方案：</p>
+<ol>
+<li>
+<p>在 U-Boot 中开启多路串口，然后 Linux 和 ArceOS 分别使用不同的串口</p>
+</li>
+<li>
+<p>直接让 Linux 使用默认的 UART2，而 ArceOS 使用 UART3。由于 ArceOS 没有串口初始化功能，因此会阻塞在串口打印。直到 Linux 启动后，它默认会初始化串口3，但是默认是关闭的，需要在 Linux 客户机中 cat /dev/ttyS3 启动串口后，ArceOS 才能继续打印</p>
+</li>
+<li>
+<p>让 Linux 使用 HDMI 的显示器作为控制台（需要修改内核配置，然后重新编译 Linux 镜像），而 ArceOS 继续使用 UART2 作为控制台。</p>
+</li>
+</ol>
+<p>我们在验证时，采用了方案 2，具体步骤如下：</p>
+<ol>
+<li>修改 <code>configs/vms/arceos-aarch64-rk3568_smp1.toml</code> 配置文件。分配 UART3 给 ArceOS 使用，然后同步修改 <code>configs/vms/arceos-aarch64-rk3568_smp1.dts</code> 文件，将原来的 UART2 相关内容换成 UART3。</li>
+</ol>
+<h3 id="准备镜像文件"><a class="header" href="#准备镜像文件">准备镜像文件</a></h3>
+<p>根据以上两个章节，分别准备 ArceOS 和 Linux 的镜像文件。</p>
+<h3 id="从文件系统加载运行-2"><a class="header" href="#从文件系统加载运行-2">从文件系统加载运行</a></h3>
+<ol>
+<li>
+<p>根据以上两个章节的介绍，分别修改好 <code>configs/vms/arceos-aarch64-rk3568_smp1.toml</code> 和 <code>configs/vms/linux-aarch64-rk3568_smp1.toml</code> 配置文件。这两个配置文件中的硬件资源默认就是分配好的，两个客户机可以同时运行。</p>
+</li>
+<li>
+<p>将 ArceOS 镜像和设备树以及 Linux 镜像和设备树放到 rootfs 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,driver-rk3568-emmc</code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 <code>boot.img</code> 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h3 id="从内存加载运行-2"><a class="header" href="#从内存加载运行-2">从内存加载运行</a></h3>
+<ol>
+<li>
+<p>根据以上两个章节的介绍，分别修改好 <code>configs/vms/arceos-aarch64-rk3568_smp1.toml</code> 和 <code>configs/vms/linux-aarch64-rk3568_smp1.toml</code> 配置文件。</p>
+</li>
+<li>
+<p>准备 AxVisor 镜像文件。在 AxVisor 源码目录中执行 <code>make ACCEL=n ARCH=aarch64 PLATFORM=aarch64-dyn LOG=info VM_CONFIGS=configs/vms/arceos-aarch64-rk3568_smp1.toml:configs/vms/linux-aarch64-rk3568_smp1.toml SMP=4 APP_FEATURES=fs FEATURES=ext4fs,driver-rk3568-emmc</code> 构建 AxVisor 镜像 <code>axvisor_aarch64-dyn.bin</code></p>
+</li>
+<li>
+<p>将 <code>axvisor_aarch64-dyn.bin</code> 放到 boot.img 中，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+<li>
+<p>将修改后的 <code>boot.img</code> 和 <code>rootfs.img</code> 部署到 ROC-RK3568-PC 开发板即可，具体步骤参见 https://github.com/arceos-hypervisor/axvisor/issues/70 中的描述！</p>
+</li>
+</ol>
+<h2 id="问题参考"><a class="header" href="#问题参考">问题参考</a></h2>
+<p>更详细的描述，参见移植及适配过程中对应的 ISSUE 中的记录：</p>
+<ol>
+<li>
+<p>https://github.com/arceos-hypervisor/axvisor/issues/66</p>
+</li>
+<li>
+<p>https://github.com/arceos-hypervisor/axvisor/issues/67</p>
+</li>
+<li>
+<p>https://github.com/arceos-hypervisor/axvisor/issues/68</p>
+</li>
+</ol>
+<style>.scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: flex; } }</style><button type="button" aria-label="scroll-to-top" class="scroll-to-top hidden" onclick="scrollToTop()"> <i class="fa fa-angle-up"></i></button><script>const scrollToTop = () => window.scroll({ top: 0, behavior: "smooth" }); window.addEventListener("scroll", () => { const button = document.querySelector(".scroll-to-top"); button.classList.toggle("hidden", window.scrollY <200); });</script><style>.announcement-banner { --site-announcement-bar-stripe-color1: #e5e7eb; --site-announcement-bar-stripe-color2: #d1d5db; z-index: 150; position: relative; flex-direction: column; justify-content: center; align-items: center; margin: 0; padding: 1rem 3.5rem; background: repeating-linear-gradient( 45deg, var(--site-announcement-bar-stripe-color1), var(--site-announcement-bar-stripe-color1) 20px, var(--site-announcement-bar-stripe-color2) 10px, var(--site-announcement-bar-stripe-color2) 40px ); } html:is(.navy, .coal, .ayu) .announcement-banner { --site-announcement-bar-stripe-color1: #1f2937; --site-announcement-bar-stripe-color2: #111827; } .announcement-banner p { color: var(--fg); width: 100%; margin: 0; padding: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; text-wrap: balance; } .announcement-banner button[data-close] { top: 50%; right: 1rem; position: absolute; transform: translateY(-50%); width: 3rem; height: 3rem; cursor: pointer !important; border: none; font-weight: 900; border-radius: 50%; background-color: transparent; }</style><div style="display: none" data-id="0.2.11" class="announcement-banner"> <p><em>正在逐步完善中。。。</em></p> <button type="button" data-close>X</button></div><script>(() => { const banner = document.querySelector(".announcement-banner"); const id = banner.getAttribute("data-id"); const message = banner.querySelector("p").textContent; const localData = JSON.parse(localStorage.getItem("mdbook-announcement-banner")); if (!localData || localData.id !== id || localData.hide !== true) { banner.style.display = "flex"; const page = document.querySelector(".page"); page.parentNode.insertBefore(banner, page); banner.querySelector("button").addEventListener("click", () => { banner.remove(); localStorage.setItem("mdbook-announcement-banner", JSON.stringify({ id, hide: true, message })); }); } })();</script><style>.giscus { margin-top: 6rem; }</style><script src="https://giscus.app/client.js" data-repo="arceos-hypervisor/doc" data-repo-id="R_kgDOLMHfvQ" data-category="Comments" data-category-id="DIC_kwDOLMHfvc4CoqAB" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-loading="eager" crossorigin="anonymous" data-theme="light" async></script><script>(() => { const giscusScript = document.querySelector("script[data-repo][data-repo-id]"); if (giscusScript?.getAttribute("data-theme") !== "book") return; const mapTheme = (theme) => (["light", "rust"].includes(theme) ? "light" : "dark"); const bookTheme = localStorage.getItem("mdbook-theme") || html.getAttribute("class"); giscusScript.setAttribute("data-theme", mapTheme(bookTheme)); document.querySelectorAll("button[role='menuitem'].theme").forEach((btn) => { btn.addEventListener("click", (event) => { const theme = mapTheme(event.target.id); const iframe = document.querySelector("iframe.giscus-frame"); if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, "*"); }); }); })();</script><style>footer { text-align: center; text-wrap: balance; margin-top: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; } footer p { margin: 0; }</style><footer><p>Copyright © 2025 • Created by ArceOS Team</p></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../quickstart/aarch64/aarch64_rk3588.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../architecture/arch.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../quickstart/aarch64/aarch64_rk3588.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../architecture/arch.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>
