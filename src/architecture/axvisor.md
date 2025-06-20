@@ -45,7 +45,7 @@ Hypervisor和操作系统提供的抽象中的主要不同是处理器虚拟化�
 在本小节中，我们将以AxVisor一次完整的运行流程为引子，详细介绍AxVisor VMM的实现。
 以下代码是定义在`AxVisor/src/main/rs`的中的`main()`函数，它主要完成了三项任务
 
-1. 在`hal::enable_vitualization()`完成了硬件初始化
+1. 在`hal::enable_virtualization()`完成了硬件初始化
 2. 在`vmm::init()`完成了VMM初始化
 3. 在`vmm::start()`启动了VMM管理的虚拟机实例并提供运行时支持
 
