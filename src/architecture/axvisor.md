@@ -29,7 +29,7 @@
 
 要理解Hypervisor的基本架构，一个关键是理解Hypervisor和操作系统抽象模型的区别。
 
-![Hypervisor vs. Operating System](../assets/axvisor//hypervisorvsos.png)
+![Hypervisor vs. Operating System](../assets/axvisor/hypervisorvsos.png)
 
 对于操作系统来说，它管理所有的硬件资源并且对所有的硬件资源进行了一层抽象提供给应用程序使用：通过虚拟内存为应用程序提供了内存的抽象，通过线程为应用程序提供了CPU核心计算资源的抽象。
 
