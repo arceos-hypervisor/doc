@@ -4,7 +4,6 @@
 
 `AxVisor`仓库是AxVisor项目的顶层Crate，它作为程序的主入口点将所有组件整合在一起，实现了AxVisor虚拟机监控器(Virtual Machine Manager， VMM)的核心功能。`AxVisor` Crate 提供了一个全局视角的虚拟化资源管理，并负责编排虚拟机的整个生命周期。功能涵盖系统初始化，虚拟机启动，处理运行时事件等等。AxVisor通过统一的框架为多种架构(x86, aarch64和RISC-V)提供支持。
 
-![AxVisor Architecture](../assets/axvisor/Axvisor.png)
 
 ## 设计目标
 在深入到具体的设计细节之前，我们将在本节中明确AxVisor的设计目标和功能需求。
@@ -23,6 +22,8 @@
 模块化设计原则使得AxVisor crate的架构非常清晰。
 
 一方面。 它依赖ArceOS unikernel基座实现了Hypervisor资源管理的基本功能，如内存管理，设备管理，任务调度。另一方面，它依赖`axvm`模块实现了对虚拟机实例的管理，如虚拟机实例的创建，销毁，启动，终止。`AxVisor` 作为核心管理者对硬件资源进行维护的同时也维护各个虚拟机的配置，状态等信息。
+
+![AxVisor Architecture](../assets/axvisor/Axvisor.png)
 
 ### 基本抽象模型
 
@@ -82,7 +83,10 @@ pub fn init() {
 
 ### 基于axtask的vCPU调度
 
-AxVisor依赖于ArceOS的axtask调度器为各个虚拟机实例的vcpu提供调度。AxVisor借助了axteask提供的Task扩展(Task Ext)接口为Task绑定了虚拟机实例和vCPU的信息。对于单核系统，axtask模块将所有vCPU放入统一的调度队列中进行管理。对于多核系统AxVisor支持通过掩码的方式为vCPU设置物理CPU亲和性，在调度过程中axtask根据掩码将虚拟机实例的任务插入到对应物理核心的调度队列中去。
+AxVisor实现了vCPU状态管理和调度解耦。通过vCPU模块维护每个架构的vCPU实现，vCPU需要正确虚拟化异常处理，定义上下文帧结构，并保存寄存器等信息，并处理与物理CPU的交互。具体实现课参考每个架构的vCPU模块。
+
+在调度方面AxVisor借助了axteask提供的Task扩展(Task Ext)接口为Task绑定了虚拟机实例和vCPU的ID，从而复用ArceOS的axtask调度器为各个虚拟机实例的vcpu提供调度。
+对于单核系统，axtask模块将所有vCPU放入统一的调度队列中进行管理。对于多核系统AxVisor支持通过掩码的方式为vCPU设置物理CPU亲和性，在调度过程中axtask根据掩码将虚拟机实例的任务插入到对应物理核心的调度队列中去。
 
 ```rust
 pub(crate) fn select_run_queue<G: BaseGuard>(task: &AxTaskRef) -> AxRunQueueRef<'static, G> {
