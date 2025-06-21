@@ -85,7 +85,7 @@ pub fn init() {
 
 AxVisor实现了vCPU状态管理和调度解耦。通过vCPU模块维护每个架构的vCPU实现，vCPU需要正确虚拟化异常处理，定义上下文帧结构，并保存寄存器等信息，并处理与物理CPU的交互。具体实现课参考每个架构的vCPU模块。
 
-在调度方面AxVisor借助了axteask提供的Task扩展(Task Ext)接口为Task绑定了虚拟机实例和vCPU的ID，从而复用ArceOS的axtask调度器为各个虚拟机实例的vcpu提供调度。
+在调度方面，AxVisor借助了axteask提供的Task扩展(Task Ext)接口为Task绑定了虚拟机实例和vCPU的ID，从而复用ArceOS的axtask调度器为各个虚拟机实例的vcpu提供调度。
 对于单核系统，axtask模块将所有vCPU放入统一的调度队列中进行管理。对于多核系统AxVisor支持通过掩码的方式为vCPU设置物理CPU亲和性，在调度过程中axtask根据掩码将虚拟机实例的任务插入到对应物理核心的调度队列中去。
 
 ```rust
