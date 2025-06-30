@@ -45,6 +45,7 @@
 
 - [Virtual IRQ](./architecture/irq/irq.md)
     - [vGIC](./architecture/irq/vgic.md)
+    - [GICv3 和 GIC 部分直通](./architecture/irq/gicv3-gppt.md)
     - [vLapic](./architecture/irq/vlapic.md)
 
 - [Passthrough Device](./architecture/device/passthrough_device.md)
