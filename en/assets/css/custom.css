@@ -1,0 +1,6 @@
+pre code {
+    overflow-y: auto; /* 启用纵向滚动条 */
+    overflow-x: auto;
+    max-height: 500px; /* 设置代码块的最大高度 */
+    border-radius: 5px; /* 可选，设置圆角 */
+}

@@ -1,0 +1,458 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>x86_vcpu - AxVisor Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/css/custom.css">
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/language-picker.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">AxVisor Book</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh-CN">中文</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                        </ul>
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("en");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "architecture/vcpu/x86_vcpu.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "zh-CN") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+
+                          // When the user clicks a list item, the page jump is performed, just like clicking the internal <a> tag.
+                          langList.querySelectorAll("li").forEach(function(li) {
+                            li.addEventListener("click", function(event) {
+                              event.preventDefault();
+        
+                              let link = this.querySelector("a");
+                              if (link && window.location.href !== link.href) {
+                                window.location.href = link.href;
+                              }
+                            });
+                          });
+                        </script>
+
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/arceos-hypervisor/doc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li><a href="https://github.com/arceos-hypervisor/x86_vcpu">x86_64</a></li>
+</ul>
+<h1 id="x86_vcpu"><a class="header" href="#x86_vcpu">x86_vcpu</a></h1>
+<h2 id="介绍"><a class="header" href="#介绍">介绍</a></h2>
+<p>定义 x86_64 架构的 vCPU 结构和虚拟化相关接口支持。</p>
+<p>crate 用户必须使用 <a href="https://crates.io/crates/crate_interface"><code>crate_interface::impl_interface</code></a> 实现 <code>PhysFrameIf</code> trait，以提供 <code>PhysFrame</code> 分配和释放的低级实现，相关实现可参考 <a href="https://github.com/arceos-org/arceos/blob/main/modules/axhal/src/paging.rs">ArceOS</a>。</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code>use x86_vcpu::PhysFrameIf;
+
+struct PhysFrameIfImpl;
+
+#[crate_interface::impl_interface]
+impl axvm::PhysFrameIf for PhysFrameIfImpl {
+    fn alloc_frame() -&gt; Option&lt;PhysAddr&gt; {
+        // Your implementation here
+    }
+    fn dealloc_frame(paddr: PhysAddr) {
+        // Your implementation here
+    }
+    fn phys_to_virt(paddr: PhysAddr) -&gt; VirtAddr {
+        // Your implementation here
+    }
+}
+</code></pre>
+<h2 id="系统架构"><a class="header" href="#系统架构">系统架构</a></h2>
+<h3 id="模块组织"><a class="header" href="#模块组织">模块组织</a></h3>
+<pre><code>x86_vcpu/
+    ├── src/
+    │   ├── msr.rs          - 模型特定寄存器操作
+    │   ├── regs.rs         - 通用寄存器管理
+    │   ├── ept.rs          - 扩展页表支持
+    │   ├── frame.rs        - 物理内存帧管理
+    │   ├── vmx/            - Intel VT-x 相关实现
+    │   │   ├── definitions.rs  - 常量和类型定义
+    │   │   ├── instructions.rs - VMX 指令封装
+    │   │   ├── percpu.rs       - 每 CPU 状态管理
+    │   │   ├── structs.rs      - VMX 数据结构
+    │   │   ├── vcpu.rs         - 虚拟 CPU 实现
+    │   │   ├── vmcs.rs         - VMCS 字段操作
+    │   │   └── mod.rs          - 模块入口
+    │   └── lib.rs          - 库入口点
+</code></pre>
+<h3 id="核心组件"><a class="header" href="#核心组件">核心组件</a></h3>
+<ul>
+<li><code>VmxVcpu</code>: 虚拟 CPU 实现，管理客户机状态和执行</li>
+<li><code>VmxPerCpuState</code>: 每物理 CPU 的 VMX 状态</li>
+<li><code>VMCS</code> 管理: 虚拟机控制结构字段的读写操作</li>
+<li><code>EPT</code> 控制: 扩展页表配置和违规处理</li>
+<li>物理内存管理: 通过 PhysFrame 抽象管理物理内存</li>
+</ul>
+<h2 id="关键数据结构"><a class="header" href="#关键数据结构">关键数据结构</a></h2>
+<h3 id="generalregisters"><a class="header" href="#generalregisters"><code>GeneralRegisters</code></a></h3>
+<p>用于存储和操作 X86_64 通用寄存器状态：</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[repr(C)]
+pub struct GeneralRegisters {
+    pub rax: u64,
+    pub rcx: u64,
+    // ... 其他寄存器
+}
+<span class="boring">}</span></code></pre></pre>
+<p>提供按索引访问和修改寄存器值的方法：</p>
+<ul>
+<li><code>get_reg_of_index(index: u8) -&gt; u64</code></li>
+<li><code>set_reg_of_index(index: u8, value: u64)</code></li>
+</ul>
+<h3 id="vmxvcpu"><a class="header" href="#vmxvcpu"><code>VmxVcpu</code></a></h3>
+<p>虚拟 CPU 的核心实现：</p>
+<pre><code>pub struct VmxVcpu&lt;H: AxVCpuHal&gt; {
+    guest_regs: GeneralRegisters,
+    host_stack_top: u64,
+    launched: bool,
+    vmcs: VmxRegion&lt;H&gt;,
+    io_bitmap: IOBitmap&lt;H&gt;,
+    msr_bitmap: MsrBitmap&lt;H&gt;,
+    // ... 其他字段
+}
+</code></pre>
+<h3 id="guestpagewalkinfo"><a class="header" href="#guestpagewalkinfo"><code>GuestPageWalkInfo</code></a></h3>
+<p>存储客户机页表遍历所需的信息：</p>
+<pre><code>pub struct GuestPageWalkInfo {
+    pub top_entry: usize,
+    pub level: usize,
+    pub width: u32,
+    // ... 权限和控制位
+}
+</code></pre>
+<h3 id="physframe"><a class="header" href="#physframe"><code>PhysFrame</code></a></h3>
+<p>物理内存页面的安全抽象：</p>
+<pre><code>pub struct PhysFrame&lt;H: AxVCpuHal&gt; {
+    start_paddr: Option&lt;HostPhysAddr&gt;,
+    _marker: PhantomData&lt;H&gt;,
+}
+</code></pre>
+<h2 id="核心功能实现"><a class="header" href="#核心功能实现">核心功能实现</a></h2>
+<h3 id="vcpu-生命周期管理"><a class="header" href="#vcpu-生命周期管理">VCPU 生命周期管理</a></h3>
+<pre><code>// 创建新的虚拟 CPU
+pub fn new() -&gt; AxResult&lt;Self&gt; { ... }
+
+// 配置虚拟 CPU
+pub fn setup(&amp;mut self, ept_root: HostPhysAddr, entry: GuestPhysAddr) -&gt; AxResult { ... }
+
+// 绑定到当前物理 CPU
+pub fn bind_to_current_processor(&amp;self) -&gt; AxResult { ... }
+
+// 执行客户机代码
+pub fn inner_run(&amp;mut self) -&gt; Option&lt;VmxExitInfo&gt; { ... }
+</code></pre>
+<h3 id="vmcs-设置"><a class="header" href="#vmcs-设置">VMCS 设置</a></h3>
+<pre><code>fn setup_vmcs_guest(&amp;mut self, entry: GuestPhysAddr) -&gt; AxResult { ... }
+
+fn setup_vmcs_host(&amp;self) -&gt; AxResult { ... }
+
+fn setup_vmcs_control(&amp;mut self, ept_root: HostPhysAddr, is_guest: bool) -&gt; AxResult { ... }
+</code></pre>
+<h3 id="vm-进入退出处理"><a class="header" href="#vm-进入退出处理">VM 进入/退出处理</a></h3>
+<pre><code>#[naked]
+unsafe extern "C" fn vmx_launch(&amp;mut self) -&gt; usize { ... }
+
+#[naked]
+unsafe extern "C" fn vmx_resume(&amp;mut self) -&gt; usize { ... }
+
+fn builtin_vmexit_handler(&amp;mut self, exit_info: &amp;VmxExitInfo) -&gt; Option&lt;AxResult&gt; { ... }
+</code></pre>
+<h3 id="事件注入"><a class="header" href="#事件注入">事件注入</a></h3>
+<pre><code>/// Add a virtual interrupt or exception to the pending events list,
+/// and try to inject it before later VM entries.
+pub fn queue_event(&amp;mut self, vector: u8, err_code: Option&lt;u32&gt;) { ... }
+
+/// Try to inject a pending event before next VM entry.
+fn inject_pending_events(&amp;mut self) -&gt; AxResult { ... }
+</code></pre>
+<h3 id="io-和-msr-拦截"><a class="header" href="#io-和-msr-拦截">I/O 和 MSR 拦截</a></h3>
+<pre><code>/// Set I/O intercept by modifying I/O bitmap.
+pub fn set_io_intercept_of_range(&amp;mut self, port_base: u32, count: u32, intercept: bool) { ... }
+
+/// Set msr intercept by modifying msr bitmap.
+pub fn set_msr_intercept_of_range(&amp;mut self, msr: u32, intercept: bool) { ... }
+</code></pre>
+<h2 id="关键技术"><a class="header" href="#关键技术">关键技术</a></h2>
+<h3 id="vmx-操作模式"><a class="header" href="#vmx-操作模式">VMX 操作模式</a></h3>
+<p>实现了完整的 VMX 操作模式切换：</p>
+<ul>
+<li>通过 <code>VMXON</code> 指令进入 VMX 操作模式</li>
+<li>通过 <code>VMLAUNCH</code> 和 <code>VMRESUME</code> 指令执行客户机代码</li>
+<li>通过 VM 退出处理程序响应客户机事件</li>
+</ul>
+<h3 id="嵌套分页-ept"><a class="header" href="#嵌套分页-ept">嵌套分页 (EPT)</a></h3>
+<p>使用扩展页表实现高效内存虚拟化：</p>
+<ul>
+<li>配置 EPT 指针 (EPTP)</li>
+<li>处理 EPT 违规事件</li>
+<li>支持内存访问权限控制</li>
+</ul>
+<h3 id="寄存器状态切换"><a class="header" href="#寄存器状态切换">寄存器状态切换</a></h3>
+<p>通过X86汇编代码实现状态切换：</p>
+<ul>
+<li><code>save_regs_to_stack!</code> 宏保存寄存器状态到堆栈</li>
+<li><code>restore_regs_from_stack!</code> 宏从堆栈恢复寄存器状态</li>
+<li>特殊处理栈指针 (RSP) 以确保正确的状态切换</li>
+</ul>
+<h3 id="指令模拟"><a class="header" href="#指令模拟">指令模拟</a></h3>
+<p>为特定指令提供模拟实现：</p>
+<ul>
+<li>CPUID 指令模拟，提供自定义处理器信息</li>
+<li>XSETBV 指令处理，管理扩展状态</li>
+<li>CR 寄存器访问处理</li>
+</ul>
+<h2 id="内存管理"><a class="header" href="#内存管理">内存管理</a></h2>
+<h3 id="物理内存分配"><a class="header" href="#物理内存分配">物理内存分配</a></h3>
+<p>通过 PhysFrame 抽象提供安全的物理内存管理：</p>
+<ul>
+<li>自动释放不再使用的物理页面</li>
+<li>支持零填充和自定义初始化</li>
+<li>提供物理地址到虚拟地址的转换</li>
+</ul>
+<h3 id="ept-页表管理"><a class="header" href="#ept-页表管理">EPT 页表管理</a></h3>
+<p>实现二级地址转换机制：</p>
+<ul>
+<li>创建和管理 EPT 页表结构</li>
+<li>支持不同的页面粒度 (4KB, 2MB, 1GB)</li>
+<li>处理页面权限和访问控制</li>
+</ul>
+<style>.scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: flex; } }</style><button type="button" aria-label="scroll-to-top" class="scroll-to-top hidden" onclick="scrollToTop()"> <i class="fa fa-angle-up"></i></button><script>const scrollToTop = () => window.scroll({ top: 0, behavior: "smooth" }); window.addEventListener("scroll", () => { const button = document.querySelector(".scroll-to-top"); button.classList.toggle("hidden", window.scrollY <200); });</script><style>.announcement-banner { --site-announcement-bar-stripe-color1: #e5e7eb; --site-announcement-bar-stripe-color2: #d1d5db; z-index: 150; position: relative; flex-direction: column; justify-content: center; align-items: center; margin: 0; padding: 1rem 3.5rem; background: repeating-linear-gradient( 45deg, var(--site-announcement-bar-stripe-color1), var(--site-announcement-bar-stripe-color1) 20px, var(--site-announcement-bar-stripe-color2) 10px, var(--site-announcement-bar-stripe-color2) 40px ); } html:is(.navy, .coal, .ayu) .announcement-banner { --site-announcement-bar-stripe-color1: #1f2937; --site-announcement-bar-stripe-color2: #111827; } .announcement-banner p { color: var(--fg); width: 100%; margin: 0; padding: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; text-wrap: balance; } .announcement-banner button[data-close] { top: 50%; right: 1rem; position: absolute; transform: translateY(-50%); width: 3rem; height: 3rem; cursor: pointer !important; border: none; font-weight: 900; border-radius: 50%; background-color: transparent; }</style><div style="display: none" data-id="0.2.11" class="announcement-banner"> <p><em>正在逐步完善中。。。</em></p> <button type="button" data-close>X</button></div><script>(() => { const banner = document.querySelector(".announcement-banner"); const id = banner.getAttribute("data-id"); const message = banner.querySelector("p").textContent; const localData = JSON.parse(localStorage.getItem("mdbook-announcement-banner")); if (!localData || localData.id !== id || localData.hide !== true) { banner.style.display = "flex"; const page = document.querySelector(".page"); page.parentNode.insertBefore(banner, page); banner.querySelector("button").addEventListener("click", () => { banner.remove(); localStorage.setItem("mdbook-announcement-banner", JSON.stringify({ id, hide: true, message })); }); } })();</script><style>.giscus { margin-top: 6rem; }</style><script src="https://giscus.app/client.js" data-repo="arceos-hypervisor/doc" data-repo-id="R_kgDOLMHfvQ" data-category="Comments" data-category-id="DIC_kwDOLMHfvc4CoqAB" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-loading="eager" crossorigin="anonymous" data-theme="light" async></script><script>(() => { const giscusScript = document.querySelector("script[data-repo][data-repo-id]"); if (giscusScript?.getAttribute("data-theme") !== "book") return; const mapTheme = (theme) => (["light", "rust"].includes(theme) ? "light" : "dark"); const bookTheme = localStorage.getItem("mdbook-theme") || html.getAttribute("class"); giscusScript.setAttribute("data-theme", mapTheme(bookTheme)); document.querySelectorAll("button[role='menuitem'].theme").forEach((btn) => { btn.addEventListener("click", (event) => { const theme = mapTheme(event.target.id); const iframe = document.querySelector("iframe.giscus-frame"); if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, "*"); }); }); })();</script><style>footer { text-align: center; text-wrap: balance; margin-top: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; } footer p { margin: 0; }</style><footer><p>Copyright © 2025 • Created by ArceOS Team</p></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../architecture/vcpu/vcpu.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../architecture/vcpu/arm_vcpu.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../architecture/vcpu/vcpu.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../architecture/vcpu/arm_vcpu.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>

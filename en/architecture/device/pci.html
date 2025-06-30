@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>emulated PCI - AxVisor Book</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../src/assets/css/custom.css">
+        <link rel="stylesheet" href="../../theme/pagetoc.css">
+        <link rel="stylesheet" href="../../theme/language-picker.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">AxVisor Book</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh-CN">中文</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                        </ul>
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("en");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "architecture/device/pci.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "zh-CN") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+
+                          // When the user clicks a list item, the page jump is performed, just like clicking the internal <a> tag.
+                          langList.querySelectorAll("li").forEach(function(li) {
+                            li.addEventListener("click", function(event) {
+                              event.preventDefault();
+        
+                              let link = this.querySelector("a");
+                              if (link && window.location.href !== link.href) {
+                                window.location.href = link.href;
+                              }
+                            });
+                          });
+                        </script>
+
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/arceos-hypervisor/doc" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pci"><a class="header" href="#pci">PCI</a></h1>
+<p>PCI（外设组件互连）是一种广泛使用的设备总线标准，用于连接计算机的外设（如网卡、显卡等）与系统通信。CPU可以通过load/store指令来访问PCI设备，PCI设备有如下三种不同内存：</p>
+<ul>
+<li>MMIO</li>
+<li>PCI IO space</li>
+<li>PCI configuration space</li>
+</ul>
+<p>配置一个PCI设备通常需要对其BAR（Base Address Register）进行配置并启用设备，遍历每个BAR，检查BAR的内存类型并分配地址，<code>root.bar_info(bdf, bar)</code>调用返回一个关于指定设备和BAR的详细信息。从分配器申请地址，根据BAR类型（32位或64位）调用<code>set_bar_32</code> 或 <code>set_bar_64</code>。</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let info = root.bar_info(bdf, bar).unwrap(); // 获取BAR元数据
+if let BarInfo::Memory { address_type, address, size, .. } = info {
+    if size &gt; 0 &amp;&amp; address == 0 { // 需要分配的未初始化BAR
+        let new_addr = allocator
+            .as_mut()
+            .expect("No memory ranges available for PCI BARs!")
+            .alloc(size as _)
+            .ok_or(DevError::NoMemory)?;
+
+        if address_type == MemoryBarType::Width32 {
+            root.set_bar_32(bdf, bar, new_addr as _);
+        } else if address_type == MemoryBarType::Width64 {
+            root.set_bar_64(bdf, bar, new_addr);
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>检查当前BAR是否占用两个条目，若当前BAR是64位类型，则需递增<code>bar</code>两次，跳过下一个索引。</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>bar += 1;
+if info.takes_two_entries() {
+    bar += 1;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>启用设备的IO/内存访问及总线主控</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let (_status, cmd) = root.get_status_command(bdf);
+  root.set_command(
+    bdf,
+    cmd | Command::IO_SPACE | Command::MEMORY_SPACE | Command::BUS_MASTER,
+  );
+<span class="boring">}</span></code></pre></pre>
+<p><strong>命令寄存器设置</strong>：</p>
+<ul>
+<li><strong>IO_SPACE</strong>: 允许设备响应IO端口访问。</li>
+<li><strong>MEMORY_SPACE</strong>: 允许设备响应内存映射访问。</li>
+<li><strong>BUS_MASTER</strong>: 启用设备作为总线主设备。</li>
+</ul>
+<h1 id="emulated-pci"><a class="header" href="#emulated-pci">Emulated PCI</a></h1>
+<p>设备的虚拟化是通过模拟（Emulation）和直通（Passthrough）技术来实现的。</p>
+<p>Emulated PCI正是通过软件模拟PCI设备实现的，这些虚拟设备与真实的硬件PCI设备类似，但并非直接依赖Hardware Devices的支持，而是通过Hypervisor层来模拟和管理，用于在虚拟化环境中为VM提供对物理PCI设备的访问能力。</p>
+<div align="center">
+<img src="../../assets/vpci.png" width="75%">
+</div>
+<h3 id="guest-vm层"><a class="header" href="#guest-vm层"><strong>Guest VM层</strong></a></h3>
+<ul>
+<li>虚拟PCI设备驱动，Guest VM认为存在真实PCI设备，通过标准PCI驱动发起I/O请求。</li>
+</ul>
+<h3 id="hypervisor层"><a class="header" href="#hypervisor层">Hypervisor层</a></h3>
+<ul>
+<li><strong>虚拟PCI总线（Virtual PCI Bus）</strong>
+<ul>
+<li>模拟PCI总线拓扑结构，管理虚拟设备的配置空间。</li>
+<li>实现PCI枚举过程，向Guest OS暴露虚拟设备列表。</li>
+</ul>
+</li>
+<li><strong>PCI设备模型（Device Model）</strong>
+<ul>
+<li><strong>寄存器模拟</strong>：对设备寄存器的读写操作进行拦截和模拟。</li>
+<li><strong>DMA模拟</strong>：通过虚拟地址转换（GPA→HPA）处理Guest发起的DMA操作。</li>
+<li><strong>中断模拟</strong>：将虚拟设备中断映射为虚拟中断。</li>
+</ul>
+</li>
+</ul>
+<h3 id="host-os--hardware层"><a class="header" href="#host-os--hardware层">Host OS &amp; Hardware层</a></h3>
+<ul>
+<li>物理资源交互，对于纯软件模拟设备，由Host用户态程序处理I/O请求。</li>
+</ul>
+<h2 id="核心机制"><a class="header" href="#核心机制">核心机制</a></h2>
+<ul>
+<li>
+<p><strong>配置空间模拟</strong></p>
+<p>PCI设备通过配置空间定义其资源需求（如I/O端口、内存映射地址等），虚拟化时，Axvisor模拟PCI总线的拓扑关系和设备的配置空间，例如，虚拟设备的BAR（基址寄存器） 由Axvisor动态分配，客户机操作系统通过写入BAR来请求资源，Axvisor则映射到宿主机物理地址或虚拟资源。</p>
+</li>
+<li>
+<p><strong>设备发现与枚举</strong></p>
+<p>GuestOS启动时，会像物理机一样枚举PCI总线以发现设备。Axvisor模拟BIOS/UEFI固件的行为，向GuestOS呈现虚拟PCI总线及挂接的设备。</p>
+</li>
+<li>
+<p><strong>I/O访问与中断处理</strong></p>
+<p>GuestOS对虚拟设备的I/O端口（PMIO）或内存映射（MMIO）访问会被VMM截获。中断则通过虚拟APIC或注入虚拟中断信号通知GuestOS。<style>.scroll-to-top { font-size: 2.5rem; width: 3.2rem; height: 3.2rem; display: none; align-items: center; justify-content: center; position: fixed; padding: 0.75rem; bottom: 4rem; right: calc(1.25rem + 90px + var(--page-padding)); z-index: 999; cursor: pointer; border: none; color: var(--bg); background: var(--fg); border-radius: 50%; } .scroll-to-top.hidden { display: none; } .scroll-to-top i { transform: translateY(-2px); } @media (min-width: 1080px) { .scroll-to-top { display: flex; } }</style><button type="button" aria-label="scroll-to-top" class="scroll-to-top hidden" onclick="scrollToTop()"> <i class="fa fa-angle-up"></i></button><script>const scrollToTop = () =&gt; window.scroll({ top: 0, behavior: "smooth" }); window.addEventListener("scroll", () =&gt; { const button = document.querySelector(".scroll-to-top"); button.classList.toggle("hidden", window.scrollY &lt;200); });</script><style>.announcement-banner { --site-announcement-bar-stripe-color1: #e5e7eb; --site-announcement-bar-stripe-color2: #d1d5db; z-index: 150; position: relative; flex-direction: column; justify-content: center; align-items: center; margin: 0; padding: 1rem 3.5rem; background: repeating-linear-gradient( 45deg, var(--site-announcement-bar-stripe-color1), var(--site-announcement-bar-stripe-color1) 20px, var(--site-announcement-bar-stripe-color2) 10px, var(--site-announcement-bar-stripe-color2) 40px ); } html:is(.navy, .coal, .ayu) .announcement-banner { --site-announcement-bar-stripe-color1: #1f2937; --site-announcement-bar-stripe-color2: #111827; } .announcement-banner p { color: var(--fg); width: 100%; margin: 0; padding: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; text-wrap: balance; } .announcement-banner button[data-close] { top: 50%; right: 1rem; position: absolute; transform: translateY(-50%); width: 3rem; height: 3rem; cursor: pointer !important; border: none; font-weight: 900; border-radius: 50%; background-color: transparent; }</style><div style="display: none" data-id="0.2.11" class="announcement-banner"> <p><em>正在逐步完善中。。。</em></p> <button type="button" data-close>X</button></div><script>(() =&gt; { const banner = document.querySelector(".announcement-banner"); const id = banner.getAttribute("data-id"); const message = banner.querySelector("p").textContent; const localData = JSON.parse(localStorage.getItem("mdbook-announcement-banner")); if (!localData || localData.id !== id || localData.hide !== true) { banner.style.display = "flex"; const page = document.querySelector(".page"); page.parentNode.insertBefore(banner, page); banner.querySelector("button").addEventListener("click", () =&gt; { banner.remove(); localStorage.setItem("mdbook-announcement-banner", JSON.stringify({ id, hide: true, message })); }); } })();</script><style>.giscus { margin-top: 6rem; }</style><script src="https://giscus.app/client.js" data-repo="arceos-hypervisor/doc" data-repo-id="R_kgDOLMHfvQ" data-category="Comments" data-category-id="DIC_kwDOLMHfvc4CoqAB" data-mapping="title" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-loading="eager" crossorigin="anonymous" data-theme="light" async></script><script>(() =&gt; { const giscusScript = document.querySelector("script[data-repo][data-repo-id]"); if (giscusScript?.getAttribute("data-theme") !== "book") return; const mapTheme = (theme) =&gt; (["light", "rust"].includes(theme) ? "light" : "dark"); const bookTheme = localStorage.getItem("mdbook-theme") || html.getAttribute("class"); giscusScript.setAttribute("data-theme", mapTheme(bookTheme)); document.querySelectorAll("button[role='menuitem'].theme").forEach((btn) =&gt; { btn.addEventListener("click", (event) =&gt; { const theme = mapTheme(event.target.id); const iframe = document.querySelector("iframe.giscus-frame"); if (iframe) iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, "*"); }); }); })();</script><style>footer { text-align: center; text-wrap: balance; margin-top: 5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; } footer p { margin: 0; }</style><footer><p>Copyright © 2025 • Created by ArceOS Team</p></footer></p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../architecture/device/device.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../architecture/device/virtio.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../architecture/device/device.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../architecture/device/virtio.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>
